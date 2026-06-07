@@ -323,14 +323,14 @@
       );
     });
 
-    // Refresh after layout settles
-    function refreshST() { ScrollTrigger.refresh(); }
-    document.fonts.ready.then(refreshST);
-    window.addEventListener('load', refreshST);
-    setTimeout(refreshST, 500);
-    setTimeout(refreshST, 1500);
+    // === ScrollTrigger refresh — aggressive multi-pass ===
+    const doRefresh = () => { ScrollTrigger.refresh(); ScrollTrigger.sort(); };
+    requestAnimationFrame(() => requestAnimationFrame(doRefresh));
+    document.fonts.ready.then(doRefresh);
+    window.addEventListener('load', doRefresh);
+    [200, 600, 1200, 2500, 5000].forEach(t => setTimeout(doRefresh, t));
 
-    // Safety net: force-reveal all [data-animate] after 4s if GSAP missed
+    // Safety net: force-reveal all [data-animate] after 6s if GSAP missed
     setTimeout(() => {
       document.querySelectorAll('[data-animate]').forEach(el => {
         if (parseFloat(getComputedStyle(el).opacity) < 0.1) {
@@ -338,4 +338,4 @@
           el.style.transform = 'none';
         }
       });
-    }, 4000);
+    }, 6000);
