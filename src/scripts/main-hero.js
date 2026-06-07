@@ -1,7 +1,4 @@
     import gsap from 'gsap';
-    import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-    gsap.registerPlugin(ScrollTrigger);
 
     // ============================================================
     // HERO — Cinematic Timeline (3-4s)
@@ -43,11 +40,3 @@
 
     // 9. Scroll indicator
     heroTl.to('.scroll-indicator', { opacity: 1, duration: 0.4 }, 3.1);
-
-    // === ScrollTrigger refresh — aggressive multi-pass ===
-    ScrollTrigger.config({ ignoreMobileResize: true });
-    const doRefresh = () => { ScrollTrigger.refresh(); ScrollTrigger.sort(); };
-    requestAnimationFrame(() => requestAnimationFrame(doRefresh));
-    document.fonts.ready.then(doRefresh);
-    window.addEventListener('load', doRefresh);
-    [200, 600, 1200, 2500, 5000].forEach(t => setTimeout(doRefresh, t));

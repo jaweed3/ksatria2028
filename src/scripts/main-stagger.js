@@ -20,8 +20,9 @@
           ease: 'power2.out',
           scrollTrigger: {
             trigger: grid,
-            start: 'top 80%',
+            start: 'top bottom',
             toggleActions: 'play none none none',
+            once: true,
           }
         }
       );
@@ -39,8 +40,9 @@
       const tentangTl = gsap.timeline({
         scrollTrigger: {
           trigger: tentangSection,
-          start: 'top 75%',
+          start: 'top bottom',
           toggleActions: 'play none none none',
+          once: true,
         }
       });
 
@@ -151,8 +153,9 @@
           ease: 'back.out(1.7)',
           scrollTrigger: {
             trigger: repOrbit,
-            start: 'top 80%',
+            start: 'top bottom',
             toggleActions: 'play none none none',
+            once: true,
           }
         }
       );
@@ -165,8 +168,9 @@
           ease: 'elastic.out(1, 0.6)',
           scrollTrigger: {
             trigger: repOrbit,
-            start: 'top 80%',
+            start: 'top bottom',
             toggleActions: 'play none none none',
+            once: true,
           }
         }
       );
@@ -300,8 +304,9 @@
         delay: delay / 1000,
         scrollTrigger: {
           trigger: el,
-          start: 'top 88%',
+          start: 'top bottom',
           toggleActions: 'play none none none',
+          once: true,
         }
       });
     });
@@ -317,7 +322,8 @@
           duration: 0.6,
           scrollTrigger: {
             trigger: num.closest('.section'),
-            start: 'top 85%',
+            start: 'top bottom',
+            once: true,
           }
         }
       );

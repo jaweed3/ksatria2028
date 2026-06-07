@@ -2,6 +2,7 @@
     import { ScrollTrigger } from "gsap/ScrollTrigger";
 
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
 
     // TIMELINE — Glowing Line + Node Reveal
     // ============================================================
@@ -13,7 +14,7 @@
         ease: 'none',
         scrollTrigger: {
           trigger: '.tl-path',
-          start: 'top 70%',
+          start: 'top 80%',
           end: 'bottom bottom',
           scrub: 1.2,
         }
@@ -23,7 +24,7 @@
       tlNodes.forEach((node, i) => {
         ScrollTrigger.create({
           trigger: node,
-          start: 'top 85%',
+          start: 'top bottom',
           onEnter: () => {
             node.classList.add('tl-node--visible');
             gsap.fromTo(node, { opacity: 0, x: -40 }, {
@@ -177,16 +178,9 @@
           ease: 'power3.out',
           scrollTrigger: {
             trigger: title,
-            start: 'top 82%',
+            start: 'top bottom',
             toggleActions: 'play none none none',
           }
         }
       );
     });
-
-    // === ScrollTrigger refresh — aggressive multi-pass ===
-    const doRefresh = () => { ScrollTrigger.refresh(); ScrollTrigger.sort(); };
-    requestAnimationFrame(() => requestAnimationFrame(doRefresh));
-    document.fonts.ready.then(doRefresh);
-    window.addEventListener('load', doRefresh);
-    [200, 600, 1200, 2500, 5000].forEach(t => setTimeout(doRefresh, t));
