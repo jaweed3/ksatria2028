@@ -1,7 +1,8 @@
 export async function POST({ request }) {
   try {
-    const { password } = await request.json();
-    const ADMIN_PW = process.env.ADMIN_PASSWORD || '';
+    const body = await request.json();
+    const { password } = body;
+    const ADMIN_PW = (process.env.ADMIN_PASSWORD || '').trim();
 
     if (!ADMIN_PW) {
       return new Response(JSON.stringify({ ok: false, error: 'not configured' }), {
@@ -9,7 +10,7 @@ export async function POST({ request }) {
       });
     }
 
-    if (password === ADMIN_PW) {
+    if (password?.trim() === ADMIN_PW) {
       return new Response(JSON.stringify({ ok: true }), {
         headers: { 'Content-Type': 'application/json' },
       });
@@ -18,8 +19,8 @@ export async function POST({ request }) {
     return new Response(JSON.stringify({ ok: false }), {
       status: 401, headers: { 'Content-Type': 'application/json' },
     });
-  } catch {
-    return new Response(JSON.stringify({ ok: false }), {
+  } catch (e) {
+    return new Response(JSON.stringify({ ok: false, error: String(e) }), {
       status: 400, headers: { 'Content-Type': 'application/json' },
     });
   }
