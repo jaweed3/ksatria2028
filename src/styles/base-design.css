@@ -1,0 +1,77 @@
+    /* ============================================================
+       DESIGN SYSTEM — KSATRIA 2028
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      /* Primary Palette — Deep Luxury */
+      --color-crimson:        #8B1A1A;
+      --color-crimson-dark:   #5C0F0F;
+      --color-crimson-light:  #B02020;
+      --color-gold:           #C9A84C;
+      --color-gold-light:     #E8C96A;
+      --color-gold-dark:      #9A7A30;
+      --color-ivory:          #F5F0E8;
+      --color-ivory-dark:     #EDE5D5;
+      --color-paper:          #FAF7F2;
+      --color-deep-black:     #050505;
+      --color-charcoal:       #1A1A1A;
+      --color-ash:            #2C2C2C;
+      --color-text-primary:   #1A0A0A;
+      --color-text-secondary: #4A3030;
+      --color-text-muted:     #7A6060;
+      --color-text-on-dark:   #F5F0E8;
+      --color-border:         rgba(139, 26, 26, 0.15);
+      --color-border-gold:    rgba(201, 168, 76, 0.3);
+
+      /* Glassmorphism */
+      --glass-bg:   rgba(5, 5, 5, 0.55);
+      --glass-bg-l: rgba(245, 240, 232, 0.08);
+      --glass-bg-g: rgba(201, 168, 76, 0.06);
+      --glass-blur: blur(16px);
+      --glass-border: 1px solid rgba(245, 240, 232, 0.08);
+
+      /* Typography */
+      --font-display: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+      --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono:    'IBM Plex Mono', 'SF Mono', 'Courier New', monospace;
+
+      /* Type Scale — Cinematic */
+      --text-xs:    0.6875rem;
+      --text-sm:    0.75rem;
+      --text-base:  1rem;
+      --text-md:    1.125rem;
+      --text-lg:    1.25rem;
+      --text-xl:    1.5rem;
+      --text-2xl:   2rem;
+      --text-3xl:   2.5rem;
+      --text-4xl:   clamp(2.5rem, 4vw, 3.5rem);
+      --text-5xl:   clamp(3.5rem, 6vw, 6rem);
+      --text-massive: clamp(3.5rem, 8vw, 7rem);
+      --text-gigantic: clamp(5rem, 14vw, 14rem);
+
+      /* Spacing */
+      --section-pad-y: clamp(4rem, 8vw, 8rem);
+      --section-pad-x: clamp(1.5rem, 5vw, 4rem);
+      --container: 1280px;
+      --container-narrow: 840px;
+
+      /* Animation */
+      --dur-instant: 80ms; --dur-fast: 200ms; --dur-normal: 400ms;
+      --dur-slow: 700ms; --dur-deliberate: 1000ms; --dur-grand: 1400ms;
+      --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+      --ease-power: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-snap: cubic-bezier(0.87, 0, 0.13, 1);
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text-primary);
+      background: var(--color-deep-black);
+      line-height: 1.7;
+      font-size: 1.0625rem;
+      -webkit-font-smoothing: antialiased;
+    }
+

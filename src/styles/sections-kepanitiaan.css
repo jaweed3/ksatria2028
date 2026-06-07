@@ -1,0 +1,102 @@
+    /* ============================================================
+       KEPANITIAAN — Dark glassmorphism hierarchy
+       ============================================================ */
+    .section-kepanitiaan {
+      background: var(--color-deep-black);
+      color: var(--color-text-on-dark);
+    }
+    .section-kepanitiaan .section-label { color: var(--color-gold); }
+    .section-kepanitiaan .section-title { color: var(--color-text-on-dark); }
+    .section-kepanitiaan .section-lead { color: rgba(245,240,232,0.6); }
+    .panitia-divider { background: var(--color-gold) !important; }
+
+    .panitia-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .panitia-level {
+      padding: 2rem 2.25rem;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(201,168,76,0.08);
+      border-left: 4px solid var(--color-crimson);
+      transition: all 0.3s ease;
+    }
+    .panitia-level:hover {
+      background: rgba(201,168,76,0.03);
+      border-left-color: var(--color-gold);
+    }
+    .panitia-level-1 {
+      border-left-width: 5px;
+      border-left-color: var(--color-gold);
+      background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(255,255,255,0.02));
+    }
+    .panitia-level-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--color-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1.25rem;
+    }
+    .panitia-names {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .panitia-name {
+      font-size: 0.95rem;
+      color: rgba(245,240,232,0.65);
+      padding: 0.25rem 0;
+    }
+    .panitia-name.big {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--color-gold);
+    }
+    .panitia-name.dim {
+      color: rgba(245,240,232,0.3);
+      font-style: italic;
+      font-size: 0.85rem;
+    }
+    .panitia-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      width: 100%;
+    }
+    .panitia-role {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding: 1rem 1.25rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(201,168,76,0.06);
+      transition: all 0.25s ease;
+    }
+    .panitia-role:hover {
+      background: rgba(201,168,76,0.04);
+      border-color: rgba(201,168,76,0.2);
+    }
+    .role-title {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: rgba(245,240,232,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .role-name {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--color-gold);
+    }
+
+    @media (max-width: 767px) {
+      .panitia-grid { grid-template-columns: 1fr; }
+      .panitia-names { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
+      .panitia-level { padding: 1.5rem; }
+    }

@@ -1,0 +1,81 @@
+    /* ============================================================
+       KOMISI STRATEGIS — 2-col + featured
+       ============================================================ */
+    .komisi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .komisi-card {
+      position: relative;
+      background: rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(201,168,76,0.08);
+      overflow: hidden;
+      transition: box-shadow 0.4s ease;
+    }
+    .komisi-card:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 30px rgba(139,26,26,0.08);
+    }
+    .komisi-accent {
+      height: 4px;
+      background: var(--color-crimson);
+      width: 100%;
+      transform-origin: left;
+      transition: background 0.3s ease;
+    }
+    .komisi-card:hover .komisi-accent {
+      background: var(--color-gold);
+    }
+    .komisi-body {
+      padding: 2rem 2rem 1.75rem;
+    }
+    .komisi-number {
+      font-family: var(--font-mono); font-size: 0.65rem; color: var(--color-gold);
+      letter-spacing: 0.2em; text-transform: uppercase; display: block; margin-bottom: 0.5rem;
+    }
+    .komisi-badge {
+      font-family: var(--font-mono); font-size: 0.55rem; font-weight: 700;
+      color: var(--color-deep-black); background: var(--color-gold);
+      text-transform: uppercase; letter-spacing: 0.15em;
+      padding: 0.2rem 0.6rem; display: inline-block; margin-bottom: 0.75rem;
+    }
+    .komisi-title {
+      font-family: var(--font-display); font-size: 1.35rem; font-weight: 700;
+      color: var(--color-text-on-dark); margin-bottom: 0.75rem; line-height: 1.2;
+    }
+    .komisi-desc {
+      font-size: 0.9rem; color: rgba(245,240,232,0.6); line-height: 1.7; margin-bottom: 1.25rem;
+    }
+    .komisi-outputs {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .komisi-tag {
+      font-family: var(--font-mono); font-size: 0.55rem; color: rgba(245,240,232,0.5);
+      background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.12);
+      padding: 0.25rem 0.6rem; letter-spacing: 0.05em;
+    }
+
+    /* Featured card — spans full width */
+    .komisi-featured {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(139,26,26,0.08) 0%, rgba(5,5,5,0.6) 100%);
+      border-color: rgba(201,168,76,0.15);
+    }
+    .komisi-featured .komisi-accent { height: 5px; background: var(--color-gold); }
+    .komisi-featured .komisi-body { padding: 2.5rem 2.5rem 2rem; }
+    .komisi-featured .komisi-title {
+      font-size: 1.65rem;
+    }
+    .komisi-featured .komisi-desc {
+      font-size: 1rem; max-width: 640px;
+    }
+
+    @media (max-width: 1023px) {
+      .komisi-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 767px) {
+      .komisi-featured .komisi-body { padding: 1.75rem; }
+    }

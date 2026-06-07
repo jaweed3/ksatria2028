@@ -1,0 +1,52 @@
+    /* ============================================================
+       NILAI DASAR CARDS
+       ============================================================ */
+    .nilai-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .nilai-card {
+      background: rgba(255,245,235,0.06);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(201,168,76,0.1);
+      padding: 2rem 1.5rem;
+      position: relative;
+      transition: all var(--dur-normal) var(--ease-out);
+      translate: 0 calc(var(--n-offset, 0) * 0.75rem * (1 - var(--n-offset, 0) / 7 * 2));
+    }
+    .nilai-card:nth-child(2) { margin-top: 2rem; }
+    .nilai-card:nth-child(3) { margin-top: -1rem; }
+    .nilai-card:nth-child(4) { margin-top: 1rem; }
+    .nilai-card:nth-child(5) { margin-top: -0.5rem; }
+    .nilai-card:nth-child(6) { margin-top: 2.5rem; }
+    .nilai-card:nth-child(7) { margin-top: 0rem; }
+    .nilai-card:nth-child(8) { margin-top: -1.5rem; }
+    .nilai-card:hover {
+      transform: translateY(-6px);
+      background: rgba(255,245,235,0.1);
+      border-color: var(--color-gold);
+    }
+    .nilai-num {
+      font-family: var(--font-mono); font-size: 2.5rem; font-weight: 700;
+      color: var(--color-crimson); opacity: 0.6; line-height: 1; margin-bottom: 0.5rem; display: block;
+    }
+    .nilai-title {
+      font-family: var(--font-display); font-size: 1.25rem; font-weight: 700;
+      color: var(--color-text-on-dark); margin-bottom: 0.5rem;
+    }
+    .nilai-line {
+      width: 30px; height: 2px; background: var(--color-gold); margin: 0.75rem 0;
+    }
+    .nilai-desc { font-size: 0.9rem; color: rgba(245,240,232,0.55); line-height: 1.6; }
+
+    @media (max-width: 1023px) {
+      .nilai-grid { grid-template-columns: repeat(2, 1fr); }
+      .nilai-card:nth-child(n) { margin-top: 0; }
+    }
+    @media (max-width: 767px) {
+      .nilai-grid { grid-template-columns: 1fr; }
+      .nilai-card:nth-child(n) { margin-top: 0; }
+    }

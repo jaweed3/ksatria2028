@@ -1,0 +1,153 @@
+    /* ============================================================
+       HERO SECTION — Cinematic Redesign
+       ============================================================ */
+    .hero {
+      position: relative; overflow: hidden; background: var(--color-deep-black);
+    }
+    .hero-bg-pattern {
+      position: absolute; inset: 0; opacity: 0.4;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(139,26,26,0.15) 0%, transparent 70%),
+        repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(201,168,76,0.02) 18px, rgba(201,168,76,0.02) 19px),
+        repeating-linear-gradient(-45deg, transparent, transparent 18px, rgba(201,168,76,0.02) 18px, rgba(201,168,76,0.02) 19px);
+    }
+    .hero-noise {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    /* Garuda Silhouette */
+    .hero-garuda-wrap {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-garuda {
+      width: clamp(300px, 60vw, 700px); height: auto;
+      color: rgba(201, 168, 76, 0.04);
+      transform: scale(1.1);
+      will-change: transform;
+    }
+
+    /* Content */
+    .hero-content-wrap {
+      display: flex; align-items: center; width: 100%;
+      padding: 8rem var(--section-pad-x) 4rem;
+    }
+    .hero-inner {
+      max-width: var(--container); margin: 0 auto; width: 100%;
+    }
+    .hero-label {
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-gold);
+      letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem;
+      opacity: 0; transform: translateY(-20px);
+    }
+    .hero-title-line {
+      overflow: hidden; margin-bottom: 0.5rem;
+    }
+    .hero-title-word {
+      display: block;
+      font-family: var(--font-display);
+      font-size: var(--text-gigantic);
+      font-weight: 900; color: var(--color-ivory); line-height: 0.9;
+      letter-spacing: -0.03em;
+      opacity: 0; transform: translateY(120px) scale(0.95);
+    }
+    .hero-title-sub {
+      font-family: var(--font-mono); font-size: clamp(0.7rem, 1.4vw, 1rem);
+      color: var(--color-gold); letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 1.5rem; opacity: 0; transform: translateY(20px);
+    }
+    .hero-tagline {
+      font-family: var(--font-display); font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.75rem);
+      color: rgba(245,240,232,0.6); margin-bottom: 2.5rem;
+      opacity: 0; transform: translateY(20px);
+    }
+    .hero-tagline-sep {
+      margin: 0 0.75rem; color: var(--color-gold); opacity: 0.5;
+    }
+
+    /* Floating Stat Cards */
+    .hero-stats {
+      display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+      opacity: 0; transform: translateY(30px);
+    }
+    .hero-stat {
+      padding: 0.75rem 1.25rem; text-align: center; min-width: 100px;
+    }
+    .hero-stat-num {
+      display: block; font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 900;
+      color: var(--color-gold); line-height: 1;
+    }
+    .hero-stat-label {
+      display: block; font-family: var(--font-mono);
+      font-size: 0.6rem; color: rgba(245,240,232,0.6);
+      text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.25rem;
+    }
+
+    /* Countdown */
+    .hero-countdown {
+      display: flex; align-items: center;
+      gap: 0.5rem; margin-bottom: 2rem;
+      opacity: 0; transform: scale(0.88);
+    }
+    .cd-block {
+      padding: 0.75rem 1rem; min-width: 65px; text-align: center;
+    }
+    .cd-number {
+      font-family: var(--font-mono); font-size: clamp(1.25rem, 2.5vw, 2rem);
+      font-weight: 700; color: var(--color-gold); display: block; line-height: 1;
+    }
+    .cd-label {
+      font-family: var(--font-mono); font-size: 0.55rem; color: rgba(245,240,232,0.5);
+      text-transform: uppercase; letter-spacing: 0.15em; margin-top: 0.35rem; display: block;
+    }
+    .cd-sep {
+      font-family: var(--font-mono); font-size: 1.25rem; color: var(--color-gold);
+      animation: colonPulse 1s ease-in-out infinite; align-self: flex-start; margin-top: 0.25rem;
+    }
+    @keyframes colonPulse {
+      0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
+    }
+
+    /* Hero Buttons */
+    .hero-buttons {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .hero-btn-1 { opacity: 0; transform: translateY(20px); }
+    .hero-btn-2 { opacity: 0; transform: translateY(20px); }
+
+    .scroll-indicator {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      color: var(--color-gold); font-size: 1.5rem; z-index: 3; opacity: 0;
+      animation: scrollBounce 2s ease-in-out 2.9s infinite;
+    }
+
+    /* ============================================================
+       BUTTONS
+       ============================================================ */
+    .btn-primary {
+      display: inline-block; background: var(--color-crimson);
+      color: var(--color-ivory); font-family: var(--font-mono);
+      font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.875rem 2rem; border: 2px solid var(--color-crimson);
+      text-decoration: none; cursor: pointer; transition: all var(--dur-normal) var(--ease-out);
+    }
+    .btn-primary:hover {
+      background: var(--color-crimson-dark); border-color: var(--color-gold);
+      color: var(--color-gold); transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(139,26,26,0.4);
+    }
+    .btn-secondary {
+      display: inline-block; background: transparent;
+      color: var(--color-gold); font-family: var(--font-mono);
+      font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.875rem 2rem; border: 2px solid var(--color-gold);
+      text-decoration: none; cursor: pointer; transition: all var(--dur-normal) var(--ease-out);
+    }
+    .btn-secondary:hover {
+      background: var(--color-gold); color: var(--color-deep-black);
+      transform: translateY(-2px);
+    }
+

@@ -1,0 +1,14 @@
+       SECTION BACKGROUNDS
+       ============================================================ */
+    .section-tentang { background: var(--color-deep-black); }
+    .section-nilai { background: var(--color-deep-black); color: var(--color-text-on-dark); }
+    .section-nilai .section-label { color: var(--color-gold); }
+    .section-nilai .section-title { color: var(--color-text-on-dark); }
+    .section-nilai .section-lead { color: rgba(245,240,232,0.7); }
+    .section-nilai .section-divider { background: var(--color-gold); }
+    .section-kegiatan { background: var(--color-ivory-dark); }
+    .section-komisi { background: var(--color-deep-black); color: var(--color-text-on-dark); }
+    .section-komisi .section-label { color: var(--color-gold); }
+    .section-komisi .section-title { color: var(--color-text-on-dark); }
+    .section-komisi .section-lead { color: rgba(245,240,232,0.7); }
+    .section-komisi .section-divider { background: var(--color-gold); }

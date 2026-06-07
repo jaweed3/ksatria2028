@@ -1,0 +1,131 @@
+    /* ============================================================
+       HORIZONTAL SCROLL (Festival + Konser)
+       ============================================================ */
+    .section-hscroll {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: var(--color-deep-black);
+    }
+    .section-hscroll .section-label { color: var(--color-gold); }
+    .section-hscroll .section-title { color: var(--color-text-on-dark); }
+    .section-hscroll .section-divider { background: var(--color-gold); }
+    .section-hscroll .section-lead { color: rgba(245,240,232,0.6); }
+
+    .hscroll-heading {
+      flex-shrink: 0;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: var(--space-section) 2rem 3rem;
+      width: 100%;
+    }
+    .hscroll-viewport {
+      overflow: hidden;
+      flex: 1;
+      min-height: 0;
+      padding-bottom: 3rem;
+    }
+    .hscroll-track {
+      display: flex;
+      gap: 2.5rem;
+      padding: 0 2rem;
+      width: max-content;
+      align-items: stretch;
+    }
+
+    /* — Festival cards — */
+    .hscroll-card {
+      width: 360px;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(201,168,76,0.08);
+      padding: 3rem 2rem;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: default;
+      display: flex;
+      flex-direction: column;
+    }
+    .hscroll-card:hover {
+      background: rgba(201,168,76,0.04);
+      border-color: var(--color-gold);
+      transform: translateY(-8px);
+      box-shadow: 0 24px 48px rgba(201,168,76,0.08);
+    }
+    .hscroll-card-icon { font-size: 3rem; margin-bottom: 1.25rem; line-height: 1; }
+    .hscroll-card-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--color-gold);
+      margin-bottom: 0.75rem;
+    }
+    .hscroll-card-desc {
+      font-size: 0.9rem;
+      color: rgba(245,240,232,0.55);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    /* — Konser artist cards — */
+    .konser-card {
+      width: 300px;
+      flex-shrink: 0;
+      background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(201,168,76,0.02));
+      border: 1px solid rgba(201,168,76,0.08);
+      padding: 2.5rem 2rem;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: default;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .konser-card:hover {
+      background: linear-gradient(145deg, rgba(201,168,76,0.06), rgba(139,26,26,0.04));
+      border-color: var(--color-gold);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(201,168,76,0.1);
+    }
+    .konser-card--featured {
+      border-color: var(--color-gold);
+      background: linear-gradient(145deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
+      box-shadow: 0 0 32px rgba(201,168,76,0.06);
+    }
+    .konser-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--color-gold);
+      opacity: 0.8;
+      margin-bottom: 0.75rem;
+    }
+    .konser-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--color-text-on-dark);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+    .konser-genre {
+      font-size: 0.9rem;
+      color: rgba(245,240,232,0.45);
+      font-family: var(--font-body);
+    }
+    .konser-footnote {
+      font-size: 0.75rem;
+      color: rgba(245,240,232,0.3);
+      text-align: center;
+      padding: 1rem 2rem 3rem;
+      font-style: italic;
+      max-width: var(--container);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    @media (max-width: 767px) {
+      .hscroll-card { width: 280px; padding: 2rem 1.5rem; }
+      .konser-card { width: 240px; padding: 2rem 1.5rem; }
+      .hscroll-track { gap: 1.5rem; }
+      .konser-name { font-size: 1.25rem; }
+    }

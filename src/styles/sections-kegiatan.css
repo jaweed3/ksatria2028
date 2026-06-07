@@ -1,0 +1,150 @@
+    /* ============================================================
+       KEGIATAN — Horizontal Scroll Timeline
+       ============================================================ */
+    .section-kegiatan {
+      background: var(--color-deep-black);
+      color: var(--color-text-on-dark);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .section-kegiatan::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 50% 60% at 50% 100%, rgba(139,26,26,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .kegiatan-heading {
+      flex-shrink: 0;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: var(--space-section) 2rem 3rem;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    .kegiatan-heading .section-label { color: var(--color-gold); }
+    .kegiatan-heading .section-title { color: var(--color-text-on-dark); }
+    .kegiatan-heading .section-divider { background: var(--color-gold); }
+    .kegiatan-heading .section-lead { color: rgba(245,240,232,0.6); }
+
+    .kegiatan-viewport {
+      overflow: hidden;
+      flex: 1;
+      min-height: 0;
+      padding-bottom: 4rem;
+      position: relative;
+      z-index: 2;
+    }
+    .kegiatan-track {
+      display: flex;
+      gap: 3rem;
+      padding: 0 3rem;
+      width: max-content;
+      align-items: center;
+      height: 100%;
+    }
+
+    /* — Day Card — */
+    .day-card {
+      width: 420px;
+      flex-shrink: 0;
+      position: relative;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(201,168,76,0.08);
+      padding: 2.5rem 2rem;
+      cursor: default;
+      will-change: transform, opacity;
+    }
+    .day-card-glow {
+      position: absolute;
+      inset: -1px;
+      opacity: 0;
+      background: linear-gradient(135deg, rgba(201,168,76,0.06), transparent 50%, rgba(139,26,26,0.06));
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+    .day-card:hover .day-card-glow { opacity: 1; }
+
+    .day-card-header { margin-bottom: 1.5rem; }
+    .day-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-crimson);
+      opacity: 0.7;
+    }
+    .day-sub {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--color-gold);
+      opacity: 0.5;
+      margin-left: 0.75rem;
+    }
+    .day-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      color: var(--color-text-on-dark);
+      margin: 0.5rem 0 0.75rem;
+      line-height: 1.1;
+    }
+    .day-divider {
+      width: 40px; height: 2px;
+      background: var(--color-gold);
+      margin-bottom: 0.75rem;
+    }
+    .day-desc {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: rgba(245,240,232,0.5);
+    }
+
+    .day-card-body { }
+    .day-events {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .day-events li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      padding: 0.45rem 0;
+      font-size: 0.88rem;
+      color: rgba(245,240,232,0.55);
+      line-height: 1.5;
+      border-bottom: 1px solid rgba(201,168,76,0.06);
+    }
+    .day-events li:last-child { border-bottom: none; }
+    .day-events .time {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--color-gold);
+      opacity: 0.7;
+      flex-shrink: 0;
+      min-width: 5.5rem;
+    }
+    .day-events .event-desc { flex: 1; }
+
+    @media (max-width: 767px) {
+      .kegiatan-heading { padding-bottom: 2rem; }
+      .kegiatan-track {
+        flex-direction: column;
+        padding: 0 1.5rem 2rem;
+        width: 100%;
+        gap: 1.5rem;
+      }
+      .kegiatan-viewport {
+        overflow: visible;
+        padding-bottom: 2rem;
+      }
+      .day-card {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+    }

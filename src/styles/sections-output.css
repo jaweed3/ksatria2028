@@ -1,0 +1,70 @@
+    /* ============================================================
+       OUTPUT — Pinned Horizontal Scroll
+       ============================================================ */
+    .section-output {
+      background: var(--color-charcoal);
+      color: var(--color-text-on-dark);
+      display: flex;
+      flex-direction: column;
+    }
+    .section-output .section-label { color: var(--color-gold); }
+    .section-output .section-title { color: var(--color-text-on-dark); }
+    .section-output .section-lead { color: rgba(245,240,232,0.6); }
+    .output-divider { background: var(--color-gold) !important; }
+    .section-output .section-inner--narrow {
+      flex-shrink: 0;
+      padding-top: var(--space-section);
+    }
+
+    .output-hscroll {
+      overflow: hidden;
+      flex: 1;
+      min-height: 0;
+      padding-bottom: 4rem;
+    }
+    .output-track {
+      display: flex;
+      gap: 2rem;
+      width: max-content;
+      padding: 3rem 2rem;
+    }
+    .output-card {
+      width: 380px;
+      flex-shrink: 0;
+      background: linear-gradient(160deg, rgba(255,255,255,0.03), rgba(201,168,76,0.02));
+      border: 1px solid rgba(201,168,76,0.08);
+      padding: 2.25rem 2rem;
+      cursor: default;
+      transition: border-color 0.35s ease, background 0.35s ease;
+    }
+    .output-card:hover {
+      background: linear-gradient(160deg, rgba(201,168,76,0.06), rgba(139,26,26,0.03));
+      border-color: var(--color-gold);
+    }
+    .output-number {
+      font-family: var(--font-mono);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--color-gold);
+      opacity: 0.15;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+    .output-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-gold);
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+    .output-desc {
+      font-size: 0.9rem;
+      color: rgba(245,240,232,0.55);
+      line-height: 1.7;
+    }
+
+    @media (max-width: 767px) {
+      .output-card { width: 290px; padding: 1.75rem 1.5rem; }
+      .output-track { padding: 2rem 1.5rem; }
+    }
