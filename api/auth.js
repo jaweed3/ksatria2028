@@ -1,7 +1,7 @@
 export async function POST({ request }) {
   try {
     const { password } = await request.json();
-    const ADMIN_PW = import.meta.env.ADMIN_PASSWORD || process?.env?.ADMIN_PASSWORD || '';
+    const ADMIN_PW = process.env.ADMIN_PASSWORD || '';
 
     if (!ADMIN_PW) {
       return new Response(JSON.stringify({ ok: false, error: 'not configured' }), {
