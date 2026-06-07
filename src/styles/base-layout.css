@@ -163,3 +163,73 @@
       .content-split { grid-template-columns: 1fr; gap: 1.5rem; }
       .glass, .glass-light, .glass-gold { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
     }
+
+    /* ============================================================
+       NAV ACTIVE LINK
+       ============================================================ */
+    .nav-links a.active {
+      opacity: 1;
+      color: var(--color-gold);
+    }
+    .nav-links a.active::after { width: 100%; }
+
+    /* ============================================================
+       BACK TO TOP
+       ============================================================ */
+    .back-to-top {
+      position: fixed;
+      bottom: 76px; right: 24px;
+      z-index: 9998;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(5,5,5,0.7);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--color-gold);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+      pointer-events: none;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .back-to-top:hover {
+      border-color: var(--color-gold);
+      box-shadow: 0 0 16px rgba(201,168,76,0.2);
+    }
+
+    /* ============================================================
+       MOBILE NAV SMOOTH TRANSITION
+       ============================================================ */
+    @media (max-width: 900px) {
+      .nav-links {
+        display: flex !important;
+        position: fixed;
+        inset: 0;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
+        background: rgba(5,5,5,0.98);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        z-index: 999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity var(--dur-normal) ease;
+      }
+      .nav-links.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .nav-links a { font-size: 1.1rem; }
+    }

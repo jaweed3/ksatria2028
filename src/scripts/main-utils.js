@@ -20,6 +20,39 @@
     setInterval(updateCountdown, 1000);
 
     // ============================================================
+    // SCROLL SPY — Active nav link
+    // ============================================================
+    const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+    const sections = Array.from(navAnchors).map(a => {
+      const id = a.getAttribute('href').slice(1);
+      return { el: document.getElementById(id), link: a };
+    }).filter(s => s.el);
+
+    const spyObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        sections.forEach(s => s.link.classList.remove('active'));
+        const active = sections.find(s => s.el === entry.target);
+        if (active) active.link.classList.add('active');
+      });
+    }, { threshold: 0.3, rootMargin: '-80px 0px 0px 0px' });
+
+    sections.forEach(s => spyObserver.observe(s.el));
+
+    // ============================================================
+    // BACK TO TOP
+    // ============================================================
+    const backBtn = document.getElementById('backToTop');
+    if (backBtn) {
+      window.addEventListener('scroll', () => {
+        backBtn.classList.toggle('visible', window.scrollY > 600);
+      });
+      backBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // ============================================================
     // MOBILE NAV TOGGLE
     // ============================================================
     const navToggle = document.querySelector('.nav-toggle');
