@@ -520,6 +520,147 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     .section-komisi .section-title { color: var(--color-text-on-dark); }
     .section-komisi .section-lead { color: rgba(245,240,232,0.7); }
     .section-komisi .section-divider { background: var(--color-gold); }
+    /* === TIMELINE PERJALANAN BANGSA === */
+    .section-timeline {
+      position: relative;
+      background: var(--color-deep-black);
+      color: var(--color-text-on-dark);
+      overflow: hidden;
+    }
+    .section-timeline .section-number { color: var(--color-gold); }
+    .timeline-bg-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: rgba(201,168,76,0.08);
+      transform: translateX(-50%);
+    }
+    .timeline-heading {
+      text-align: center;
+      padding-top: var(--space-section);
+    }
+    .timeline-sup {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      color: var(--color-gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .timeline-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--color-text-on-dark);
+      line-height: 1.15;
+    }
+    .timeline-path {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 6rem 2rem 8rem;
+    }
+    .timeline-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--color-gold), var(--color-crimson));
+      transform: translateX(-50%);
+      transform-origin: top center;
+      scale: 1 0;
+    }
+    .tl-node {
+      position: relative;
+      margin-bottom: 6rem;
+      display: flex;
+      align-items: flex-start;
+      opacity: 0;
+    }
+    .tl-node.tl-node--visible { opacity: 1; }
+    .tl-node:last-child { margin-bottom: 0; }
+    .tl-node:nth-child(odd) {
+      flex-direction: row;
+      padding-right: calc(50% + 2rem);
+      text-align: right;
+    }
+    .tl-node:nth-child(even) {
+      flex-direction: row-reverse;
+      padding-left: calc(50% + 2rem);
+      text-align: left;
+    }
+    .tl-node-marker {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      z-index: 2;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(5,5,5,0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 2px solid var(--color-gold);
+    }
+    .tl-year {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--color-gold);
+    }
+    .tl-node-content {
+      padding: 1.5rem 2rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.12);
+      border-radius: 4px;
+    }
+    .tl-node-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--color-gold);
+      margin-bottom: 0.5rem;
+    }
+    .tl-node-desc {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: rgba(245,240,232,0.65);
+      line-height: 1.6;
+    }
+    .tl-node:nth-child(odd) .tl-node-content {
+      border-right: 3px solid var(--color-gold);
+    }
+    .tl-node:nth-child(even) .tl-node-content {
+      border-left: 3px solid var(--color-gold);
+    }
+    @media (max-width: 767px) {
+      .timeline-line { left: 24px; }
+      .tl-node, .tl-node:nth-child(odd), .tl-node:nth-child(even) {
+        flex-direction: column;
+        padding: 0 0 0 56px;
+        text-align: left;
+      }
+      .tl-node-marker {
+        left: 24px;
+        width: 48px; height: 48px;
+        transform: translateX(-50%);
+      }
+      .tl-year { font-size: 0.75rem; }
+      .tl-node-content {
+        border-left: 3px solid var(--color-gold) !important;
+        border-right: none !important;
+      }
+      .tl-node { margin-bottom: 3rem; }
+    }
     .section-output { background: var(--color-ivory); }
     .section-representasi { background: var(--color-crimson); color: var(--color-text-on-dark); }
     .section-representasi .section-label { color: var(--color-gold); }
@@ -1124,6 +1265,37 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
 
     // 9. Scroll indicator
     heroTl.to('.scroll-indicator', { opacity: 1, duration: 0.4 }, 3.1);
+
+    // ============================================================
+    // TIMELINE — Growing Line + Node Reveal
+    // ============================================================
+    const timelineLine = document.getElementById('timelineLine');
+    const tlNodes = gsap.utils.toArray('.tl-node');
+    if (timelineLine) {
+      gsap.to(timelineLine, {
+        scaleY: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.section-timeline',
+          start: 'top center',
+          end: 'bottom center',
+          scrub: 1.2,
+        }
+      });
+    }
+    if (tlNodes.length) {
+      tlNodes.forEach((node, i) => {
+        ScrollTrigger.create({
+          trigger: node,
+          start: 'top 85%',
+          onEnter: () => {
+            node.classList.add('tl-node--visible');
+            gsap.fromTo(node, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: i * 0.15 });
+          },
+          once: true,
+        });
+      });
+    }
 
     // ============================================================
     // OUTPUT — Horizontal Scroll (Fake)
