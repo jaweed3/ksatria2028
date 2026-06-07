@@ -29,6 +29,14 @@
       background: rgba(255,245,235,0.1);
       border-color: var(--color-gold);
     }
+    .nilai-icon {
+      width: 36px; height: 36px;
+      color: var(--color-gold);
+      opacity: 0.15;
+      margin-bottom: 0.75rem;
+      transition: opacity 0.3s ease;
+    }
+    .nilai-card:hover .nilai-icon { opacity: 0.4; }
     .nilai-num {
       font-family: var(--font-mono); font-size: 2.5rem; font-weight: 700;
       color: var(--color-crimson); opacity: 0.6; line-height: 1; margin-bottom: 0.5rem; display: block;
