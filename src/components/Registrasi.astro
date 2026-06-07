@@ -1,0 +1,105 @@
+<section class="section section-registrasi" id="registrasi">
+  <div class="section-inner--narrow">
+    <p class="section-label registrasi-label" data-animate="fade-up">— Registrasi —</p>
+    <h2 class="section-title registrasi-title" data-animate="fade-up" data-delay="100">Bergabunglah dalam Sejarah</h2>
+    <div class="section-divider registrasi-divider" data-animate="fade-in" data-delay="200"></div>
+    <p class="section-lead registrasi-lead" data-animate="fade-up" data-delay="300">
+      Daftarkan diri sebagai delegasi KSATRIA 2028
+    </p>
+    <blockquote class="registrasi-quote" data-animate="fade-up" data-delay="350">
+      <p>"1928: Melahirkan Indonesia — 2028: Menentukan Indonesia"</p>
+    </blockquote>
+    <form class="registrasi-form" id="registrasiForm" data-animate="fade-up" data-delay="400">
+      <div class="form-group">
+        <label for="nama">Nama Lengkap <span class="required">*</span></label>
+        <input type="text" id="nama" name="nama" required placeholder="Masukkan nama lengkap">
+      </div>
+      <div class="form-group">
+        <label for="provinsi">Asal Provinsi <span class="required">*</span></label>
+        <select id="provinsi" name="provinsi" required>
+          <option value="">Pilih Provinsi</option>
+          <option value="Aceh">Aceh</option>
+          <option value="Sumatera Utara">Sumatera Utara</option>
+          <option value="Sumatera Barat">Sumatera Barat</option>
+          <option value="Riau">Riau</option>
+          <option value="Kepulauan Riau">Kepulauan Riau</option>
+          <option value="Jambi">Jambi</option>
+          <option value="Sumatera Selatan">Sumatera Selatan</option>
+          <option value="Bangka Belitung">Bangka Belitung</option>
+          <option value="Bengkulu">Bengkulu</option>
+          <option value="Lampung">Lampung</option>
+          <option value="Banten">Banten</option>
+          <option value="DKI Jakarta">DKI Jakarta</option>
+          <option value="Jawa Barat">Jawa Barat</option>
+          <option value="Jawa Tengah">Jawa Tengah</option>
+          <option value="DI Yogyakarta">DI Yogyakarta</option>
+          <option value="Jawa Timur">Jawa Timur</option>
+          <option value="Bali">Bali</option>
+          <option value="Nusa Tenggara Barat">Nusa Tenggara Barat</option>
+          <option value="Nusa Tenggara Timur">Nusa Tenggara Timur</option>
+          <option value="Kalimantan Barat">Kalimantan Barat</option>
+          <option value="Kalimantan Tengah">Kalimantan Tengah</option>
+          <option value="Kalimantan Selatan">Kalimantan Selatan</option>
+          <option value="Kalimantan Timur">Kalimantan Timur</option>
+          <option value="Kalimantan Utara">Kalimantan Utara</option>
+          <option value="Sulawesi Utara">Sulawesi Utara</option>
+          <option value="Sulawesi Tengah">Sulawesi Tengah</option>
+          <option value="Sulawesi Barat">Sulawesi Barat</option>
+          <option value="Sulawesi Selatan">Sulawesi Selatan</option>
+          <option value="Sulawesi Tenggara">Sulawesi Tenggara</option>
+          <option value="Gorontalo">Gorontalo</option>
+          <option value="Maluku">Maluku</option>
+          <option value="Maluku Utara">Maluku Utara</option>
+          <option value="Papua">Papua</option>
+          <option value="Papua Barat">Papua Barat</option>
+          <option value="Papua Selatan">Papua Selatan</option>
+          <option value="Papua Tengah">Papua Tengah</option>
+          <option value="Papua Pegunungan">Papua Pegunungan</option>
+          <option value="Papua Barat Daya">Papua Barat Daya</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="organisasi">Asal Organisasi / Komunitas <span class="required">*</span></label>
+        <input type="text" id="organisasi" name="organisasi" required placeholder="Nama organisasi atau komunitas">
+      </div>
+      <div class="form-group">
+        <label for="kategori">Kategori Delegasi <span class="required">*</span></label>
+        <select id="kategori" name="kategori" required>
+          <option value="">Pilih Kategori</option>
+          <option value="Mahasiswa">Mahasiswa</option>
+          <option value="Santri">Santri</option>
+          <option value="Pemuda Adat">Pemuda Adat</option>
+          <option value="Aktivis Sosial">Aktivis Sosial</option>
+          <option value="Pemuda Desa">Pemuda Desa</option>
+          <option value="Komunitas Agama">Komunitas Agama</option>
+          <option value="Komunitas Budaya">Komunitas Budaya</option>
+          <option value="Startup Youth">Startup Youth</option>
+          <option value="Pelaku UMKM">Pelaku UMKM</option>
+          <option value="Diaspora">Diaspora</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="email">Email <span class="required">*</span></label>
+        <input type="email" id="email" name="email" required placeholder="contoh@email.com">
+      </div>
+      <div class="form-group">
+        <label for="hp">Nomor HP <span class="required">*</span></label>
+        <input type="tel" id="hp" name="hp" required placeholder="08xxxxxxxxxx">
+      </div>
+      <div class="form-group">
+        <label for="pesan">Pesan / Motivasi</label>
+        <textarea id="pesan" name="pesan" rows="4" placeholder="Apa yang mendorong Anda bergabung?"></textarea>
+      </div>
+      <button type="submit" class="btn-submit">Kirim Pendaftaran</button>
+    </form>
+    <div id="formThanks" class="form-thanks" style="display: none;">
+      <div class="thanks-icon">✓</div>
+      <h3 class="thanks-title">Terima Kasih!</h3>
+      <p class="thanks-desc">Pendaftaran Anda telah diterima. Kami akan menghubungi Anda segera melalui email atau WhatsApp.</p>
+    </div>
+    <p class="registrasi-alt" data-animate="fade-up" data-delay="500">
+      Atau hubungi kami via WhatsApp: <strong>+62 xxx xxxx xxxx</strong>
+    </p>
+  </div>
+</section>

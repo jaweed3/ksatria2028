@@ -1,0 +1,74 @@
+<footer class="footer" id="footer">
+  <div class="section-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">KSATRIA 2028</div>
+        <p class="footer-desc">Kongres Satu Abad Sumpah Pemuda Republik Indonesia</p>
+        <p class="footer-info">28 Oktober 2028 · Gedung MPR RI & GBK · Jakarta</p>
+      </div>
+      <div class="footer-nav">
+        <h4 class="footer-heading">Navigasi</h4>
+        <ul>
+          <li><a href="#tentang">Tentang</a></li>
+          <li><a href="#kegiatan">Kegiatan</a></li>
+          <li><a href="#komisi">Komisi</a></li>
+          <li><a href="#festival">Festival</a></li>
+          <li><a href="#kepanitiaan">Kepanitiaan</a></li>
+          <li><a href="#registrasi">Daftar</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4 class="footer-heading">Kontak</h4>
+        <ul>
+          <li>Email: info@ksatria2028.id</li>
+          <li>WhatsApp: +62 xxx xxxx xxxx</li>
+        </ul>
+        <h4 class="footer-heading footer-social-heading">Sosial Media</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Twitter / X</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">TikTok</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <blockquote class="footer-quote">"1928: Melahirkan Indonesia — 2028: Menentukan Indonesia"</blockquote>
+    <p class="footer-copy">© 2028 Panitia Nasional KSATRIA 2028 | <em>Bersatu · Beraksi · Berdampak</em></p>
+    <p class="footer-note">Website ini dibuat sebagai representasi digital gerakan KSATRIA 2028</p>
+  </div>
+</footer>
+<script>
+  function updateCountdown() {
+    const target = new Date('2028-10-28T19:00:00+07:00').getTime();
+    const now = Date.now();
+    const diff = target - now;
+    if (diff <= 0) {
+      const cd = document.getElementById('countdown');
+      if (cd) cd.innerHTML = '<span class="countdown-over">KSATRIA 2028 Sedang Berlangsung!</span>';
+      return;
+    }
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    const el = (id) => document.getElementById(id);
+    if (el('cd-days')) el('cd-days').textContent = String(days).padStart(3, '0');
+    if (el('cd-hours')) el('cd-hours').textContent = String(hours).padStart(2, '0');
+    if (el('cd-minutes')) el('cd-minutes').textContent = String(minutes).padStart(2, '0');
+    if (el('cd-seconds')) el('cd-seconds').textContent = String(seconds).padStart(2, '0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // Form submit
+  const form = document.getElementById('registrasiForm');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      form.style.display = 'none';
+      const thanks = document.getElementById('formThanks');
+      if (thanks) thanks.style.display = 'block';
+    });
+  }
+</script>
