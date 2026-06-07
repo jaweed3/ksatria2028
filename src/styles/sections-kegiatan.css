@@ -57,6 +57,7 @@
       padding: 2.5rem 2rem;
       cursor: default;
       will-change: transform, opacity;
+      overflow: hidden;
     }
     .day-card-glow {
       position: absolute;
@@ -68,7 +69,19 @@
     }
     .day-card:hover .day-card-glow { opacity: 1; }
 
-    .day-card-header { margin-bottom: 1.5rem; }
+    .day-num-bg {
+      position: absolute; top: -0.2em; right: 0.05em;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(6rem, 12vw, 10rem);
+      color: var(--color-gold);
+      opacity: 0.03;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .day-card-header { margin-bottom: 1.5rem; position: relative; z-index: 1; }
     .day-label {
       font-family: var(--font-mono);
       font-size: 0.65rem;
@@ -103,16 +116,11 @@
       color: rgba(245,240,232,0.5);
     }
 
-    .day-card-body { }
-    .day-events {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+    .day-events { list-style: none; padding: 0; margin: 0; }
     .day-events li {
       display: flex;
       align-items: baseline;
-      gap: 0.5rem;
+      gap: 0.35rem;
       padding: 0.45rem 0;
       font-size: 0.88rem;
       color: rgba(245,240,232,0.55);
@@ -120,31 +128,35 @@
       border-bottom: 1px solid rgba(201,168,76,0.06);
     }
     .day-events li:last-child { border-bottom: none; }
+    .deco-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--color-gold);
+      opacity: 0.3;
+      flex-shrink: 0;
+    }
     .day-events .time {
       font-family: var(--font-mono);
       font-size: 0.72rem;
       color: var(--color-gold);
       opacity: 0.7;
       flex-shrink: 0;
-      min-width: 5.5rem;
+      min-width: 4rem;
     }
-    .day-events .event-desc { flex: 1; }
 
     @media (max-width: 767px) {
-      .kegiatan-heading { padding-bottom: 2rem; }
+      .kegiatan-heading { padding: 3rem 1.25rem 2rem; }
+      .kegiatan-viewport { overflow: visible; padding-bottom: 2rem; }
       .kegiatan-track {
         flex-direction: column;
-        padding: 0 1.5rem 2rem;
+        padding: 0 1.25rem 2rem;
         width: 100%;
         gap: 1.5rem;
       }
-      .kegiatan-viewport {
-        overflow: visible;
-        padding-bottom: 2rem;
-      }
-      .day-card {
-        width: 100%;
-        max-width: 500px;
-        margin: 0 auto;
-      }
+      .day-card { width: 100%; max-width: 500px; margin: 0 auto; padding: 1.5rem; }
+      .day-num-bg { font-size: 5rem; }
+      .day-title { font-size: 1.4rem; }
+      .day-card-body { font-size: 0.85rem; }
+      .day-events li { font-size: 0.8rem; }
+      .day-events .time { min-width: 3.5rem; font-size: 0.68rem; }
     }
