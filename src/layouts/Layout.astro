@@ -26,7 +26,7 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     html { scroll-behavior: smooth; }
 
     :root {
-      /* Primary Palette */
+      /* Primary Palette — Deep Luxury */
       --color-crimson:        #8B1A1A;
       --color-crimson-dark:   #5C0F0F;
       --color-crimson-light:  #B02020;
@@ -36,7 +36,7 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
       --color-ivory:          #F5F0E8;
       --color-ivory-dark:     #EDE5D5;
       --color-paper:          #FAF7F2;
-      --color-deep-black:     #0D0D0D;
+      --color-deep-black:     #050505;
       --color-charcoal:       #1A1A1A;
       --color-ash:            #2C2C2C;
       --color-text-primary:   #1A0A0A;
@@ -46,12 +46,19 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
       --color-border:         rgba(139, 26, 26, 0.15);
       --color-border-gold:    rgba(201, 168, 76, 0.3);
 
+      /* Glassmorphism */
+      --glass-bg:   rgba(5, 5, 5, 0.55);
+      --glass-bg-l: rgba(245, 240, 232, 0.08);
+      --glass-bg-g: rgba(201, 168, 76, 0.06);
+      --glass-blur: blur(16px);
+      --glass-border: 1px solid rgba(245, 240, 232, 0.08);
+
       /* Typography */
       --font-display: 'Playfair Display', 'Times New Roman', Georgia, serif;
       --font-body:    'Crimson Pro', 'Georgia', Times, serif;
       --font-mono:    'Space Mono', 'Courier New', Courier, monospace;
 
-      /* Type Scale */
+      /* Type Scale — Cinematic */
       --text-xs:    0.6875rem;
       --text-sm:    0.75rem;
       --text-base:  1rem;
@@ -59,10 +66,11 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
       --text-lg:    1.25rem;
       --text-xl:    1.5rem;
       --text-2xl:   2rem;
-      --text-3xl:   clamp(2rem, 4vw, 3rem);
-      --text-4xl:   clamp(2.5rem, 5vw, 4rem);
-      --text-5xl:   clamp(3rem, 7vw, 6rem);
-      --text-hero:  clamp(3.5rem, 10vw, 9rem);
+      --text-3xl:   2.5rem;
+      --text-4xl:   clamp(2.5rem, 4vw, 3.5rem);
+      --text-5xl:   clamp(3.5rem, 6vw, 6rem);
+      --text-massive: clamp(3.5rem, 8vw, 7rem);
+      --text-gigantic: clamp(5rem, 14vw, 14rem);
 
       /* Spacing */
       --section-pad-y: clamp(4rem, 8vw, 8rem);
@@ -82,10 +90,67 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     body {
       font-family: var(--font-body);
       color: var(--color-text-primary);
-      background: var(--color-ivory);
+      background: var(--color-deep-black);
       line-height: 1.7;
       font-size: 1.0625rem;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================================================
+       LAYER SYSTEM
+       ============================================================ */
+    .layer-bg {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      overflow: hidden;
+    }
+    .layer-mid {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      overflow: hidden;
+    }
+    .layer-fg {
+      position: relative; z-index: 2;
+    }
+
+    /* ============================================================
+       SECTION SIZE VARIANTS
+       ============================================================ */
+    .section-fs { min-height: 100vh; display: flex; align-items: center; }
+    .section-80 { min-height: 80vh; display: flex; align-items: center; }
+
+    /* ============================================================
+       GLASSMORPHISM
+       ============================================================ */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: var(--glass-border);
+    }
+    .glass-light {
+      background: var(--glass-bg-l);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: var(--glass-border);
+    }
+    .glass-gold {
+      background: var(--glass-bg-g);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid rgba(201, 168, 76, 0.12);
+    }
+
+    /* ============================================================
+       ASYMMETRIC CONTENT LAYOUT
+       ============================================================ */
+    .content-split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: center;
+    }
+    .content-split--reverse { direction: rtl; }
+    .content-split--reverse > * { direction: ltr; }
+
+    @media (max-width: 900px) {
+      .content-split { grid-template-columns: 1fr; gap: 2rem; }
     }
 
     /* Scroll Progress */
@@ -288,111 +353,113 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     }
 
     /* ============================================================
-       HERO SECTION
+       HERO SECTION — Cinematic Redesign
        ============================================================ */
     .hero {
-      position: relative; min-height: 100vh; display: flex;
-      align-items: center; justify-content: center; overflow: hidden;
-      background: var(--color-deep-black);
+      position: relative; overflow: hidden; background: var(--color-deep-black);
     }
-    .hero-bg {
-      position: absolute; inset: 0; z-index: 0;
+    .hero-bg-pattern {
+      position: absolute; inset: 0; opacity: 0.4;
       background:
-        repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(201,168,76,0.03) 18px, rgba(201,168,76,0.03) 19px),
-        repeating-linear-gradient(-45deg, transparent, transparent 18px, rgba(201,168,76,0.03) 18px, rgba(201,168,76,0.03) 19px);
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(139,26,26,0.15) 0%, transparent 70%),
+        repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(201,168,76,0.02) 18px, rgba(201,168,76,0.02) 19px),
+        repeating-linear-gradient(-45deg, transparent, transparent 18px, rgba(201,168,76,0.02) 18px, rgba(201,168,76,0.02) 19px);
     }
     .hero-noise {
-      position: absolute; inset: 0; z-index: 1; pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
       mix-blend-mode: overlay;
     }
-    .hero-frame {
-      position: absolute; z-index: 1; pointer-events: none; opacity: 0;
+
+    /* Garuda Silhouette */
+    .hero-garuda-wrap {
+      display: flex; align-items: center; justify-content: center;
     }
-    .hero-frame-tl, .hero-frame-tr {
-      width: clamp(40px, 6vw, 80px); height: clamp(40px, 6vw, 80px);
-      top: clamp(1.5rem, 4vw, 3rem);
-    }
-    .hero-frame-bl, .hero-frame-br {
-      width: clamp(40px, 6vw, 80px); height: clamp(40px, 6vw, 80px);
-      bottom: clamp(1.5rem, 4vw, 3rem);
-    }
-    .hero-frame-tl {
-      left: clamp(1.5rem, 4vw, 3rem);
-      border-top: 2px solid var(--color-gold);
-      border-left: 2px solid var(--color-gold);
-    }
-    .hero-frame-tr {
-      right: clamp(1.5rem, 4vw, 3rem);
-      border-top: 2px solid var(--color-gold);
-      border-right: 2px solid var(--color-gold);
-    }
-    .hero-frame-bl {
-      left: clamp(1.5rem, 4vw, 3rem);
-      border-bottom: 2px solid var(--color-gold);
-      border-left: 2px solid var(--color-gold);
-    }
-    .hero-frame-br {
-      right: clamp(1.5rem, 4vw, 3rem);
-      border-bottom: 2px solid var(--color-gold);
-      border-right: 2px solid var(--color-gold);
+    .hero-garuda {
+      width: clamp(300px, 60vw, 700px); height: auto;
+      color: rgba(201, 168, 76, 0.04);
+      transform: scale(1.1);
+      will-change: transform;
     }
 
-    .hero-content {
-      position: relative; z-index: 2; text-align: center;
-      padding: 6rem var(--section-pad-x) 4rem; max-width: 900px;
+    /* Content */
+    .hero-content-wrap {
+      display: flex; align-items: center; width: 100%;
+      padding: 8rem var(--section-pad-x) 4rem;
+    }
+    .hero-inner {
+      max-width: var(--container); margin: 0 auto; width: 100%;
     }
     .hero-label {
       font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-gold);
       letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem;
       opacity: 0; transform: translateY(-20px);
     }
-    .hero-wordmark {
+    .hero-title-line {
+      overflow: hidden; margin-bottom: 0.5rem;
+    }
+    .hero-title-word {
+      display: block;
       font-family: var(--font-display);
-      font-size: clamp(3.5rem, 10vw, 8rem);
-      font-weight: 900; color: var(--color-ivory); line-height: 1;
-      margin-bottom: 1rem;
-      opacity: 0; transform: translateY(60px) scale(0.95);
+      font-size: var(--text-gigantic);
+      font-weight: 900; color: var(--color-ivory); line-height: 0.9;
+      letter-spacing: -0.03em;
+      opacity: 0; transform: translateY(120px) scale(0.95);
     }
-    .hero-subtitle {
-      font-family: var(--font-mono); font-size: clamp(0.65rem, 1.2vw, 0.85rem);
+    .hero-title-sub {
+      font-family: var(--font-mono); font-size: clamp(0.7rem, 1.4vw, 1rem);
       color: var(--color-gold); letter-spacing: 0.15em; text-transform: uppercase;
-      margin-bottom: 2rem; opacity: 0; transform: translateY(20px);
+      margin-bottom: 1.5rem; opacity: 0; transform: translateY(20px);
     }
-    .hero-divider {
-      width: 80px; height: 2px; background: var(--color-gold);
-      margin: 0 auto 2rem;
-      opacity: 0;
-    }
-    .hero-tagline-1, .hero-tagline-2 {
+    .hero-tagline {
       font-family: var(--font-display); font-style: italic;
-      font-size: clamp(1.25rem, 3vw, 2rem);
-      color: var(--color-ivory); line-height: 1.3;
+      font-size: clamp(1.1rem, 2vw, 1.75rem);
+      color: rgba(245,240,232,0.6); margin-bottom: 2.5rem;
+      opacity: 0; transform: translateY(20px);
+    }
+    .hero-tagline-sep {
+      margin: 0 0.75rem; color: var(--color-gold); opacity: 0.5;
+    }
+
+    /* Floating Stat Cards */
+    .hero-stats {
+      display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;
       opacity: 0; transform: translateY(30px);
+    }
+    .hero-stat {
+      padding: 0.75rem 1.25rem; text-align: center; min-width: 100px;
+    }
+    .hero-stat-num {
+      display: block; font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 900;
+      color: var(--color-gold); line-height: 1;
+    }
+    .hero-stat-label {
+      display: block; font-family: var(--font-mono);
+      font-size: 0.6rem; color: rgba(245,240,232,0.6);
+      text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.25rem;
     }
 
     /* Countdown */
     .hero-countdown {
-      display: flex; align-items: center; justify-content: center;
-      gap: 0.75rem; margin: 2.5rem 0;
+      display: flex; align-items: center;
+      gap: 0.5rem; margin-bottom: 2rem;
       opacity: 0; transform: scale(0.88);
     }
     .cd-block {
-      background: rgba(13,13,13,0.6); border: 1px solid rgba(201,168,76,0.2);
-      backdrop-filter: blur(8px); padding: 1rem 1.25rem; min-width: 70px;
-      text-align: center;
+      padding: 0.75rem 1rem; min-width: 65px; text-align: center;
     }
     .cd-number {
-      font-family: var(--font-mono); font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-family: var(--font-mono); font-size: clamp(1.25rem, 2.5vw, 2rem);
       font-weight: 700; color: var(--color-gold); display: block; line-height: 1;
     }
     .cd-label {
-      font-family: var(--font-mono); font-size: 0.6rem; color: rgba(245,240,232,0.5);
-      text-transform: uppercase; letter-spacing: 0.15em; margin-top: 0.5rem; display: block;
+      font-family: var(--font-mono); font-size: 0.55rem; color: rgba(245,240,232,0.5);
+      text-transform: uppercase; letter-spacing: 0.15em; margin-top: 0.35rem; display: block;
     }
     .cd-sep {
-      font-family: var(--font-mono); font-size: 1.5rem; color: var(--color-gold);
-      animation: colonPulse 1s ease-in-out infinite; align-self: flex-start; margin-top: 0.5rem;
+      font-family: var(--font-mono); font-size: 1.25rem; color: var(--color-gold);
+      animation: colonPulse 1s ease-in-out infinite; align-self: flex-start; margin-top: 0.25rem;
     }
     @keyframes colonPulse {
       0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
@@ -400,14 +467,14 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
 
     /* Hero Buttons */
     .hero-buttons {
-      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      display: flex; gap: 1rem; flex-wrap: wrap;
     }
     .hero-btn-1 { opacity: 0; transform: translateY(20px); }
     .hero-btn-2 { opacity: 0; transform: translateY(20px); }
 
     .scroll-indicator {
       position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      color: var(--color-gold); font-size: 1.5rem; z-index: 2; opacity: 0;
+      color: var(--color-gold); font-size: 1.5rem; z-index: 3; opacity: 0;
       animation: scrollBounce 2s ease-in-out 2.9s infinite;
     }
 
@@ -1018,34 +1085,45 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     gsap.registerPlugin(ScrollTrigger);
 
     // ============================================================
-    // HERO — Full GSAP Timeline Entrance Sequence
+    // HERO — Cinematic Timeline (3-4s)
     // ============================================================
     const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-    heroTl
-      // Gold corner frames
-      .to('.hero-frame-tl', { opacity: 1, duration: 0.5 }, 0.2)
-      .to('.hero-frame-tr', { opacity: 1, duration: 0.5 }, 0.3)
-      .to('.hero-frame-bl', { opacity: 1, duration: 0.5 }, 0.4)
-      .to('.hero-frame-br', { opacity: 1, duration: 0.5 }, 0.5)
-      // Label
-      .to('.hero-label', { opacity: 1, y: 0, duration: 0.6 }, 0.4)
-      // Wordmark (scale + letter-spacing)
-      .to('.hero-wordmark', { opacity: 1, y: 0, scale: 1, duration: 1.0, letterSpacing: 'normal', ease: 'power2.out' }, 0.6)
-      // Subtitle
-      .to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.5 }, 1.0)
-      // Divider line
-      .to('.hero-divider', { opacity: 1, duration: 0.4 }, 1.1)
-      // Taglines
-      .to('.hero-tagline-1', { opacity: 1, y: 0, duration: 0.6 }, 1.3)
-      .to('.hero-tagline-2', { opacity: 1, y: 0, duration: 0.6 }, 1.5)
-      // Countdown
-      .to('.hero-countdown', { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.4)' }, 1.8)
-      // Buttons
-      .to('.hero-btn-1', { opacity: 1, y: 0, duration: 0.4 }, 2.1)
-      .to('.hero-btn-2', { opacity: 1, y: 0, duration: 0.4 }, 2.25)
-      // Scroll indicator
-      .to('.scroll-indicator', { opacity: 1, duration: 0.4 }, 2.4);
+    // 1. Background slowly scales
+    heroTl.to('.hero-garuda', {
+      scale: 1, duration: 2.5, ease: 'power1.out',
+    }, 0);
+
+    // 2. Label fades in
+    heroTl.to('.hero-label', { opacity: 1, y: 0, duration: 0.5 }, 0.4);
+
+    // 3. Massive title word reveal
+    heroTl.to('.hero-title-word', {
+      opacity: 1, y: 0, scale: 1, duration: 1.0, ease: 'power2.out',
+    }, 0.6);
+
+    // 4. Subtitle
+    heroTl.to('.hero-title-sub', { opacity: 1, y: 0, duration: 0.5 }, 1.2);
+
+    // 5. Tagline
+    heroTl.to('.hero-tagline', { opacity: 1, y: 0, duration: 0.6 }, 1.5);
+
+    // 6. Stat cards reveal one by one
+    heroTl.to('.hero-stat', {
+      opacity: 1, y: 0, duration: 0.4, stagger: 0.12,
+    }, 1.8);
+
+    // 7. Countdown appears
+    heroTl.to('.hero-countdown', {
+      opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.4)',
+    }, 2.3);
+
+    // 8. CTA buttons
+    heroTl.to('.hero-btn-1', { opacity: 1, y: 0, duration: 0.4 }, 2.7);
+    heroTl.to('.hero-btn-2', { opacity: 1, y: 0, duration: 0.4 }, 2.85);
+
+    // 9. Scroll indicator
+    heroTl.to('.scroll-indicator', { opacity: 1, duration: 0.4 }, 3.1);
 
     // ============================================================
     // OUTPUT — Horizontal Scroll (Fake)

@@ -1,42 +1,90 @@
-<section class="hero" id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-noise"></div>
-  <div class="hero-frame hero-frame-tl"></div>
-  <div class="hero-frame hero-frame-tr"></div>
-  <div class="hero-frame hero-frame-bl"></div>
-  <div class="hero-frame hero-frame-br"></div>
-  <div class="hero-content">
-    <div class="hero-label">28 Oktober 2028 · Gedung MPR RI & GBK · Jakarta</div>
-    <h1 class="hero-wordmark">KSATRIA 2028</h1>
-    <div class="hero-subtitle">Kongres Satu Abad Sumpah Pemuda Republik Indonesia</div>
-    <div class="hero-divider"></div>
-    <div class="hero-tagline-1">"1928: Melahirkan Indonesia</div>
-    <div class="hero-tagline-2">2028: Menentukan Indonesia"</div>
-    <div class="hero-countdown" id="countdown">
-      <div class="cd-block">
-        <span class="cd-number" id="cd-days">000</span>
-        <span class="cd-label">Hari</span>
+<section class="hero section-fs" id="hero">
+  <!-- Background layer -->
+  <div class="layer-bg">
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-noise"></div>
+  </div>
+
+  <!-- Midground: Garuda silhouette -->
+  <div class="layer-mid hero-garuda-wrap">
+    <svg class="hero-garuda" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M200 30 C280 30 340 80 360 150 C370 180 365 220 340 250 C380 260 400 290 400 330 C400 370 375 400 340 410 C350 430 340 460 310 470 C280 480 240 470 210 450 C200 490 180 490 170 450 C140 470 100 480 70 470 C40 460 30 430 40 410 C5 400 -20 370 -20 330 C-20 290 0 260 40 250 C15 220 10 180 20 150 C40 80 100 30 180 30 L185 30 C190 10 195 0 200 0 C205 0 210 10 215 30 L220 30 Z" fill="currentColor" opacity="0.6"/>
+      <path d="M200 60 C260 60 310 100 325 160 C335 190 320 220 300 240 C330 250 360 270 360 320 C360 360 330 380 300 385 C315 400 305 425 280 435 C255 445 225 435 200 420 C175 435 145 445 120 435 C95 425 85 400 100 385 C70 380 40 360 40 320 C40 270 70 250 100 240 C80 220 65 190 75 160 C90 100 140 60 200 60 Z" fill="currentColor" opacity="0.3"/>
+      <path d="M200 80 C240 80 280 110 290 170 C295 195 280 220 260 240 C280 250 310 270 310 310 C310 340 280 360 260 365 C270 380 260 400 240 410 C220 420 210 410 200 400 C190 410 180 420 160 410 C140 400 130 380 140 365 C120 360 90 340 90 310 C90 270 120 250 140 240 C120 220 105 195 110 170 C120 110 160 80 200 80 Z" fill="currentColor" opacity="0.15"/>
+      <path d="M200 100 C225 100 250 120 258 170 C262 190 252 215 240 235 C255 240 275 255 275 290 C275 315 252 330 240 335 C248 348 238 365 222 372 C210 378 200 370 200 360 C200 370 190 378 178 372 C162 365 152 348 160 335 C148 330 125 315 125 290 C125 255 145 240 160 235 C148 215 138 190 142 170 C150 120 175 100 200 100 Z" fill="currentColor" opacity="0.08"/>
+    </svg>
+  </div>
+
+  <!-- Foreground: Content -->
+  <div class="layer-fg hero-content-wrap">
+    <div class="hero-inner">
+      <!-- Label -->
+      <div class="hero-label">28 Oktober 2028 · Gedung MPR RI & GBK · Jakarta</div>
+
+      <!-- Massive title -->
+      <h1 class="hero-title-line">
+        <span class="hero-title-word" data-word="KSATRIA">KSATRIA</span>
+      </h1>
+      <div class="hero-title-sub">Kongres Satu Abad Sumpah Pemuda<br/>Republik Indonesia</div>
+
+      <!-- Tagline -->
+      <div class="hero-tagline">
+        <span class="hero-tagline-part">1928: Melahirkan Indonesia</span>
+        <span class="hero-tagline-sep">—</span>
+        <span class="hero-tagline-part">2028: Menentukan Indonesia</span>
       </div>
-      <div class="cd-sep">:</div>
-      <div class="cd-block">
-        <span class="cd-number" id="cd-hours">00</span>
-        <span class="cd-label">Jam</span>
+
+      <!-- Floating stat cards -->
+      <div class="hero-stats">
+        <div class="hero-stat glass-gold">
+          <span class="hero-stat-num">38</span>
+          <span class="hero-stat-label">Provinsi</span>
+        </div>
+        <div class="hero-stat glass-gold">
+          <span class="hero-stat-num">7</span>
+          <span class="hero-stat-label">Komisi Strategis</span>
+        </div>
+        <div class="hero-stat glass-gold">
+          <span class="hero-stat-num">2000+</span>
+          <span class="hero-stat-label">Delegasi</span>
+        </div>
+        <div class="hero-stat glass-gold">
+          <span class="hero-stat-num">100</span>
+          <span class="hero-stat-label">Tahun Sumpah Pemuda</span>
+        </div>
       </div>
-      <div class="cd-sep">:</div>
-      <div class="cd-block">
-        <span class="cd-number" id="cd-minutes">00</span>
-        <span class="cd-label">Menit</span>
+
+      <!-- Countdown -->
+      <div class="hero-countdown" id="countdown">
+        <div class="cd-block glass">
+          <span class="cd-number" id="cd-days">000</span>
+          <span class="cd-label">Hari</span>
+        </div>
+        <span class="cd-sep">:</span>
+        <div class="cd-block glass">
+          <span class="cd-number" id="cd-hours">00</span>
+          <span class="cd-label">Jam</span>
+        </div>
+        <span class="cd-sep">:</span>
+        <div class="cd-block glass">
+          <span class="cd-number" id="cd-minutes">00</span>
+          <span class="cd-label">Menit</span>
+        </div>
+        <span class="cd-sep">:</span>
+        <div class="cd-block glass">
+          <span class="cd-number" id="cd-seconds">00</span>
+          <span class="cd-label">Detik</span>
+        </div>
       </div>
-      <div class="cd-sep">:</div>
-      <div class="cd-block">
-        <span class="cd-number" id="cd-seconds">00</span>
-        <span class="cd-label">Detik</span>
+
+      <!-- CTA Buttons -->
+      <div class="hero-buttons">
+        <a href="#registrasi" class="btn-primary hero-btn-1">Daftarkan Delegasi</a>
+        <a href="#tentang" class="btn-secondary hero-btn-2">Pelajari Lebih Lanjut</a>
       </div>
-    </div>
-    <div class="hero-buttons">
-      <a href="#registrasi" class="btn-primary hero-btn-1">Daftarkan Delegasi</a>
-      <a href="#tentang" class="btn-secondary hero-btn-2">Pelajari Lebih Lanjut</a>
     </div>
   </div>
+
+  <!-- Scroll indicator -->
   <div class="scroll-indicator">↓</div>
 </section>
