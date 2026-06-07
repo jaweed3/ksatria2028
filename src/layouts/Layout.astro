@@ -677,6 +677,16 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     .section-konser .section-title { color: var(--color-text-on-dark); }
     .section-konser .section-lead { color: rgba(245,240,232,0.7); }
     .section-konser .section-divider { background: var(--color-gold); }
+    .konser-footnote {
+      position: relative;
+      z-index: 2;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: rgba(245,240,232,0.4);
+      font-style: italic;
+      text-align: center;
+      padding: 0 2rem 2rem;
+    }
     .section-kepanitiaan { background: var(--color-ivory); }
     .section-rundown { background: var(--color-ivory-dark); }
     .section-registrasi { background: var(--color-crimson); color: var(--color-text-on-dark); }
@@ -955,71 +965,100 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     @media (max-width: 767px) { .rep-grid { grid-template-columns: repeat(3, 1fr); } }
 
     /* ============================================================
-       FESTIVAL CARDS
+       HORIZONTAL SCROLL (Festival + Konser)
        ============================================================ */
-    .festival-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+    .section-hscroll {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
-    .festival-card {
-      background: var(--color-charcoal); padding: 2rem 1.5rem; text-align: center;
+    .hscroll-heading {
+      flex-shrink: 0;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: var(--space-section) 2rem 2rem;
+      width: 100%;
+    }
+    .hscroll-viewport {
+      overflow: hidden;
+      flex: 1;
+      min-height: 0;
+      padding-bottom: 3rem;
+    }
+    .hscroll-track {
+      display: flex;
+      gap: 2rem;
+      padding: 0 2rem;
+      width: max-content;
+    }
+    .hscroll-card {
+      width: 340px;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.03);
       border: 1px solid rgba(201,168,76,0.1);
-      transition: all var(--dur-normal) var(--ease-spring);
+      border-radius: 4px;
+      padding: 2.5rem 2rem;
+      transition: all 0.3s ease;
+      cursor: default;
     }
-    .festival-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
-      border-color: var(--color-gold);
+    .hscroll-card:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(201,168,76,0.3);
+      transform: translateY(-4px);
     }
-    .festival-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .festival-card-title {
-      font-family: var(--font-display); font-size: 1.1rem; font-weight: 700;
-      color: var(--color-text-on-dark); margin-bottom: 0.5rem;
+    .hscroll-card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .hscroll-card-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--color-gold);
+      margin-bottom: 0.75rem;
     }
-    .festival-card-desc { font-size: 0.85rem; color: rgba(245,240,232,0.6); line-height: 1.6; }
-    .festival-divider { background: var(--color-gold) !important; }
-    .festival-label { color: var(--color-gold) !important; }
+    .hscroll-card-desc { font-size: 0.85rem; color: rgba(245,240,232,0.6); line-height: 1.6; }
 
-    @media (max-width: 1023px) { .festival-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 767px) { .festival-grid { grid-template-columns: 1fr; } }
-
-    /* ============================================================
-       KONSER CARDS
-       ============================================================ */
-    .konser-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
-    }
     .konser-card {
-      background: var(--color-charcoal); padding: 1.75rem;
+      width: 280px;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.03);
       border: 1px solid rgba(201,168,76,0.1);
-      transition: all var(--dur-normal) var(--ease-spring);
+      border-radius: 4px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      cursor: default;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .konser-card:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(201,168,76,0.3);
       transform: translateY(-4px);
-      box-shadow: 0 12px 36px rgba(0,0,0,0.3);
+    }
+    .konser-card--featured {
       border-color: var(--color-gold);
+      background: rgba(201,168,76,0.06);
     }
-    .konser-card-featured {
-      border-color: var(--color-gold);
-      background: linear-gradient(135deg, var(--color-charcoal) 0%, rgba(201,168,76,0.08) 100%);
+    .konser-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-gold);
+      margin-bottom: 0.5rem;
     }
-    .konser-card-order {
-      font-family: var(--font-mono); font-size: 0.65rem; color: var(--color-gold);
-      text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;
+    .konser-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--color-text-on-dark);
+      margin-bottom: 0.35rem;
     }
-    .konser-card-name {
-      font-family: var(--font-display); font-size: 1.15rem; font-weight: 700;
-      color: var(--color-text-on-dark); margin-bottom: 0.25rem;
-    }
-    .konser-card-genre { font-size: 0.8rem; color: rgba(245,240,232,0.5); }
-    .konser-note {
-      text-align: center; margin-top: 2rem; font-size: 0.8rem;
-      color: rgba(245,240,232,0.4); font-style: italic;
-    }
-    .konser-divider { background: var(--color-gold) !important; }
-    .konser-label { color: var(--color-gold) !important; }
+    .konser-genre { font-size: 0.8rem; color: rgba(245,240,232,0.5); }
 
-    @media (max-width: 1023px) { .konser-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 767px) { .konser-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 767px) {
+      .hscroll-card { width: 260px; padding: 1.5rem; }
+      .konser-card { width: 220px; padding: 1.5rem; }
+    }
 
     /* ============================================================
        KEPANITIAAN
@@ -1296,6 +1335,31 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
         });
       });
     }
+
+    // ============================================================
+    // HORIZONTAL SCROLL — Festival + Konser
+    // ============================================================
+    const hscrollSections = document.querySelectorAll('.section-hscroll');
+    hscrollSections.forEach((section) => {
+      const viewport = section.querySelector('.hscroll-viewport');
+      const track = section.querySelector('.hscroll-track');
+      if (!viewport || !track) return;
+
+      const getTravel = () => -(track.scrollWidth - window.innerWidth + 64);
+
+      gsap.to(track, {
+        x: getTravel,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: () => '+=' + Math.abs(getTravel()),
+          pin: true,
+          scrub: 1,
+          invalidateOnRefresh: true,
+        }
+      });
+    });
 
     // ============================================================
     // OUTPUT — Horizontal Scroll (Fake)
