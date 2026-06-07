@@ -37,92 +37,94 @@
     }
 
     // ============================================================
-    // HORIZONTAL SCROLL — Festival + Konser
+    // HORIZONTAL SCROLL — Festival + Konser (desktop only)
     // ============================================================
-    const hscrollSections = document.querySelectorAll('.section-hscroll');
-    hscrollSections.forEach((section) => {
-      const viewport = section.querySelector('.hscroll-viewport');
-      const track = section.querySelector('.hscroll-track');
-      if (!viewport || !track) return;
+    if (window.matchMedia('(min-width: 768px)').matches) {
+      const hscrollSections = document.querySelectorAll('.section-hscroll');
+      hscrollSections.forEach((section) => {
+        const viewport = section.querySelector('.hscroll-viewport');
+        const track = section.querySelector('.hscroll-track');
+        if (!viewport || !track) return;
 
-      const getTravel = () => -(track.scrollWidth - window.innerWidth + 64);
+        const getTravel = () => -(track.scrollWidth - window.innerWidth + 64);
 
-      gsap.to(track, {
-        x: getTravel,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: () => '+=' + Math.abs(getTravel()),
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-        }
-      });
-    });
-
-    // ============================================================
-    // KEGIATAN — Horizontal Scroll Timeline + Center Focus
-    // ============================================================
-    const kegiatanSection = document.querySelector('.section-kegiatan');
-    const kegiatanViewport = kegiatanSection?.querySelector('.kegiatan-viewport');
-    const kegiatanTrack = kegiatanSection?.querySelector('.kegiatan-track');
-    const dayCards = gsap.utils.toArray('.day-card');
-
-    if (kegiatanSection && kegiatanTrack && kegiatanViewport && dayCards.length) {
-      const getTravel = () => -(kegiatanTrack.scrollWidth - kegiatanViewport.offsetWidth);
-
-      const kegiatanScroll = gsap.to(kegiatanTrack, {
-        x: getTravel,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: kegiatanSection,
-          start: 'top top',
-          end: () => '+=' + Math.abs(getTravel()),
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-          onRefresh: () => { kegiatanScroll.vars.x = getTravel(); },
-        }
-      });
-
-      dayCards.forEach((card) => {
-        gsap.fromTo(card,
-          { scale: 0.82, opacity: 0.3 },
-          {
-            scale: 1, opacity: 1,
-            scrollTrigger: {
-              trigger: card,
-              containerAnimation: kegiatanScroll,
-              start: 'left center',
-              end: 'right center',
-              scrub: 1,
-            }
+        gsap.to(track, {
+          x: getTravel,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: () => '+=' + Math.abs(getTravel()),
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
           }
-        );
+        });
       });
-    }
 
-    // ============================================================
-    // OUTPUT — Horizontal Scroll
-    // ============================================================
-    const outputSection = document.querySelector('.section-output');
-    const outputTrack = document.querySelector('.output-track');
-    if (outputSection && outputTrack) {
-      const getTravel = () => -(outputTrack.scrollWidth - window.innerWidth + 64);
+      // ============================================================
+      // KEGIATAN — Horizontal Scroll Timeline + Center Focus (desktop only)
+      // ============================================================
+      const kegiatanSection = document.querySelector('.section-kegiatan');
+      const kegiatanViewport = kegiatanSection?.querySelector('.kegiatan-viewport');
+      const kegiatanTrack = kegiatanSection?.querySelector('.kegiatan-track');
+      const dayCards = gsap.utils.toArray('.day-card');
 
-      gsap.to(outputTrack, {
-        x: getTravel,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: outputSection,
-          start: 'top top',
-          end: () => '+=' + Math.abs(getTravel()),
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-        }
-      });
+      if (kegiatanSection && kegiatanTrack && kegiatanViewport && dayCards.length) {
+        const getTravel = () => -(kegiatanTrack.scrollWidth - kegiatanViewport.offsetWidth);
+
+        const kegiatanScroll = gsap.to(kegiatanTrack, {
+          x: getTravel,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: kegiatanSection,
+            start: 'top top',
+            end: () => '+=' + Math.abs(getTravel()),
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+            onRefresh: () => { kegiatanScroll.vars.x = getTravel(); },
+          }
+        });
+
+        dayCards.forEach((card) => {
+          gsap.fromTo(card,
+            { scale: 0.82, opacity: 0.3 },
+            {
+              scale: 1, opacity: 1,
+              scrollTrigger: {
+                trigger: card,
+                containerAnimation: kegiatanScroll,
+                start: 'left center',
+                end: 'right center',
+                scrub: 1,
+              }
+            }
+          );
+        });
+      }
+
+      // ============================================================
+      // OUTPUT — Horizontal Scroll (desktop only)
+      // ============================================================
+      const outputSection = document.querySelector('.section-output');
+      const outputTrack = document.querySelector('.output-track');
+      if (outputSection && outputTrack) {
+        const getTravel = () => -(outputTrack.scrollWidth - window.innerWidth + 64);
+
+        gsap.to(outputTrack, {
+          x: getTravel,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: outputSection,
+            start: 'top top',
+            end: () => '+=' + Math.abs(getTravel()),
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+          }
+        });
+      }
     }
 
     // ============================================================

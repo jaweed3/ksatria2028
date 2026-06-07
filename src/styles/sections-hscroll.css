@@ -124,8 +124,14 @@
     }
 
     @media (max-width: 767px) {
-      .hscroll-card { width: 280px; padding: 2rem 1.5rem; }
-      .konser-card { width: 240px; padding: 2rem 1.5rem; }
-      .hscroll-track { gap: 1.5rem; }
-      .konser-name { font-size: 1.25rem; }
+      .hscroll-heading { padding-bottom: 1.5rem; }
+      .hscroll-viewport { overflow: visible; padding-bottom: 2rem; }
+      .hscroll-track {
+        flex-direction: column;
+        width: 100%;
+        padding: 0 1.25rem 2rem;
+        gap: 1rem;
+      }
+      .hscroll-card { width: 100% !important; padding: 1.5rem; }
+      .konser-card { width: 100% !important; padding: 1.5rem; }
     }
