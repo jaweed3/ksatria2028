@@ -65,13 +65,22 @@
     }
 
     // ============================================================
-    // FORM SUBMIT HANDLER
+    // FORM SUBMIT HANDLER — POST to API
     // ============================================================
     const form = document.getElementById('registrasiForm');
     const thanks = document.getElementById('formThanks');
     if (form && thanks) {
-      form.addEventListener('submit', (e) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const fd = new FormData(form);
+        const data = Object.fromEntries(fd.entries());
+        try {
+          await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+        } catch (_) {}
         form.style.display = 'none';
         thanks.style.display = 'block';
       });
