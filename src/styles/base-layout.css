@@ -208,6 +208,19 @@
     }
 
     /* ============================================================
+       NOISE TEXTURE OVERLAY
+       ============================================================ */
+    .noise-overlay {
+      position: fixed; inset: 0; z-index: 9997;
+      pointer-events: none;
+      opacity: 0.02;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      mix-blend-mode: overlay;
+    }
+
+    /* ============================================================
        MOBILE NAV SMOOTH TRANSITION
        ============================================================ */
     @media (max-width: 900px) {
@@ -232,4 +245,47 @@
         pointer-events: auto;
       }
       .nav-links a { font-size: 1.1rem; }
+    }
+
+    /* ============================================================
+       GOLD GLOW ENHANCEMENT
+       ============================================================ */
+    .section-label,
+    .nav-logo,
+    blockquote p,
+    .tl-body-year,
+    .konser-name,
+    .day-title,
+    .pillar-title {
+      filter: drop-shadow(0 0 8px rgba(201,168,76,0.12));
+    }
+
+    .section-number,
+    .output-number {
+      filter: drop-shadow(0 0 12px rgba(201,168,76,0.06));
+    }
+
+    .section-divider,
+    [class$="divider"]:not(.scroll-progress):not(.rundown-divider):not(.registrasi-divider) {
+      box-shadow: 0 0 12px rgba(201,168,76,0.15);
+    }
+
+    .nilai-card,
+    .komisi-card,
+    .output-card,
+    .hscroll-card,
+    .konser-card,
+    .day-card,
+    .tl-body {
+      box-shadow: 0 0 0 rgba(201,168,76,0);
+      transition: box-shadow 0.4s ease;
+    }
+    .nilai-card:hover,
+    .komisi-card:hover,
+    .output-card:hover,
+    .hscroll-card:hover,
+    .konser-card:hover,
+    .day-card:hover,
+    .tl-body:hover {
+      box-shadow: 0 0 24px rgba(201,168,76,0.06);
     }

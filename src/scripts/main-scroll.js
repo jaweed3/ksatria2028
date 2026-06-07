@@ -186,3 +186,26 @@
         }
       );
     });
+
+    // ============================================================
+    // SUBTLE FLOATING — key decorative elements
+    // ============================================================
+    // Section numbers drift slowly
+    gsap.utils.toArray('.section-number').forEach(num => {
+      gsap.to(num, {
+        y: -15, duration: 6 + Math.random() * 3,
+        repeat: -1, yoyo: true, ease: 'sine.inOut',
+      });
+    });
+
+    // Hero Garuda already has parallax, but add subtle breathing
+    gsap.to('.hero-garuda', {
+      scale: 1.02, duration: 5,
+      repeat: -1, yoyo: true, ease: 'sine.inOut',
+    });
+
+    // Glow line on timeline pulses
+    gsap.to('.tl-glow-line', {
+      opacity: 0.6, duration: 3,
+      repeat: -1, yoyo: true, ease: 'sine.inOut',
+    });
