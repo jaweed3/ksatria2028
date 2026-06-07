@@ -1460,6 +1460,88 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     });
 
     // ============================================================
+    // PARALLAX — Garuda in hero
+    // ============================================================
+    const heroGaruda = document.querySelector('.hero-garuda');
+    if (heroGaruda) {
+      gsap.to(heroGaruda, {
+        y: 120,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.5,
+        }
+      });
+    }
+
+    // ============================================================
+    // SECTION TITLE REVEAL — clip-path + fade
+    // ============================================================
+    gsap.utils.toArray('.section-title').forEach(title => {
+      gsap.fromTo(title,
+        { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
+        {
+          clipPath: 'inset(0 0% 0 0)', opacity: 1,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: title,
+            start: 'top 82%',
+            toggleActions: 'play none none none',
+          }
+        }
+      );
+    });
+
+    // ============================================================
+    // CARD GRID STAGGER — nilai, komisi, representasi
+    // ============================================================
+    const gridSelectors = ['.nilai-grid', '.komisi-grid', '.rep-grid'];
+    gridSelectors.forEach(sel => {
+      const grid = document.querySelector(sel);
+      if (!grid) return;
+      const cards = grid.children;
+      if (!cards.length) return;
+      gsap.fromTo(cards,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.6,
+          stagger: 0.06,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: grid,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          }
+        }
+      );
+    });
+
+    // ============================================================
+    // VALUE CARDS STAGGER
+    // ============================================================
+    const valueGrid = document.querySelector('.tentang-values');
+    if (valueGrid) {
+      gsap.fromTo(valueGrid.children,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.6,
+          stagger: 0.12,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: valueGrid,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          }
+        }
+      );
+    }
+
+    // ============================================================
     // SCROLL REVEALS — [data-animate] elements
     // ============================================================
     const animateMap = {
