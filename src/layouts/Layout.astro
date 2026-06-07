@@ -84,7 +84,19 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     const btn = document.getElementById('musicToggle');
     let playing = false;
     if (bgm && btn) {
-      btn.addEventListener('click', () => {
+      // Auto-play on first user interaction
+      const autoplay = () => {
+        bgm.play().then(() => { playing = true; btn.classList.add('playing'); }).catch(() => {});
+        document.removeEventListener('click', autoplay);
+        document.removeEventListener('touchstart', autoplay);
+        document.removeEventListener('keydown', autoplay);
+      };
+      document.addEventListener('click', autoplay);
+      document.addEventListener('touchstart', autoplay);
+      document.addEventListener('keydown', autoplay);
+      // Toggle button
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         playing = !playing;
         if (playing) {
           bgm.play().then(() => btn.classList.add('playing')).catch(() => { playing = false; });

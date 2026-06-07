@@ -26,12 +26,12 @@
           trigger: node,
           start: 'top bottom',
           onEnter: () => {
+            if (node.classList.contains('tl-node--visible')) return;
             node.classList.add('tl-node--visible');
             gsap.fromTo(node, { opacity: 0, x: -40 }, {
               opacity: 1, x: 0, duration: 0.8, ease: 'power3.out', delay: i * 0.1,
             });
           },
-          once: true,
         });
       });
     }

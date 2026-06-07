@@ -22,9 +22,8 @@
             trigger: grid,
             start: 'top bottom',
             toggleActions: 'play none none none',
-            once: true,
-          }
-        }
+          },
+        },
       );
     });
 
@@ -42,7 +41,6 @@
           trigger: tentangSection,
           start: 'top bottom',
           toggleActions: 'play none none none',
-          once: true,
         }
       });
 
@@ -155,9 +153,8 @@
             trigger: repOrbit,
             start: 'top bottom',
             toggleActions: 'play none none none',
-            once: true,
-          }
-        }
+          },
+        },
       );
 
       gsap.fromTo(repCenter,
@@ -170,7 +167,6 @@
             trigger: repOrbit,
             start: 'top bottom',
             toggleActions: 'play none none none',
-            once: true,
           }
         }
       );
@@ -305,10 +301,9 @@
         scrollTrigger: {
           trigger: el,
           start: 'top bottom',
-          toggleActions: 'play none none none',
-          once: true,
-        }
-      });
+            toggleActions: 'play none none none',
+          }
+        });
     });
 
     // ============================================================
@@ -323,7 +318,6 @@
           scrollTrigger: {
             trigger: num.closest('.section'),
             start: 'top bottom',
-            once: true,
           }
         }
       );
