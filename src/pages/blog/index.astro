@@ -17,7 +17,7 @@ const rest = posts.slice(1);
     </div>
 
     {featured && (
-      <a href={`/blog/${featured.slug}`} class="blog-featured">
+      <a href={`/blog/${featured.id}`} class="blog-featured">
         <div class="blog-featured-img-wrap">
           {featured.data.image
             ? <img src={featured.data.image} alt="" class="blog-featured-img" />
@@ -36,7 +36,7 @@ const rest = posts.slice(1);
 
     <div class="blog-grid">
       {rest.map(post => (
-        <a href={`/blog/${post.slug}`} class="blog-card">
+        <a href={`/blog/${post.id}`} class="blog-card">
           {post.data.image
             ? <img src={post.data.image} alt="" class="blog-card-img" />
             : <div class="blog-card-img-placeholder">✦</div>
