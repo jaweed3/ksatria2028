@@ -1,10 +1,8 @@
-export async function GET() {
+export default function handler(req, res) {
   const has = !!process.env.ADMIN_PASSWORD;
-  return new Response(JSON.stringify({
+  res.json({
     ok: true,
     env_set: has,
     env_len: process.env.ADMIN_PASSWORD?.length || 0,
-  }), {
-    headers: { 'Content-Type': 'application/json' },
   });
 }

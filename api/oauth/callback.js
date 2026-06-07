@@ -1,7 +1,7 @@
-export async function GET({ url }) {
+export default async function handler(req, res) {
   const GITHUB_CLIENT = process.env.GITHUB_CLIENT_ID || '';
   const GITHUB_SECRET = process.env.GITHUB_CLIENT_SECRET || '';
-  const code = url.searchParams.get('code') || '';
+  const code = req.query?.code || '';
 
   const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
     method: 'POST',
@@ -24,7 +24,6 @@ export async function GET({ url }) {
     })();
   <\/script></body></html>`;
 
-  return new Response(html, {
-    headers: { 'Content-Type': 'text/html' },
-  });
+  res.setHeader('Content-Type', 'text/html');
+  res.status(200).send(html);
 }
