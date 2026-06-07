@@ -508,7 +508,7 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     /* ============================================================
        SECTION BACKGROUNDS
        ============================================================ */
-    .section-tentang { background: var(--color-ivory); }
+    .section-tentang { background: var(--color-deep-black); }
     .section-nilai { background: var(--color-crimson); color: var(--color-text-on-dark); }
     .section-nilai .section-label { color: var(--color-gold); }
     .section-nilai .section-title { color: var(--color-text-on-dark); }
@@ -717,8 +717,8 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     /* ============================================================
        SECTION LABEL / TITLE / DIVIDER COLOR OVERRIDES
        ============================================================ */
-    .section-tentang .section-label { color: var(--color-crimson); }
-    .section-tentang .section-divider { background: var(--color-crimson); }
+    .section-tentang .section-label { color: var(--color-gold); }
+    .section-tentang .section-divider { background: var(--color-gold); }
     .section-output .section-label { color: var(--color-crimson); }
     .section-output .section-divider { background: var(--color-crimson); }
     .section-kepanitiaan .section-label { color: var(--color-crimson); }
@@ -731,44 +731,62 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     /* ============================================================
        TENTANG SECTION
        ============================================================ */
-    .tentang-divider { background: var(--color-crimson) !important; }
+    .section-tentang {
+      background: var(--color-deep-black);
+      color: var(--color-text-on-dark);
+      position: relative;
+    }
+    .section-tentang .section-label { color: var(--color-gold); }
+    .section-tentang .section-title { color: var(--color-text-on-dark); }
+    .section-tentang .section-lead { color: rgba(245,240,232,0.7); }
+    .section-tentang .section-lead strong { color: var(--color-gold); }
+    .section-tentang .section-divider { background: var(--color-gold); }
+    .section-tentang .content-split {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: var(--space-section) 2rem 0;
+    }
     .tentang-quote {
-      text-align: center; margin: 3rem auto; max-width: 720px; position: relative;
+      padding: 2.5rem 2rem;
+      text-align: center;
     }
     .tentang-quote-mark {
       font-family: var(--font-display); font-size: clamp(4rem, 8vw, 8rem);
-      color: var(--color-gold); opacity: 0.35; line-height: 0.6; display: block;
+      color: var(--color-gold); opacity: 0.4; line-height: 0.6; display: block;
     }
     .tentang-quote p {
       font-family: var(--font-display); font-style: italic;
-      font-size: clamp(1.5rem, 3.5vw, 2.5rem); color: var(--color-crimson);
+      font-size: clamp(1.5rem, 3.5vw, 2.5rem); color: var(--color-gold);
       line-height: 1.4; font-weight: 600;
     }
     .tentang-values {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem;
+      max-width: var(--container);
+      margin: 4rem auto 0;
+      padding: 0 2rem 4rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
     }
     .value-card {
-      text-align: center; padding: 2rem 1.5rem;
-      background: var(--color-paper); border: 1px solid var(--color-border);
-      transition: all var(--dur-normal) var(--ease-spring);
+      text-align: center; padding: 2.5rem 1.5rem;
+      transition: all var(--dur-normal) var(--ease-out);
     }
     .value-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 16px 48px rgba(139,26,26,0.15);
-      border-color: var(--color-gold);
+      border-color: var(--color-gold) !important;
     }
     .value-number {
       font-family: var(--font-mono); font-size: 2.5rem; font-weight: 700;
-      color: var(--color-crimson); opacity: 0.15; line-height: 1; margin-bottom: 0.5rem;
+      color: var(--color-gold); opacity: 0.2; line-height: 1; margin-bottom: 0.5rem;
     }
     .value-title {
-      font-family: var(--font-display); font-size: 1.25rem; font-weight: 700;
-      color: var(--color-crimson); margin-bottom: 0.5rem;
+      font-family: var(--font-display); font-size: 1.35rem; font-weight: 700;
+      color: var(--color-gold); margin-bottom: 0.5rem;
     }
     .value-divider {
       width: 40px; height: 2px; background: var(--color-gold); margin: 0.75rem auto;
     }
-    .value-desc { font-size: 0.95rem; color: var(--color-text-secondary); }
+    .value-desc { font-size: 0.9rem; color: rgba(245,240,232,0.65); line-height: 1.6; }
 
     @media (max-width: 767px) {
       .tentang-values { grid-template-columns: 1fr; }
@@ -781,30 +799,31 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
     }
     .nilai-card {
-      background: var(--color-paper); padding: 2rem 1.5rem; position: relative;
-      border: 1px solid rgba(245,240,232,0.1);
-      transition: all var(--dur-normal) var(--ease-spring);
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(201,168,76,0.1);
+      padding: 2rem 1.5rem; position: relative;
+      transition: all var(--dur-normal) var(--ease-out);
     }
     .nilai-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+      background: rgba(255,255,255,0.06);
       border-color: var(--color-gold);
     }
     .nilai-card-number {
       font-family: var(--font-mono); font-size: 3rem; font-weight: 700;
-      color: var(--color-crimson); opacity: 0.08; position: absolute;
+      color: var(--color-gold); opacity: 0.1; position: absolute;
       top: 0.75rem; right: 1rem; line-height: 1;
     }
     .nilai-card-title {
       font-family: var(--font-display); font-size: 1.15rem; font-weight: 700;
-      color: var(--color-crimson); margin-bottom: 0.5rem;
+      color: var(--color-gold); margin-bottom: 0.5rem;
     }
     .nilai-card-divider {
       width: 30px; height: 2px; background: var(--color-gold); margin: 0.75rem 0;
     }
-    .nilai-card-desc { font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.6; }
-    .nilai-divider { background: var(--color-gold) !important; }
-    .nilai-label { color: var(--color-gold) !important; }
+    .nilai-card-desc { font-size: 0.9rem; color: rgba(245,240,232,0.6); line-height: 1.6; }
 
     @media (max-width: 1023px) { .nilai-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 767px) { .nilai-grid { grid-template-columns: 1fr; } }
@@ -871,12 +890,19 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
     }
     .komisi-card {
-      background: var(--color-charcoal); border-top: 3px solid var(--color-crimson);
-      padding: 1.75rem; transition: all var(--dur-normal) var(--ease-spring);
+      background: rgba(255,255,255,0.02);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-top: 3px solid var(--color-crimson);
+      border-left: 1px solid rgba(201,168,76,0.08);
+      border-right: 1px solid rgba(201,168,76,0.08);
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+      padding: 1.75rem;
+      transition: all var(--dur-normal) var(--ease-out);
     }
     .komisi-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(139,26,26,0.25);
+      background: rgba(255,255,255,0.04);
       border-top-color: var(--color-gold);
     }
     .komisi-number {
@@ -896,8 +922,6 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
       background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.15);
       padding: 0.25rem 0.6rem; letter-spacing: 0.05em;
     }
-    .komisi-divider { background: var(--color-gold) !important; }
-    .komisi-label { color: var(--color-gold) !important; }
 
     @media (max-width: 1023px) { .komisi-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 767px) { .komisi-grid { grid-template-columns: 1fr; } }
@@ -941,16 +965,28 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     /* ============================================================
        REPRESENTASI
        ============================================================ */
+    .section-representasi { position: relative; }
+    .section-representasi::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201,168,76,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
     .rep-grid {
       display: grid; grid-template-columns: repeat(7, 1fr); gap: 1rem;
     }
     .rep-item {
-      text-align: center; padding: 1.25rem 0.5rem;
-      background: rgba(245,240,232,0.08); border: 1px solid rgba(245,240,232,0.1);
-      transition: all var(--dur-normal) var(--ease-spring);
+      text-align: center; padding: 1.5rem 0.5rem;
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(201,168,76,0.1);
+      transition: all var(--dur-normal) var(--ease-out);
     }
     .rep-item:hover {
-      background: rgba(245,240,232,0.15); transform: translateY(-4px);
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-4px);
       border-color: var(--color-gold);
     }
     .rep-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
@@ -958,8 +994,6 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
       font-family: var(--font-mono); font-size: 0.65rem; color: var(--color-text-on-dark);
       text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.3;
     }
-    .rep-divider { background: var(--color-gold) !important; }
-    .rep-label { color: var(--color-gold) !important; }
 
     @media (max-width: 1023px) { .rep-grid { grid-template-columns: repeat(5, 1fr); } }
     @media (max-width: 767px) { .rep-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -1128,37 +1162,52 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     /* ============================================================
        REGISTRASI FORM
        ============================================================ */
-    .registrasi-divider { background: var(--color-gold) !important; }
-    .registrasi-label { color: var(--color-gold) !important; }
+    .section-registrasi { position: relative; overflow: hidden; }
+    .section-registrasi::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 30%, rgba(201,168,76,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
     .registrasi-quote {
       text-align: center; font-family: var(--font-display); font-style: italic;
       font-size: 1.25rem; color: var(--color-gold); margin: 1.5rem 0;
     }
     .registrasi-form {
-      max-width: 560px; margin: 0 auto; background: var(--color-paper);
-      padding: 2.5rem; border: 1px solid rgba(245,240,232,0.15);
+      max-width: 560px; margin: 0 auto;
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(201,168,76,0.12);
+      padding: 2.5rem;
     }
     .form-group { margin-bottom: 1.25rem; }
     .form-group label {
       display: block; font-family: var(--font-mono); font-size: 0.7rem;
-      color: var(--color-text-primary); text-transform: uppercase;
+      color: var(--color-gold); text-transform: uppercase;
       letter-spacing: 0.1em; margin-bottom: 0.5rem;
     }
-    .form-group label .required { color: var(--color-crimson); }
+    .form-group label .required { color: var(--color-ivory); }
     .form-group input,
     .form-group select,
     .form-group textarea {
-      width: 100%; padding: 0.75rem 1rem; background: var(--color-ivory);
-      border: 1px solid var(--color-border); font-family: var(--font-body);
-      font-size: 1rem; color: var(--color-text-primary);
+      width: 100%; padding: 0.75rem 1rem;
+      background: rgba(5,5,5,0.4);
+      border: 1px solid rgba(201,168,76,0.15);
+      font-family: var(--font-body);
+      font-size: 1rem; color: var(--color-ivory);
       transition: border-color var(--dur-fast);
     }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(245,240,232,0.3); }
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
-      outline: none; border-color: var(--color-crimson);
-      box-shadow: 0 0 0 3px rgba(139,26,26,0.1);
+      outline: none; border-color: var(--color-gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
     }
+    .form-group select option { background: var(--color-deep-black); color: var(--color-ivory); }
     .form-group textarea { resize: vertical; min-height: 100px; }
     .btn-submit {
       width: 100%; padding: 1rem; background: var(--color-gold);
@@ -1173,10 +1222,13 @@ const description = "KSATRIA 2028 adalah forum nasional pemuda Indonesia memperi
     }
     .form-thanks {
       max-width: 560px; margin: 0 auto; text-align: center; padding: 3rem 2rem;
-      background: var(--color-paper);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(201,168,76,0.12);
     }
     .thanks-icon {
-      font-size: 3rem; color: #2ecc71; margin-bottom: 1rem;
+      font-size: 3rem; color: var(--color-gold); margin-bottom: 1rem;
     }
     .thanks-title {
       font-family: var(--font-display); font-size: 1.5rem; font-weight: 700;
