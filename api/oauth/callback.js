@@ -15,15 +15,11 @@ export default async function handler(req, res) {
   const data = await tokenRes.json();
 
   const html = `<!doctype html><html><body><script>
-    (function() {
-      function receiveMessage(e) {
-        window.opener.postMessage('authorization:github:success:${JSON.stringify(data)}', e.origin);
-      }
-      window.addEventListener('message', receiveMessage, false);
-      window.opener.postMessage('authorizing:github', '*');
-    })();
+    const msg = 'authorization:github:success:${JSON.stringify(data)}';
+    window.opener.postMessage(msg, '*');
+    window.addEventListener('message', function() { window.close(); });
   <\/script></body></html>`;
 
-  res.setHeader('Content-Type', 'text/html');
-  res.status(200).send(html);
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.end(html);
 }
