@@ -105,14 +105,17 @@
       }
 
       // ============================================================
-      // OUTPUT — Horizontal Scroll (desktop only)
+      // OUTPUT — Full-Viewport Horizontal Scroll + Center Glassmorphism
       // ============================================================
-      const outputSection = document.querySelector('.section-output');
-      const outputTrack = document.querySelector('.output-track');
-      if (outputSection && outputTrack) {
-        const getTravel = () => -(outputTrack.scrollWidth - window.innerWidth + 64);
+      const outputSection = document.querySelector('.section-output[data-hscroll]');
+      const outputViewport = outputSection?.querySelector('.output-viewport');
+      const outputTrack = outputSection?.querySelector('.output-track');
+      const outputCards = outputSection ? gsap.utils.toArray('.output-card') : [];
 
-        gsap.to(outputTrack, {
+      if (outputSection && outputTrack && outputViewport && outputCards.length) {
+        const getTravel = () => -(outputCards.length * (outputViewport.offsetWidth * 0.92 + 32) - outputViewport.offsetWidth);
+
+        const outputScroll = gsap.to(outputTrack, {
           x: getTravel,
           ease: 'none',
           scrollTrigger: {
@@ -120,9 +123,43 @@
             start: 'top top',
             end: () => '+=' + Math.abs(getTravel()),
             pin: true,
-            scrub: 1,
+            scrub: 1.2,
             invalidateOnRefresh: true,
+            onRefresh: () => { outputScroll.vars.x = getTravel(); },
+            onUpdate: self => {
+              const progress = self.progress;
+              const totalCards = outputCards.length;
+              const cardWidth = outputViewport.offsetWidth * 0.92 + 32;
+              const totalWidth = totalCards * cardWidth;
+              const rawIndex = progress * (totalCards - 1);
+              const centerIdx = Math.min(Math.max(Math.round(rawIndex), 0), totalCards - 1);
+
+              outputCards.forEach((card, i) => {
+                card.classList.remove('output-card--center', 'output-card--left', 'output-card--right', 'output-card--far');
+
+                if (i === centerIdx) {
+                  card.classList.add('output-card--center');
+                } else if (i < centerIdx) {
+                  if (centerIdx - i >= 2) {
+                    card.classList.add('output-card--far');
+                  } else {
+                    card.classList.add('output-card--left');
+                  }
+                } else {
+                  if (i - centerIdx >= 2) {
+                    card.classList.add('output-card--far');
+                  } else {
+                    card.classList.add('output-card--right');
+                  }
+                }
+              });
+            }
           }
+        });
+
+        ScrollTrigger.addEventListener('refresh', () => {
+          outputScroll.vars.x = getTravel();
+          outputScroll.scrollTrigger.refresh();
         });
       }
     }
@@ -186,6 +223,35 @@
         }
       );
     });
+
+    // ============================================================
+    // GLOWING LINES — benang emas organic drift
+    // ============================================================
+    const glowPaths = gsap.utils.toArray('.glow-path');
+    if (glowPaths.length) {
+      // Path 1: horizontal drift
+      gsap.to(glowPaths[0], {
+        x: 30, duration: 8, repeat: -1, yoyo: true, ease: 'sine.inOut',
+      });
+      // Path 2: subtle vertical sway
+      if (glowPaths[1]) {
+        gsap.to(glowPaths[1], {
+          y: -15, duration: 6, repeat: -1, yoyo: true, ease: 'sine.inOut',
+        });
+      }
+      // Path 3: slow diagonal pulse
+      if (glowPaths[2]) {
+        gsap.to(glowPaths[2], {
+          opacity: 0.15, duration: 5, repeat: -1, yoyo: true, ease: 'sine.inOut',
+        });
+      }
+      // Path 4: very slow opacity shimmer
+      if (glowPaths[3]) {
+        gsap.to(glowPaths[3], {
+          opacity: 0.1, duration: 10, repeat: -1, yoyo: true, ease: 'sine.inOut',
+        });
+      }
+    }
 
     // ============================================================
     // SUBTLE FLOATING — key decorative elements
