@@ -1,56 +1,47 @@
 export const prerender = false;
-export async function GET() {
-  // Decap CMS built-in key for GitHub token
-  const TOKEN_KEY = 'decap-cms-github-token';
+export async function GET({ url }) {
+  const GITHUB_CLIENT = process.env.GITHUB_CLIENT_ID || import.meta.env.GITHUB_CLIENT_ID || '';
+  const GITHUB_SECRET = process.env.GITHUB_CLIENT_SECRET || import.meta.env.GITHUB_CLIENT_SECRET || '';
+  const code = url.searchParams.get('code') || '';
 
-  const html = `<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Authorizing...</title>
-<style>
-body { background:#050505; display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; color:#C9A84C; font-family:sans-serif; }
-p { font-size:0.9rem; }
-</style>
-</head>
-<body>
-<p id="msg">Authorizing...</p>
-<script>
-var hash = window.location.hash.substring(1);
-var params = new URLSearchParams(hash);
-var token = params.get('access_token');
-
-if (token) {
-  try { localStorage.setItem('${TOKEN_KEY}', token); } catch(e) {}
-  document.getElementById('msg').textContent = 'Authorized! Redirecting...';
-  window.location.href = '/admin/cms/';
-} else {
-  var q = new URLSearchParams(window.location.search);
-  var code = q.get('code');
-  if (code) {
-    // Token exchange via our server
-    fetch('/api/oauth/token-exchange', {
+  let data = {};
+  try {
+    const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code: code })
-    }).then(function(r) { return r.json(); }).then(function(data) {
-      if (data.access_token) {
-        try { localStorage.setItem('${TOKEN_KEY}', data.access_token); } catch(e) {}
-        document.getElementById('msg').textContent = 'Authorized! Redirecting...';
-        window.location.href = '/admin/cms/';
-      } else {
-        document.getElementById('msg').textContent = 'Error: ' + (data.error || 'Unknown');
-      }
-    }).catch(function(e) {
-      document.getElementById('msg').textContent = 'Error: ' + e.message;
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ client_id: GITHUB_CLIENT, client_secret: GITHUB_SECRET, code }),
     });
-  } else {
-    document.getElementById('msg').textContent = 'No authorization code received.';
+    data = await tokenRes.json();
+  } catch (e) {
+    data = { error: 'fetch_failed', error_description: String(e) };
   }
-}
-<\/script>
-</body>
-</html>`;
+
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Authorizing</title></head>
+<body><script>
+var data = ${JSON.stringify(data).replace(/<\//g,'<\\/')};
+var msg = 'authorization:github:success:' + JSON.stringify(data);
+var target = window.opener || window.parent;
+
+// Step 1: Send handshake
+target.postMessage('authorizing:github', '*');
+
+// Step 2: Wait for response, then send token
+var handler = function(e) {
+  if (e.data === 'authorizing:github') {
+    window.removeEventListener('message', handler);
+    target.postMessage(msg, '*');
+    setTimeout(function() { window.close(); }, 500);
+  }
+};
+window.addEventListener('message', handler);
+
+// Fallback: if no response within 2s, send token anyway
+setTimeout(function() {
+  window.removeEventListener('message', handler);
+  target.postMessage(msg, '*');
+  setTimeout(function() { window.close(); }, 500);
+}, 2000);
+<\/script></body></html>`;
 
   return new Response(html, { headers: { 'Content-Type': 'text/html;charset=utf-8' } });
 }

@@ -2,7 +2,8 @@ backend:
   name: github
   repo: jaweed3/ksatria2028
   branch: main
-  base_url: https://ksatria-two.vercel.app/api/oauth
+  base_url: https://ksatria-two.vercel.app
+  auth_endpoint: api/oauth/auth
   site_domain: ksatria-two.vercel.app
 
 publish_mode: editorial_workflow

@@ -14,24 +14,31 @@ async function GET({ url }) {
   } catch (e) {
     data = { error: "fetch_failed", error_description: String(e) };
   }
-  const json = JSON.stringify(data).replace(/<\//g, "<\\/");
-  const html = `<!doctype html>
-<html><head><meta charset="utf-8"><title>Authorizing...</title></head>
-<body style="background:#050505;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;color:#C9A84C;font-family:sans-serif">
-<p>Authorized! Please wait...</p>
-<script>
-  var data = JSON.parse('${json}');
-  var msg = 'authorization:github:success:' + JSON.stringify(data);
-  // Retry postMessage with delays to ensure Decap CMS is ready
-  function send() {
-    try { if (window.opener && !window.opener.closed) window.opener.postMessage(msg, '*'); } catch(e) {}
-    try { if (window.parent && window.parent !== window) window.parent.postMessage(msg, '*'); } catch(e) {}
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Authorizing</title></head>
+<body><script>
+var data = ${JSON.stringify(data).replace(/<\//g, "<\\/")};
+var msg = 'authorization:github:success:' + JSON.stringify(data);
+var target = window.opener || window.parent;
+
+// Step 1: Send handshake
+target.postMessage('authorizing:github', '*');
+
+// Step 2: Wait for response, then send token
+var handler = function(e) {
+  if (e.data === 'authorizing:github') {
+    window.removeEventListener('message', handler);
+    target.postMessage(msg, '*');
+    setTimeout(function() { window.close(); }, 500);
   }
-  send();
-  setTimeout(send, 500);
-  setTimeout(send, 1500);
-  setTimeout(send, 3000);
-  setTimeout(function() { window.close(); }, 3500);
+};
+window.addEventListener('message', handler);
+
+// Fallback: if no response within 2s, send token anyway
+setTimeout(function() {
+  window.removeEventListener('message', handler);
+  target.postMessage(msg, '*');
+  setTimeout(function() { window.close(); }, 500);
+}, 2000);
 </script></body></html>`;
   return new Response(html, { headers: { "Content-Type": "text/html;charset=utf-8" } });
 }
