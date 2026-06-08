@@ -1,34 +1,50 @@
 <!doctype html>
-<html>
+<html lang="id">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin — KSATRIA 2028</title>
   <style>
-    * { box-sizing: border-box; margin:0; padding:0; }
-    body { background:#050505; color:#F5F0E8; font-family:'Inter',system-ui,sans-serif; }
-    .page { max-width:800px; margin:0 auto; padding:4rem 2rem; }
-    h1 { font-family:'Cormorant Garamond',serif; color:#C9A84C; font-size:2rem; margin-bottom:0.5rem; }
-    .sub { color:rgba(245,240,232,0.5); font-size:0.85rem; margin-bottom:2rem; }
-    input, textarea, button { font-family:'Inter',system-ui,sans-serif; }
-    .pw-box { text-align:center; padding:4rem 0; }
-    .pw-box input { padding:0.85rem 1rem; background:rgba(255,255,255,0.04); border:1px solid rgba(201,168,76,0.2); color:#F5F0E8; font-size:1rem; text-align:center; outline:none; display:block; margin:1rem auto; max-width:300px; width:100%; }
-    .pw-box input:focus { border-color:#C9A84C; }
-    .pw-box .e { color:#8B1A1A; font-size:0.8rem; margin-top:0.75rem; display:none; }
-    .btn { padding:0.85rem 2rem; background:#C9A84C; color:#050505; border:none; font-family:'IBM Plex Mono',monospace; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.15em; cursor:pointer; }
-    .btn:hover { background:#E8C96A; }
-    .hidden { display:none!important; }
-    .editor { display:grid; gap:1rem; }
-    .editor label { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:rgba(201,168,76,0.7); text-transform:uppercase; letter-spacing:0.1em; }
-    .editor input, .editor textarea { padding:0.75rem 1rem; background:rgba(255,255,255,0.03); border:1px solid rgba(201,168,76,0.15); color:#F5F0E8; font-size:1rem; outline:none; }
-    .editor input:focus, .editor textarea:focus { border-color:#C9A84C; }
-    .editor textarea { min-height:200px; resize:vertical; }
-    .editor .hint { font-size:0.75rem; color:rgba(245,240,232,0.3); }
-    .post-list { margin-top:2rem; display:grid; gap:0.75rem; }
-    .post-item { padding:1rem 1.25rem; background:rgba(255,255,255,0.02); border:1px solid rgba(201,168,76,0.06); display:flex; justify-content:space-between; align-items:center; }
-    .post-item .title { color:rgba(201,168,76,0.8); font-family:'Cormorant Garamond',serif; font-size:1rem; }
-    .post-item .del { color:rgba(139,26,26,0.6); cursor:pointer; font-size:0.75rem; font-family:'IBM Plex Mono',monospace; }
-    .toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:rgba(201,168,76,0.15); border:1px solid rgba(201,168,76,0.3); padding:0.75rem 1.5rem; font-size:0.85rem; color:#C9A84C; border-radius:4px; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:#050505;color:#F5F0E8;font-family:'Inter','Segoe UI',system-ui,sans-serif;min-height:100vh}
+    .page{max-width:800px;margin:0 auto;padding:4rem 2rem}
+    h1{font-family:'Cormorant Garamond','Georgia',serif;color:#C9A84C;font-size:2rem;margin-bottom:0.25rem}
+    .sub{color:rgba(245,240,232,0.4);font-size:0.85rem;margin-bottom:2rem}
+    input,textarea,button,select{font-family:'Inter','Segoe UI',system-ui,sans-serif}
+    .pw-box{text-align:center;padding:6rem 0 4rem}
+    .pw-box input{padding:0.85rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:#F5F0E8;font-size:1rem;text-align:center;outline:none;display:block;margin:1.5rem auto;max-width:300px;width:100%;border-radius:0}
+    .pw-box input:focus{border-color:#C9A84C}
+    .pw-box .e{color:#8B1A1A;font-size:0.8rem;margin-top:0.75rem;display:none}
+    .btn{padding:0.85rem 2rem;background:#C9A84C;color:#050505;border:none;font-family:'IBM Plex Mono','SF Mono',monospace;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;cursor:pointer;transition:background 0.2s}
+    .btn:hover{background:#E8C96A}
+    .btn:disabled{opacity:0.4;cursor:not-allowed}
+    .btn-s{padding:0.5rem 1rem;font-size:0.65rem}
+    .btn-o{background:transparent;border:1px solid rgba(201,168,76,0.3);color:rgba(245,240,232,0.6)}
+    .btn-o:hover{background:rgba(201,168,76,0.08);color:#F5F0E8}
+    .btn-d{background:#8B1A1A;color:#F5F0E8}
+    .btn-d:hover{background:#B32020}
+    .hidden{display:none!important}
+    .editor{display:grid;gap:1rem}
+    .editor label{font-family:'IBM Plex Mono','SF Mono',monospace;font-size:0.7rem;color:rgba(201,168,76,0.7);text-transform:uppercase;letter-spacing:0.1em}
+    .editor input,.editor textarea,.editor select{padding:0.75rem 1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.15);color:#F5F0E8;font-size:1rem;outline:none;border-radius:0;width:100%}
+    .editor input:focus,.editor textarea:focus,.editor select:focus{border-color:#C9A84C}
+    .editor textarea{min-height:250px;resize:vertical;font-family:'SF Mono','Menlo',monospace;font-size:0.9rem;line-height:1.6}
+    .editor .hint{font-size:0.75rem;color:rgba(245,240,232,0.3)}
+    .post-list{margin-top:2rem;display:grid;gap:0.5rem}
+    .post-item{padding:1rem 1.25rem;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.06);display:flex;justify-content:space-between;align-items:center}
+    .post-item .title{color:rgba(201,168,76,0.8);font-family:'Cormorant Garamond','Georgia',serif;font-size:1rem}
+    .post-item .meta{color:rgba(245,240,232,0.3);font-size:0.7rem;font-family:'IBM Plex Mono','SF Mono',monospace}
+    .post-item .actions{display:flex;gap:0.5rem;align-items:center}
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);padding:0.75rem 1.5rem;font-size:0.85rem;color:#C9A84C;z-index:999;pointer-events:none}
+    .loading{text-align:center;padding:3rem;color:rgba(245,240,232,0.3)}
+    .toolbar{display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(201,168,76,0.1)}
+    .status{font-size:0.7rem;color:rgba(245,240,232,0.35);font-family:'IBM Plex Mono','SF Mono',monospace}
+    .status.ok{color:rgba(76,201,112,0.6)}
+    @media(max-width:600px){
+      .page{padding:2rem 1rem}
+      .post-item{flex-direction:column;align-items:flex-start;gap:0.5rem}
+      .post-item .actions{align-self:flex-end}
+    }
   </style>
 </head>
 <body>
@@ -36,101 +52,143 @@
   <div class="pw-box">
     <h1>KSATRIA 2028</h1>
     <p class="sub">Panel Admin</p>
-    <input type="password" id="pwInput" placeholder="Password">
-    <button class="btn" onclick="login()">Masuk</button>
-    <div class="e" id="pwErr">Salah!</div>
+    <input type="password" id="pwInput" placeholder="Password admin" autocomplete="current-password">
+    <button class="btn" id="loginBtn">Masuk</button>
+    <div class="e" id="pwErr">Password salah</div>
   </div>
 </div>
 
 <div class="page hidden" id="adminPage">
   <h1>KSATRIA 2028</h1>
-  <p class="sub">Kelola Artikel Blog</p>
+  <p class="sub">Panel Admin &mdash; Kelola Artikel Blog</p>
 
-  <div class="editor">
-    <label>Token GitHub <span class="hint">(repo scope)</span></label>
-    <input type="text" id="tokenInput" placeholder="ghp_xxx" value="">
-    <button class="btn" onclick="loadPosts()">Load Posts</button>
+  <div class="toolbar">
+    <span id="statusBadge" class="status">Belum terautentikasi</span>
+    <button class="btn btn-s btn-o" onclick="logout()">Logout</button>
+    <span style="flex:1"></span>
+    <button class="btn btn-s" onclick="newPost()">+ Artikel Baru</button>
+    <button class="btn btn-s btn-o" onclick="loadPosts()">Refresh</button>
   </div>
 
-  <div class="post-list hidden" id="postList"></div>
+  <div id="postList" class="post-list"></div>
 
-  <div class="editor hidden" id="editForm" style="margin-top:2rem">
-    <label>Judul</label>
-    <input type="text" id="postTitle">
+  <div class="editor hidden" id="editForm">
+    <label>Judul Artikel</label>
+    <input type="text" id="postTitle" placeholder="Judul" maxlength="200">
+    <label>Nama file <span class="hint">(huruf kecil, tanda hubung saja, tanpa .md)</span></label>
+    <input type="text" id="postSlug" placeholder="nama-file-artikel" maxlength="100" pattern="[a-z0-9-]+">
     <label>Konten (Markdown)</label>
-    <textarea id="postBody"></textarea>
-    <label>Nama file <span class="hint">(tanpa .md, contoh: berita-baru)</span></label>
-    <input type="text" id="postSlug" placeholder="nama-file-artikel">
-    <button class="btn" onclick="savePost()">Simpan</button>
-    <button class="btn" onclick="cancelEdit()" style="background:transparent;color:rgba(245,240,232,0.5)">Batal</button>
+    <textarea id="postBody" placeholder="Tulis konten di sini..."></textarea>
+    <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
+      <button class="btn" id="saveBtn">Simpan</button>
+      <button class="btn btn-o" onclick="cancelEdit()">Batal</button>
+    </div>
   </div>
 </div>
 
 <script>
-let ghToken = '';
-let repos = [];
+let token = '';
+const API = '/api/admin';
 
 async function login() {
-  const r = await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.getElementById('pwInput').value})});
-  const d = await r.json();
-  if (d.ok) { document.getElementById('pwPage').classList.add('hidden'); document.getElementById('adminPage').classList.remove('hidden'); }
-  else document.getElementById('pwErr').classList.remove('hidden');
-}
-document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+  const pw = document.getElementById('pwInput').value;
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  btn.textContent = 'Memeriksa...';
+  document.getElementById('pwErr').style.display = 'none';
 
-async function gh(url, opts={}) {
-  if(!opts.headers) opts.headers={};
-  opts.headers['Authorization']='Bearer '+ghToken;
-  opts.headers['Accept']='application/vnd.github.v3+json';
-  const r=await fetch('https://api.github.com'+url, opts);
-  if(!r.ok && r.status!==404) throw await r.json();
-  return r.status===404?null:r.json();
+  try {
+    const r = await fetch(API + '/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw }),
+    });
+    const d = await r.json();
+    if (d.ok && d.token) {
+      token = d.token;
+      sessionStorage.setItem('ksatria_admin_token', d.token);
+      document.getElementById('pwPage').classList.add('hidden');
+      document.getElementById('adminPage').classList.remove('hidden');
+      document.getElementById('statusBadge').textContent = 'Terautentikasi';
+      document.getElementById('statusBadge').className = 'status ok';
+      loadPosts();
+    } else {
+      document.getElementById('pwErr').style.display = 'block';
+    }
+  } catch {
+    document.getElementById('pwErr').textContent = 'Gagal menghubungi server';
+    document.getElementById('pwErr').style.display = 'block';
+  }
+  btn.disabled = false;
+  btn.textContent = 'Masuk';
+}
+
+function logout() {
+  token = '';
+  sessionStorage.removeItem('ksatria_admin_token');
+  document.getElementById('adminPage').classList.add('hidden');
+  document.getElementById('pwPage').classList.remove('hidden');
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwErr').style.display = 'none';
+  document.getElementById('statusBadge').textContent = 'Belum terautentikasi';
+  document.getElementById('statusBadge').className = 'status';
+}
+
+async function authFetch(url, opts = {}) {
+  if (!opts.headers) opts.headers = {};
+  opts.headers['Authorization'] = 'Bearer ' + token;
+  const r = await fetch(url, opts);
+  if (r.status === 401) { logout(); throw new Error('Sesi habis'); }
+  return r;
 }
 
 async function loadPosts() {
-  ghToken=document.getElementById('tokenInput').value.trim();
-  if(!ghToken) return;
-  const list=document.getElementById('postList');
-  const form=document.getElementById('editForm');
-  list.innerHTML='';
-  list.classList.remove('hidden');
-  form.classList.add('hidden');
+  const list = document.getElementById('postList');
+  list.innerHTML = '<div class="loading">Memuat daftar artikel...</div>';
+  document.getElementById('editForm').classList.add('hidden');
 
   try {
-    // Get default branch content
-    const contents=await gh('/repos/jaweed3/ksatria2028/contents/src/content/posts');
-    if(!contents) { list.innerHTML='<div class="post-item">No posts found</div>'; return; }
-    list.innerHTML='<div style="margin-bottom:0.75rem;color:rgba(245,240,232,0.4);font-size:0.75rem">Click to edit:</div>';
-    contents.forEach(f=>{
-      if(f.name.endsWith('.md')){
-        const d=document.createElement('div'); d.className='post-item';
-        d.innerHTML='<span class="title">'+f.name.replace('.md','')+'</span><span class="del" onclick="editPost(\''+f.name+'\',\''+f.sha+'\')">Edit</span>';
-        list.appendChild(d);
-      }
+    const r = await authFetch(API + '/posts');
+    const d = await r.json();
+    if (!d.ok) { list.innerHTML = '<div class="post-item">Gagal memuat</div>'; return; }
+
+    if (!d.posts.length) {
+      list.innerHTML = '<div class="post-item">Belum ada artikel. Klik "+ Artikel Baru" untuk membuat.</div>';
+      return;
+    }
+
+    list.innerHTML = '';
+    d.posts.forEach(p => {
+      const item = document.createElement('div');
+      item.className = 'post-item';
+      item.innerHTML = '<div><div class="title">' + esc(p.title) + '</div><div class="meta">' + esc(p.date) + ' · ' + esc(p.name) + '</div></div><div class="actions"><button class="btn btn-s btn-o" onclick="editPost(\'' + esc(p.name) + '\')">Edit</button><button class="btn btn-s btn-d" onclick="deletePost(\'' + esc(p.name) + '\')">Hapus</button></div>';
+      list.appendChild(item);
     });
-    list.innerHTML+='<div style="margin-top:1rem"><button class="btn" onclick="newPost()">+ Artikel Baru</button></div>';
-  } catch(e){
-    list.innerHTML='<div class="post-item">Error: '+(e.message||'unknown')+'</div>';
+  } catch (e) {
+    list.innerHTML = '<div class="post-item">Error: ' + esc(e.message) + '</div>';
   }
 }
 
-async function editPost(name, sha) {
-  const path='src/content/posts/'+name;
-  const data=await gh('/repos/jaweed3/ksatria2028/contents/'+encodeURIComponent(path));
-  if(!data) return;
-  const content=atob(data.content.replace(/\n/g,''));
-  document.getElementById('postTitle').value=content.match(/^title:\s*(.+)/m)?.[1]||'';
-  document.getElementById('postBody').value=content.replace(/^---[\s\S]*?---\n*/,'');
-  document.getElementById('postSlug').value=name.replace('.md','');
-  document.getElementById('editForm').dataset.sha=sha;
-  document.getElementById('editForm').dataset.name=name;
-  document.getElementById('editForm').classList.remove('hidden');
+async function editPost(name) {
+  try {
+    const r = await authFetch(API + '/posts?file=' + encodeURIComponent(name));
+    const d = await r.json();
+    if (!d.ok) { toast('Gagal memuat artikel'); return; }
+    document.getElementById('postTitle').value = d.title || '';
+    document.getElementById('postBody').value = d.content.replace(/^---[\s\S]*?---\n*/, '');
+    document.getElementById('postSlug').value = name.replace('.md', '');
+    document.getElementById('editForm').dataset.sha = d.sha || '';
+    document.getElementById('editForm').dataset.name = name;
+    document.getElementById('editForm').classList.remove('hidden');
+  } catch (e) {
+    toast('Error: ' + e.message);
+  }
 }
 
 function newPost() {
-  document.getElementById('postTitle').value='';
-  document.getElementById('postBody').value='';
-  document.getElementById('postSlug').value='';
+  document.getElementById('postTitle').value = '';
+  document.getElementById('postBody').value = '';
+  document.getElementById('postSlug').value = '';
   delete document.getElementById('editForm').dataset.sha;
   delete document.getElementById('editForm').dataset.name;
   document.getElementById('editForm').classList.remove('hidden');
@@ -141,36 +199,76 @@ function cancelEdit() {
 }
 
 async function savePost() {
-  const title=document.getElementById('postTitle').value.trim();
-  const body=document.getElementById('postBody').value;
-  const slug=document.getElementById('postSlug').value.trim();
-  if(!title||!body||!slug) return;
+  const title = document.getElementById('postTitle').value.trim();
+  const body = document.getElementById('postBody').value;
+  const slug = document.getElementById('postSlug').value.trim();
+  if (!title || !body || !slug) { toast('Judul, slug, dan konten harus diisi'); return; }
+  if (!/^[a-z0-9-]+$/.test(slug)) { toast('Slug: huruf kecil dan tanda hubung saja'); return; }
 
-  const today=new Date().toISOString().split('T')[0];
-  const frontmatter='---\ntitle: '+title+'\ndate: '+today+'\n---\n\n';
-  const content=frontmatter+body;
-  const path='src/content/posts/'+slug+'.md';
-  const enc=btoa(unescape(encodeURIComponent(content)));
-  const sha=document.getElementById('editForm').dataset.sha;
+  const sha = document.getElementById('editForm').dataset.sha || '';
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  btn.textContent = 'Menyimpan...';
 
-  const data={message:'Update '+slug+'.md',content:enc};
-  if(sha) data.sha=sha;
-  // Get the latest commit SHA for the default branch
-  const ref=await gh('/repos/jaweed3/ksatria2028/git/refs/heads/main');
-  if(ref) data.branch='main';
-  await gh('/repos/jaweed3/ksatria2028/contents/'+encodeURIComponent(path),{method:'PUT',body:JSON.stringify(data)});
-  cancelEdit();
-  loadPosts();
-  toast('Saved!');
+  try {
+    const r = await authFetch(API + '/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, title, body, sha }),
+    });
+    const d = await r.json();
+    if (d.ok) {
+      toast('Tersimpan!');
+      cancelEdit();
+      loadPosts();
+    } else {
+      toast('Gagal: ' + (d.error || 'unknown'));
+    }
+  } catch (e) {
+    toast('Error: ' + e.message);
+  }
+  btn.disabled = false;
+  btn.textContent = 'Simpan';
+}
+
+async function deletePost(name) {
+  if (!confirm('Hapus ' + name + '?')) return;
+  try {
+    const r = await authFetch(API + '/posts?file=' + encodeURIComponent(name), { method: 'DELETE' });
+    const d = await r.json();
+    if (d.ok) { toast('Terhapus!'); loadPosts(); }
+    else { toast('Gagal: ' + (d.error || 'unknown')); }
+  } catch (e) {
+    toast('Error: ' + e.message);
+  }
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
 }
 
 let toastTimer;
 function toast(msg) {
-  const t=document.createElement('div'); t.className='toast'; t.textContent=msg;
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
   document.body.appendChild(t);
   clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.remove(),2000);
+  toastTimer = setTimeout(() => t.remove(), 2500);
 }
+
+document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+document.getElementById('loginBtn').addEventListener('click', login);
+
+// Auto-restore session
+(function() {
+  const saved = sessionStorage.getItem('ksatria_admin_token');
+  if (saved) { token = saved; document.getElementById('pwPage').classList.add('hidden'); document.getElementById('adminPage').classList.remove('hidden'); document.getElementById('statusBadge').textContent = 'Terautentikasi'; document.getElementById('statusBadge').className = 'status ok'; loadPosts(); }
+})();
 </script>
 </body>
 </html>
