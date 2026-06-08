@@ -20,6 +20,38 @@
     setInterval(updateCountdown, 1000);
 
     // ============================================================
+    // COUNTER-UP — Hero stats (38, 7, 2000+, 100)
+    // ============================================================
+    function animateCounter(el, target, suffix) {
+      const dur = 1200;
+      const start = performance.now();
+      function tick(now) {
+        const t = Math.min((now - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const current = Math.round(eased * target);
+        el.textContent = current + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    const statNums = document.querySelectorAll('.hero-stat-num');
+    if (statNums.length) {
+      const statObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          statObserver.unobserve(el);
+          const raw = el.textContent.trim();
+          const suffix = raw.replace(/[\d]/g, '');
+          const target = parseInt(raw) || 0;
+          if (target > 0) animateCounter(el, target, suffix);
+        });
+      }, { threshold: 0.3 });
+      statNums.forEach(el => statObserver.observe(el));
+    }
+
+    // ============================================================
     // SCROLL SPY — Active nav link
     // ============================================================
     const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
