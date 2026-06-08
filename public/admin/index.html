@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — KSATRIA 2028</title>
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { background:#050505; color:#F5F0E8; font-family:'Inter',system-ui,sans-serif; }
+    .page { max-width:800px; margin:0 auto; padding:4rem 2rem; }
+    h1 { font-family:'Cormorant Garamond',serif; color:#C9A84C; font-size:2rem; margin-bottom:0.5rem; }
+    .sub { color:rgba(245,240,232,0.5); font-size:0.85rem; margin-bottom:2rem; }
+    input, textarea, button { font-family:'Inter',system-ui,sans-serif; }
+    .pw-box { text-align:center; padding:4rem 0; }
+    .pw-box input { padding:0.85rem 1rem; background:rgba(255,255,255,0.04); border:1px solid rgba(201,168,76,0.2); color:#F5F0E8; font-size:1rem; text-align:center; outline:none; display:block; margin:1rem auto; max-width:300px; width:100%; }
+    .pw-box input:focus { border-color:#C9A84C; }
+    .pw-box .e { color:#8B1A1A; font-size:0.8rem; margin-top:0.75rem; display:none; }
+    .btn { padding:0.85rem 2rem; background:#C9A84C; color:#050505; border:none; font-family:'IBM Plex Mono',monospace; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.15em; cursor:pointer; }
+    .btn:hover { background:#E8C96A; }
+    .hidden { display:none!important; }
+    .editor { display:grid; gap:1rem; }
+    .editor label { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:rgba(201,168,76,0.7); text-transform:uppercase; letter-spacing:0.1em; }
+    .editor input, .editor textarea { padding:0.75rem 1rem; background:rgba(255,255,255,0.03); border:1px solid rgba(201,168,76,0.15); color:#F5F0E8; font-size:1rem; outline:none; }
+    .editor input:focus, .editor textarea:focus { border-color:#C9A84C; }
+    .editor textarea { min-height:200px; resize:vertical; }
+    .editor .hint { font-size:0.75rem; color:rgba(245,240,232,0.3); }
+    .post-list { margin-top:2rem; display:grid; gap:0.75rem; }
+    .post-item { padding:1rem 1.25rem; background:rgba(255,255,255,0.02); border:1px solid rgba(201,168,76,0.06); display:flex; justify-content:space-between; align-items:center; }
+    .post-item .title { color:rgba(201,168,76,0.8); font-family:'Cormorant Garamond',serif; font-size:1rem; }
+    .post-item .del { color:rgba(139,26,26,0.6); cursor:pointer; font-size:0.75rem; font-family:'IBM Plex Mono',monospace; }
+    .toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:rgba(201,168,76,0.15); border:1px solid rgba(201,168,76,0.3); padding:0.75rem 1.5rem; font-size:0.85rem; color:#C9A84C; border-radius:4px; }
+  </style>
+</head>
+<body>
+<div class="page" id="pwPage">
+  <div class="pw-box">
+    <h1>KSATRIA 2028</h1>
+    <p class="sub">Panel Admin</p>
+    <input type="password" id="pwInput" placeholder="Password">
+    <button class="btn" onclick="login()">Masuk</button>
+    <div class="e" id="pwErr">Salah!</div>
+  </div>
+</div>
+
+<div class="page hidden" id="adminPage">
+  <h1>KSATRIA 2028</h1>
+  <p class="sub">Kelola Artikel Blog</p>
+
+  <div class="editor">
+    <label>Token GitHub <span class="hint">(repo scope)</span></label>
+    <input type="text" id="tokenInput" placeholder="ghp_xxx" value="">
+    <button class="btn" onclick="loadPosts()">Load Posts</button>
+  </div>
+
+  <div class="post-list hidden" id="postList"></div>
+
+  <div class="editor hidden" id="editForm" style="margin-top:2rem">
+    <label>Judul</label>
+    <input type="text" id="postTitle">
+    <label>Konten (Markdown)</label>
+    <textarea id="postBody"></textarea>
+    <label>Nama file <span class="hint">(tanpa .md, contoh: berita-baru)</span></label>
+    <input type="text" id="postSlug" placeholder="nama-file-artikel">
+    <button class="btn" onclick="savePost()">Simpan</button>
+    <button class="btn" onclick="cancelEdit()" style="background:transparent;color:rgba(245,240,232,0.5)">Batal</button>
+  </div>
+</div>
+
+<script>
+let ghToken = '';
+let repos = [];
+
+async function login() {
+  const r = await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.getElementById('pwInput').value})});
+  const d = await r.json();
+  if (d.ok) { document.getElementById('pwPage').classList.add('hidden'); document.getElementById('adminPage').classList.remove('hidden'); }
+  else document.getElementById('pwErr').classList.remove('hidden');
+}
+document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+
+async function gh(url, opts={}) {
+  if(!opts.headers) opts.headers={};
+  opts.headers['Authorization']='Bearer '+ghToken;
+  opts.headers['Accept']='application/vnd.github.v3+json';
+  const r=await fetch('https://api.github.com'+url, opts);
+  if(!r.ok && r.status!==404) throw await r.json();
+  return r.status===404?null:r.json();
+}
+
+async function loadPosts() {
+  ghToken=document.getElementById('tokenInput').value.trim();
+  if(!ghToken) return;
+  const list=document.getElementById('postList');
+  const form=document.getElementById('editForm');
+  list.innerHTML='';
+  list.classList.remove('hidden');
+  form.classList.add('hidden');
+
+  try {
+    // Get default branch content
+    const contents=await gh('/repos/jaweed3/ksatria2028/contents/src/content/posts');
+    if(!contents) { list.innerHTML='<div class="post-item">No posts found</div>'; return; }
+    list.innerHTML='<div style="margin-bottom:0.75rem;color:rgba(245,240,232,0.4);font-size:0.75rem">Click to edit:</div>';
+    contents.forEach(f=>{
+      if(f.name.endsWith('.md')){
+        const d=document.createElement('div'); d.className='post-item';
+        d.innerHTML='<span class="title">'+f.name.replace('.md','')+'</span><span class="del" onclick="editPost(\''+f.name+'\',\''+f.sha+'\')">Edit</span>';
+        list.appendChild(d);
+      }
+    });
+    list.innerHTML+='<div style="margin-top:1rem"><button class="btn" onclick="newPost()">+ Artikel Baru</button></div>';
+  } catch(e){
+    list.innerHTML='<div class="post-item">Error: '+(e.message||'unknown')+'</div>';
+  }
+}
+
+async function editPost(name, sha) {
+  const path='src/content/posts/'+name;
+  const data=await gh('/repos/jaweed3/ksatria2028/contents/'+encodeURIComponent(path));
+  if(!data) return;
+  const content=atob(data.content.replace(/\n/g,''));
+  document.getElementById('postTitle').value=content.match(/^title:\s*(.+)/m)?.[1]||'';
+  document.getElementById('postBody').value=content.replace(/^---[\s\S]*?---\n*/,'');
+  document.getElementById('postSlug').value=name.replace('.md','');
+  document.getElementById('editForm').dataset.sha=sha;
+  document.getElementById('editForm').dataset.name=name;
+  document.getElementById('editForm').classList.remove('hidden');
+}
+
+function newPost() {
+  document.getElementById('postTitle').value='';
+  document.getElementById('postBody').value='';
+  document.getElementById('postSlug').value='';
+  delete document.getElementById('editForm').dataset.sha;
+  delete document.getElementById('editForm').dataset.name;
+  document.getElementById('editForm').classList.remove('hidden');
+}
+
+function cancelEdit() {
+  document.getElementById('editForm').classList.add('hidden');
+}
+
+async function savePost() {
+  const title=document.getElementById('postTitle').value.trim();
+  const body=document.getElementById('postBody').value;
+  const slug=document.getElementById('postSlug').value.trim();
+  if(!title||!body||!slug) return;
+
+  const today=new Date().toISOString().split('T')[0];
+  const frontmatter='---\ntitle: '+title+'\ndate: '+today+'\n---\n\n';
+  const content=frontmatter+body;
+  const path='src/content/posts/'+slug+'.md';
+  const enc=btoa(unescape(encodeURIComponent(content)));
+  const sha=document.getElementById('editForm').dataset.sha;
+
+  const data={message:'Update '+slug+'.md',content:enc};
+  if(sha) data.sha=sha;
+  // Get the latest commit SHA for the default branch
+  const ref=await gh('/repos/jaweed3/ksatria2028/git/refs/heads/main');
+  if(ref) data.branch='main';
+  await gh('/repos/jaweed3/ksatria2028/contents/'+encodeURIComponent(path),{method:'PUT',body:JSON.stringify(data)});
+  cancelEdit();
+  loadPosts();
+  toast('Saved!');
+}
+
+let toastTimer;
+function toast(msg) {
+  const t=document.createElement('div'); t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t);
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.remove(),2000);
+}
+</script>
+</body>
+</html>
