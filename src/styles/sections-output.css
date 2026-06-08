@@ -4,8 +4,14 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
+  min-height: 100vh;
 }
+@media (max-width: 767px) {
+  .section-output {
+    min-height: auto;
+  }
+}
+
 .section-output .section-label { color: var(--color-gold); }
 .section-output .section-title { color: var(--color-text-on-dark); }
 .section-output .section-lead { color: rgba(245,240,232,0.6); }
@@ -15,12 +21,13 @@
   padding-top: var(--space-section);
 }
 
+/* Viewport — full viewport width */
 .output-viewport {
   flex: 1;
   min-height: 0;
-  overflow: visible !important;
-  width: 100vw;
+  overflow: hidden;
   position: relative;
+  width: 100vw;
   margin-left: calc(-50vw + 50%);
 }
 
@@ -28,17 +35,18 @@
   display: flex;
   align-items: center;
   width: max-content;
-  padding: 3rem calc(50vw - 50%);
+  padding: 3rem calc(50vw - 50% + 2rem);
   gap: 2rem;
   will-change: transform;
+  min-height: 320px;
 }
 
+/* Cards */
 .output-card {
   width: 90vw;
   max-width: 560px;
   flex-shrink: 0;
   position: relative;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .output-card-inner {
@@ -61,6 +69,7 @@
   transition: opacity 0.5s ease;
 }
 
+/* Center — glassmorphism gold */
 .output-card--center .output-card-inner {
   background: rgba(201,168,76,0.06);
   border-color: rgba(201,168,76,0.25);
@@ -76,14 +85,19 @@
   background: linear-gradient(90deg, var(--color-gold), rgba(201,168,76,0.3));
 }
 
+/* Left — fading out */
 .output-card--left .output-card-inner {
   opacity: 0.4;
   transform: scale(0.92) translateX(-5%);
 }
+
+/* Right — approaching */
 .output-card--right .output-card-inner {
   opacity: 0.3;
   transform: scale(0.88) translateX(5%);
 }
+
+/* Far — barely visible */
 .output-card--far .output-card-inner {
   opacity: 0.08;
   transform: scale(0.8);
@@ -122,6 +136,7 @@
   font-size: 0.95rem;
   color: rgba(245,240,232,0.55);
   line-height: 1.75;
+  transition: color 0.5s ease;
 }
 .output-card--center .output-desc {
   color: rgba(245,240,232,0.75);
@@ -132,8 +147,8 @@
     padding-top: var(--space-section-mobile);
   }
   .output-viewport {
-    margin-left: 0;
     width: 100%;
+    margin-left: 0;
     overflow: visible;
   }
   .output-track {
@@ -141,6 +156,7 @@
     width: 100%;
     padding: 2rem 1rem;
     gap: 1rem;
+    min-height: auto;
   }
   .output-card {
     width: 100%;
