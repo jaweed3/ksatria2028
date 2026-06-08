@@ -3,7 +3,6 @@ export async function GET({ url }) {
   const GITHUB_CLIENT = process.env.GITHUB_CLIENT_ID || import.meta.env.GITHUB_CLIENT_ID || '';
   const GITHUB_SECRET = process.env.GITHUB_CLIENT_SECRET || import.meta.env.GITHUB_CLIENT_SECRET || '';
   const code = url.searchParams.get('code') || '';
-  const state = url.searchParams.get('state') || '';
 
   let data = {};
   try {
@@ -18,25 +17,25 @@ export async function GET({ url }) {
   }
 
   const json = JSON.stringify(data).replace(/<\//g, '<\\/');
+
   const html = `<!doctype html>
-<html lang="en">
-<head><meta charset="utf-8"><title>Authorizing...</title></head>
+<html><head><meta charset="utf-8"><title>Authorizing...</title></head>
 <body style="background:#050505;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;color:#C9A84C;font-family:sans-serif">
-<p>Authorizing...</p>
+<p>Authorized! Please wait...</p>
 <script>
-  (function() {
-    var data = JSON.parse('${json}');
-    var msg = 'authorization:github:success:' + JSON.stringify(data);
-    if (window.opener) {
-      window.opener.postMessage(msg, '*');
-      setTimeout(function() { window.close(); }, 1000);
-    } else if (window.parent) {
-      window.parent.postMessage(msg, '*');
-      setTimeout(function() { window.close(); }, 1000);
-    }
-  })();
-<\/script>
-</body></html>`;
+  var data = JSON.parse('${json}');
+  var msg = 'authorization:github:success:' + JSON.stringify(data);
+  // Retry postMessage with delays to ensure Decap CMS is ready
+  function send() {
+    try { if (window.opener && !window.opener.closed) window.opener.postMessage(msg, '*'); } catch(e) {}
+    try { if (window.parent && window.parent !== window) window.parent.postMessage(msg, '*'); } catch(e) {}
+  }
+  send();
+  setTimeout(send, 500);
+  setTimeout(send, 1500);
+  setTimeout(send, 3000);
+  setTimeout(function() { window.close(); }, 3500);
+<\/script></body></html>`;
 
   return new Response(html, { headers: { 'Content-Type': 'text/html;charset=utf-8' } });
 }
