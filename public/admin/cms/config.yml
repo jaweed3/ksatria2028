@@ -2,7 +2,8 @@ backend:
   name: github
   repo: jaweed3/ksatria2028
   branch: main
-  site_domain: ksatria-two.vercel.app
+  auth_type: pkce
+  app_id: Ov23liiiYlS8fu7gZrx6
 
 publish_mode: editorial_workflow
 media_folder: public/uploads
