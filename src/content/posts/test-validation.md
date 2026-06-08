@@ -1,6 +1,6 @@
 ---
-title: Test Validasi
+title: Test Validasi Edited
 date: 2026-06-08
 ---
 
-Ini konten test validasi
+Ini konten setelah edit
