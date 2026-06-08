@@ -1,17 +1,11 @@
-import { signToken, checkOrigin, checkRateLimit, recordFailedAttempt, resetRateLimit, setTokenCookie, auditLog } from './_auth';
+import { signToken, checkRateLimit, recordFailedAttempt, resetRateLimit, setTokenCookie } from './_auth';
 
 export const prerender = false;
 
 export async function POST({ request, clientAddress }) {
   try {
-    if (!checkOrigin(request)) {
-      auditLog(request, 'LOGIN', 'REJECTED_ORIGIN');
-      return Response.json({ ok: false, error: 'forbidden' }, { status: 403 });
-    }
-
     const rl = checkRateLimit(clientAddress);
     if (!rl.allowed) {
-      auditLog(request, 'LOGIN', 'RATE_LIMITED');
       return Response.json({ ok: false, error: 'too many attempts' }, { status: 429 });
     }
 
@@ -23,13 +17,11 @@ export async function POST({ request, clientAddress }) {
 
     if (!password || password.trim() !== adminPw) {
       recordFailedAttempt(clientAddress);
-      auditLog(request, 'LOGIN', 'FAIL');
       return Response.json({ ok: false, error: 'invalid password' }, { status: 401 });
     }
 
     resetRateLimit(clientAddress);
     const { token, expiresAt } = signToken('admin');
-    auditLog(request, 'LOGIN', 'OK');
 
     const res = Response.json({ ok: true, expiresAt });
     setTokenCookie(res, token);

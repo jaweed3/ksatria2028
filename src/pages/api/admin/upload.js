@@ -1,5 +1,3 @@
-import { extractToken, verifyToken, auditLog } from './_auth';
-
 export const prerender = false;
 
 const GH_REPO = 'jaweed3/ksatria2028';
@@ -26,10 +24,6 @@ async function gh(path, opts = {}) {
 }
 
 export async function POST({ request }) {
-  const token = extractToken(request);
-  const user = verifyToken(token);
-  if (!user) return Response.json({ ok: false }, { status: 401 });
-
   try {
     const form = await request.formData();
     const file = form.get('file');
@@ -68,7 +62,6 @@ export async function POST({ request }) {
     });
 
     const rawUrl = `https://raw.githubusercontent.com/${GH_REPO}/${GH_BRANCH}/${ghPath}`;
-    auditLog(request, 'UPLOAD', slug);
     return Response.json({ ok: true, url: rawUrl, slug });
   } catch (e) {
     return Response.json({ ok: false, error: e.message }, { status: 500 });

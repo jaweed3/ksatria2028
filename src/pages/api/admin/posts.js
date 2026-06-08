@@ -1,5 +1,3 @@
-import { extractToken, verifyToken, auditLog } from './_auth';
-
 export const prerender = false;
 
 const GH_REPO = 'jaweed3/ksatria2028';
@@ -26,10 +24,6 @@ async function gh(path, opts = {}) {
 }
 
 export async function GET({ request }) {
-  const token = extractToken(request);
-  const user = verifyToken(token);
-  if (!user) return Response.json({ ok: false }, { status: 401 });
-
   const url = new URL(request.url);
   const file = url.searchParams.get('file');
 
@@ -70,10 +64,6 @@ export async function GET({ request }) {
 }
 
 export async function POST({ request }) {
-  const token = extractToken(request);
-  const user = verifyToken(token);
-  if (!user) return Response.json({ ok: false }, { status: 401 });
-
   try {
     const { slug, title, body, sha } = await request.json();
     if (!slug || !title || !body) {
@@ -103,7 +93,6 @@ export async function POST({ request }) {
       body: JSON.stringify(payload),
     });
 
-    auditLog(request, 'POST_SAVE', slug);
     return Response.json({ ok: true, sha: result?.sha, commit: result?.commit?.sha });
   } catch (e) {
     return Response.json({ ok: false, error: e.message }, { status: 500 });
@@ -111,10 +100,6 @@ export async function POST({ request }) {
 }
 
 export async function DELETE({ request }) {
-  const token = extractToken(request);
-  const user = verifyToken(token);
-  if (!user) return Response.json({ ok: false }, { status: 401 });
-
   const url = new URL(request.url);
   const file = url.searchParams.get('file');
   if (!file) return Response.json({ ok: false, error: 'file required' }, { status: 400 });
@@ -127,6 +112,5 @@ export async function DELETE({ request }) {
     body: JSON.stringify({ message: `Delete ${file} via admin`, sha: data.sha, branch: GH_BRANCH }),
   });
 
-  auditLog(request, 'POST_DELETE', file);
   return Response.json({ ok: true });
 }
