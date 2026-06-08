@@ -79,8 +79,24 @@
     <input type="text" id="postSlug" placeholder="nama-file-artikel" maxlength="100" pattern="[a-z0-9-]+">
     <label>Konten (Markdown)</label>
     <textarea id="postBody" placeholder="Tulis konten di sini..."></textarea>
+
+    <div style="border-top:1px solid rgba(201,168,76,0.1);padding-top:1rem;margin-top:0.5rem">
+      <label>Upload Gambar <span class="hint">(PNG/JPG/GIF/WebP, max 5MB)</span></label>
+      <div style="display:flex;gap:0.5rem;align-items:center">
+        <input type="file" id="uploadInput" accept="image/png,image/jpeg,image/gif,image/webp" style="flex:1;font-size:0.85rem;padding:0.5rem">
+        <button class="btn btn-s" id="uploadBtn" onclick="uploadImage()">Upload</button>
+      </div>
+      <div id="uploadResult" style="margin-top:0.5rem;display:none">
+        <input type="text" id="uploadUrl" readonly style="font-size:0.75rem;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);color:rgba(201,168,76,0.6);width:100%;outline:none">
+        <div style="display:flex;gap:0.5rem;margin-top:0.4rem">
+          <button class="btn btn-s btn-o" onclick="copyUploadUrl()">Salin URL</button>
+          <button class="btn btn-s" onclick="insertUploadUrl()">Sisipkan ke Editor</button>
+        </div>
+      </div>
+    </div>
+
     <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
-      <button class="btn" id="saveBtn">Simpan</button>
+      <button class="btn" id="saveBtn" onclick="savePost()">Simpan</button>
       <button class="btn btn-o" onclick="cancelEdit()">Batal</button>
     </div>
   </div>
@@ -241,6 +257,50 @@ async function deletePost(name) {
   } catch (e) {
     toast('Error: ' + e.message);
   }
+}
+
+async function uploadImage() {
+  const input = document.getElementById('uploadInput');
+  const file = input.files?.[0];
+  if (!file) { toast('Pilih file dulu'); return; }
+  if (file.size > 5 * 1024 * 1024) { toast('Maks 5MB'); return; }
+
+  const btn = document.getElementById('uploadBtn');
+  btn.disabled = true;
+  btn.textContent = 'Uploading...';
+
+  try {
+    const fd = new FormData();
+    fd.append('file', file);
+    const r = await authFetch(API + '/upload', { method: 'POST', body: fd });
+    const d = await r.json();
+    if (d.ok) {
+      document.getElementById('uploadUrl').value = d.url;
+      document.getElementById('uploadResult').style.display = 'block';
+      toast('Upload berhasil!');
+    } else {
+      toast('Gagal: ' + (d.error || 'unknown'));
+    }
+  } catch (e) {
+    toast('Error: ' + e.message);
+  }
+  btn.disabled = false;
+  btn.textContent = 'Upload';
+}
+
+function copyUploadUrl() {
+  const input = document.getElementById('uploadUrl');
+  input.select();
+  navigator.clipboard?.writeText(input.value);
+  toast('URL disalin!');
+}
+
+function insertUploadUrl() {
+  const url = document.getElementById('uploadUrl').value;
+  const ta = document.getElementById('postBody');
+  const start = ta.selectionStart || ta.value.length;
+  ta.value = ta.value.slice(0, start) + `\n![gambar](${url})\n` + ta.value.slice(ta.selectionEnd || start);
+  toast('Disisipkan ke editor!');
 }
 
 function esc(s) {

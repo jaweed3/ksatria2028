@@ -113,7 +113,14 @@
       const outputCards = outputSection ? gsap.utils.toArray('.output-card') : [];
 
       if (outputSection && outputTrack && outputViewport && outputCards.length) {
-        const getTravel = () => -(outputCards.length * (outputViewport.offsetWidth * 0.92 + 32) - outputViewport.offsetWidth);
+        const gap = 32; // 2rem in px
+
+        const getCardW = () => outputCards[0]?.offsetWidth || 560;
+        const getTravel = () => {
+          const cw = getCardW();
+          const total = outputCards.length * (cw + gap) - gap;
+          return -(total - outputViewport.offsetWidth);
+        };
 
         const outputScroll = gsap.to(outputTrack, {
           x: getTravel,
@@ -129,8 +136,6 @@
             onUpdate: self => {
               const progress = self.progress;
               const totalCards = outputCards.length;
-              const cardWidth = outputViewport.offsetWidth * 0.92 + 32;
-              const totalWidth = totalCards * cardWidth;
               const rawIndex = progress * (totalCards - 1);
               const centerIdx = Math.min(Math.max(Math.round(rawIndex), 0), totalCards - 1);
 
@@ -140,17 +145,9 @@
                 if (i === centerIdx) {
                   card.classList.add('output-card--center');
                 } else if (i < centerIdx) {
-                  if (centerIdx - i >= 2) {
-                    card.classList.add('output-card--far');
-                  } else {
-                    card.classList.add('output-card--left');
-                  }
+                  card.classList.add(centerIdx - i >= 2 ? 'output-card--far' : 'output-card--left');
                 } else {
-                  if (i - centerIdx >= 2) {
-                    card.classList.add('output-card--far');
-                  } else {
-                    card.classList.add('output-card--right');
-                  }
+                  card.classList.add(i - centerIdx >= 2 ? 'output-card--far' : 'output-card--right');
                 }
               });
             }
