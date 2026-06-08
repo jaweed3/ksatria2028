@@ -1,27 +1,10 @@
-import crypto from 'node:crypto';
+import { extractToken, verifyToken, auditLog } from './_auth';
 
 export const prerender = false;
 
 const GH_REPO = 'jaweed3/ksatria2028';
 const GH_BRANCH = 'main';
 const POSTS_PATH = 'src/content/posts';
-
-function verifyToken(authHeader) {
-  const token = (authHeader || '').replace(/^Bearer\s+/i, '').trim();
-  if (!token) return null;
-  try {
-    const decoded = Buffer.from(token, 'base64url').toString();
-    const [username, ts, hmac] = decoded.split(':');
-    const secret = process.env.TOKEN_SECRET || crypto.createHash('sha256').update(process.env.ADMIN_PASSWORD || 'fallback').digest('hex');
-    const expected = crypto.createHmac('sha256', secret).update(`${username}:${ts}`).digest('hex');
-    if (hmac !== expected) return null;
-    const age = Date.now() - parseInt(ts, 36);
-    if (age > 86400000 || age < 0) return null;
-    return { username };
-  } catch {
-    return null;
-  }
-}
 
 async function gh(path, opts = {}) {
   const pat = process.env.GITHUB_PAT;
@@ -43,7 +26,8 @@ async function gh(path, opts = {}) {
 }
 
 export async function GET({ request }) {
-  const user = verifyToken(request.headers.get('authorization'));
+  const token = extractToken(request);
+  const user = verifyToken(token);
   if (!user) return Response.json({ ok: false }, { status: 401 });
 
   const url = new URL(request.url);
@@ -86,7 +70,8 @@ export async function GET({ request }) {
 }
 
 export async function POST({ request }) {
-  const user = verifyToken(request.headers.get('authorization'));
+  const token = extractToken(request);
+  const user = verifyToken(token);
   if (!user) return Response.json({ ok: false }, { status: 401 });
 
   try {
@@ -94,11 +79,9 @@ export async function POST({ request }) {
     if (!slug || !title || !body) {
       return Response.json({ ok: false, error: 'slug, title, and body required' }, { status: 400 });
     }
-
     if (slug.length > 100 || title.length > 200 || body.length > 100000) {
       return Response.json({ ok: false, error: 'content too large' }, { status: 400 });
     }
-
     if (!/^[a-z0-9-]+$/.test(slug)) {
       return Response.json({ ok: false, error: 'slug must be lowercase alphanumeric and hyphens only' }, { status: 400 });
     }
@@ -120,6 +103,7 @@ export async function POST({ request }) {
       body: JSON.stringify(payload),
     });
 
+    auditLog(request, 'POST_SAVE', slug);
     return Response.json({ ok: true, sha: result?.sha, commit: result?.commit?.sha });
   } catch (e) {
     return Response.json({ ok: false, error: e.message }, { status: 500 });
@@ -127,7 +111,8 @@ export async function POST({ request }) {
 }
 
 export async function DELETE({ request }) {
-  const user = verifyToken(request.headers.get('authorization'));
+  const token = extractToken(request);
+  const user = verifyToken(token);
   if (!user) return Response.json({ ok: false }, { status: 401 });
 
   const url = new URL(request.url);
@@ -139,12 +124,9 @@ export async function DELETE({ request }) {
 
   await gh(`/contents/${encodeURIComponent(POSTS_PATH + '/' + file)}`, {
     method: 'DELETE',
-    body: JSON.stringify({
-      message: `Delete ${file} via admin`,
-      sha: data.sha,
-      branch: GH_BRANCH,
-    }),
+    body: JSON.stringify({ message: `Delete ${file} via admin`, sha: data.sha, branch: GH_BRANCH }),
   });
 
+  auditLog(request, 'POST_DELETE', file);
   return Response.json({ ok: true });
 }
