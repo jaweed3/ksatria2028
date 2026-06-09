@@ -77,6 +77,12 @@
     <input type="text" id="postTitle" placeholder="Judul" maxlength="200">
     <label>Nama file <span class="hint">(huruf kecil, tanda hubung saja, tanpa .md)</span></label>
     <input type="text" id="postSlug" placeholder="nama-file-artikel" maxlength="100" pattern="[a-z0-9-]+">
+    <label>URL Thumbnail <span class="hint">(opsional, upload dulu di bawah lalu salin URL-nya)</span></label>
+    <input type="text" id="postImage" placeholder="https://ksatria2028.com/uploads/nama-file.jpg" maxlength="500">
+
+    <label>Tags <span class="hint">(pisahkan dengan koma, contoh: berita, kongres, pemuda)</span></label>
+    <input type="text" id="postTags" placeholder="berita, kongres, pemuda" maxlength="300">
+
     <label>Konten (Markdown)</label>
     <textarea id="postBody" placeholder="Tulis konten di sini..."></textarea>
 
@@ -90,6 +96,7 @@
         <input type="text" id="uploadUrl" readonly style="font-size:0.75rem;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);color:rgba(201,168,76,0.6);width:100%;outline:none">
         <div style="display:flex;gap:0.5rem;margin-top:0.4rem">
           <button class="btn btn-s btn-o" onclick="copyUploadUrl()">Salin URL</button>
+          <button class="btn btn-s btn-o" onclick="setThumbnail()">Jadi Thumbnail</button>
           <button class="btn btn-s" onclick="insertUploadUrl()">Sisipkan ke Editor</button>
         </div>
       </div>
@@ -216,6 +223,8 @@ async function editPost(name) {
     document.getElementById('postTitle').value = d.title || '';
     document.getElementById('postBody').value = d.content.replace(/^---[\s\S]*?---\n*/, '');
     document.getElementById('postSlug').value = name.replace('.md', '');
+    document.getElementById('postImage').value = d.image || '';
+    document.getElementById('postTags').value = d.tags ? d.tags.join(', ') : '';
     document.getElementById('editForm').dataset.sha = d.sha || '';
     document.getElementById('editForm').dataset.name = name;
     document.getElementById('editForm').classList.remove('hidden');
@@ -228,9 +237,16 @@ function newPost() {
   document.getElementById('postTitle').value = '';
   document.getElementById('postBody').value = '';
   document.getElementById('postSlug').value = '';
+  document.getElementById('postImage').value = '';
+  document.getElementById('postTags').value = '';
   delete document.getElementById('editForm').dataset.sha;
   delete document.getElementById('editForm').dataset.name;
   document.getElementById('editForm').classList.remove('hidden');
+}
+
+function setThumbnail() {
+  const url = document.getElementById('uploadUrl').value;
+  if (url) { document.getElementById('postImage').value = url; toast('Thumbnail diset!'); }
 }
 
 function cancelEdit() {
@@ -244,6 +260,10 @@ async function savePost() {
   if (!title || !body || !slug) { toast('Judul, slug, dan konten harus diisi'); return; }
   if (!/^[a-z0-9-]+$/.test(slug)) { toast('Slug: huruf kecil dan tanda hubung saja'); return; }
 
+  const image = document.getElementById('postImage').value.trim();
+  const tagsRaw = document.getElementById('postTags').value.trim();
+  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+
   const sha = document.getElementById('editForm').dataset.sha || '';
   const btn = document.getElementById('saveBtn');
   btn.disabled = true;
@@ -253,7 +273,7 @@ async function savePost() {
     const r = await authFetch(API + '/posts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug, title, body, sha }),
+      body: JSON.stringify({ slug, title, body, image, tags, sha }),
     });
     const d = await r.json();
     if (d.ok) {

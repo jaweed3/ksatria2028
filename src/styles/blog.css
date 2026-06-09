@@ -166,6 +166,23 @@
       line-height: 1.6;
     }
 
+    .blog-tags { margin-bottom: 0.5rem; }
+    .blog-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-gold);
+      background: rgba(201,168,76,0.08);
+      padding: 0.25em 0.6em;
+      margin-right: 0.35em;
+      margin-bottom: 0.35em;
+      border: 1px solid rgba(201,168,76,0.15);
+    }
+    .blog-featured .blog-tags { margin-bottom: 0.35rem; }
+    .blog-article .blog-tags { margin-bottom: 0.75rem; }
+
     .blog-empty {
       text-align: center;
       padding: 6rem 2rem;

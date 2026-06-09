@@ -19,6 +19,9 @@ const { Content } = await render(post);
     <p class="blog-article-date">
       {post.data.date?.toLocaleDateString('id-ID', { year:'numeric', month:'long', day:'numeric' })}
     </p>
+    <div class="blog-tags">
+      {post.data.tags?.map(t => <span class="blog-tag">{t}</span>)}
+    </div>
     <h1>{post.data.title}</h1>
 
     {post.data.image && <img src={post.data.image} alt="" class="blog-article-img" />}

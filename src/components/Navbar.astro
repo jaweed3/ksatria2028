@@ -1,15 +1,21 @@
-<nav class="navbar" id="navbar">
+---
+const path = Astro.url.pathname;
+const isHome = path === '/' || path === '';
+function isActive(p: string) { return path === p || path.startsWith(p + '/'); }
+---
+<nav class:list={{ navbar: true, scrolled: !isHome }} id="navbar">
   <div class="navbar-inner">
-    <a href="#" class="nav-logo">KSATRIA 2028</a>
+    <a href="/" class="nav-logo">KSATRIA 2028</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu">☰</button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#tentang">Tentang</a></li>
-      <li><a href="#kegiatan">Kegiatan</a></li>
-      <li><a href="#komisi">Komisi</a></li>
-      <li><a href="#festival">Festival</a></li>
-      <li><a href="#kepanitiaan">Kepanitiaan</a></li>
-      <li><a href="/blog">Blog</a></li>
-      <li><a href="#registrasi" class="nav-cta">Daftar Sekarang</a></li>
+      <li><a href="/" class:list={{ 'nav-active': isHome }}>Beranda</a></li>
+      <li><a href="/tentang" class:list={{ 'nav-active': isActive('/tentang') }}>Tentang</a></li>
+      <li><a href="/kegiatan" class:list={{ 'nav-active': isActive('/kegiatan') }}>Kegiatan</a></li>
+      <li><a href="/komisi" class:list={{ 'nav-active': isActive('/komisi') }}>Komisi</a></li>
+      <li><a href="/#festival">Festival</a></li>
+      <li><a href="/kepanitiaan" class:list={{ 'nav-active': isActive('/kepanitiaan') }}>Kepanitiaan</a></li>
+      <li><a href="/blog" class:list={{ 'nav-active': isActive('/blog') }}>Blog</a></li>
+      <li><a href="/#registrasi" class="nav-cta">Daftar Sekarang</a></li>
     </ul>
   </div>
 </nav>

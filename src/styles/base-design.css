@@ -95,6 +95,8 @@
       --section-pad-x: clamp(1.5rem, 5vw, 4rem);
       --container: 1280px;
       --container-narrow: 840px;
+      --space-section: var(--section-pad-y);
+      --space-section-mobile: 3rem;
 
       /* Animation */
       --dur-instant: 80ms; --dur-fast: 200ms; --dur-normal: 400ms;

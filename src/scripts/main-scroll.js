@@ -113,16 +113,9 @@
       const outputCards = outputSection ? gsap.utils.toArray('.output-card') : [];
 
       if (outputSection && outputTrack && outputViewport && outputCards.length) {
-        const gap = 32; // 2rem in px
+        const getTravel = () => -(outputTrack.scrollWidth - outputViewport.offsetWidth);
 
-        const getCardW = () => outputCards[0]?.offsetWidth || 560;
-        const getTravel = () => {
-          const cw = getCardW();
-          const total = outputCards.length * (cw + gap) - gap;
-          return -(total - outputViewport.offsetWidth);
-        };
-
-        const outputScroll = gsap.to(outputTrack, {
+        gsap.to(outputTrack, {
           x: getTravel,
           ease: 'none',
           scrollTrigger: {
@@ -132,7 +125,6 @@
             pin: true,
             scrub: 1.2,
             invalidateOnRefresh: true,
-            onRefresh: () => { outputScroll.vars.x = getTravel(); },
             onUpdate: self => {
               const progress = self.progress;
               const totalCards = outputCards.length;
@@ -152,11 +144,6 @@
               });
             }
           }
-        });
-
-        ScrollTrigger.addEventListener('refresh', () => {
-          outputScroll.vars.x = getTravel();
-          outputScroll.scrollTrigger.refresh();
         });
       }
     }

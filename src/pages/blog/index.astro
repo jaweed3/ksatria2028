@@ -28,6 +28,9 @@ const rest = posts.slice(1);
             <p class="blog-featured-date">
               {featured.data.date?.toLocaleDateString('id-ID', { year:'numeric', month:'long', day:'numeric' })}
             </p>
+            <div class="blog-tags">
+              {featured.data.tags?.map(t => <span class="blog-tag">{t}</span>)}
+            </div>
             <h2 class="blog-featured-title">{featured.data.title}</h2>
             <p class="blog-featured-excerpt">{featured.body.slice(0, 180)}...</p>
           </div>
@@ -42,11 +45,14 @@ const rest = posts.slice(1);
             ? <img src={post.data.image} alt="" class="blog-card-img" />
             : <div class="blog-card-img-placeholder">✦</div>
           }
-          <p class="blog-card-date">
+            <p class="blog-card-date">
             {post.data.date?.toLocaleDateString('id-ID', { year:'numeric', month:'long', day:'numeric' })}
-          </p>
-          <h3 class="blog-card-title">{post.data.title}</h3>
-          <p class="blog-card-excerpt">{post.body.slice(0, 120)}...</p>
+            </p>
+            <div class="blog-tags">
+              {post.data.tags?.map(t => <span class="blog-tag">{t}</span>)}
+            </div>
+            <h3 class="blog-card-title">{post.data.title}</h3>
+            <p class="blog-card-excerpt">{post.body.slice(0, 120)}...</p>
         </a>
       ))}
     </div>

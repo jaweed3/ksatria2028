@@ -30,14 +30,20 @@ export async function GET({ request }) {
   if (file) {
     const data = await gh(`/contents/${encodeURIComponent(POSTS_PATH + '/' + file)}`);
     if (!data) return Response.json({ ok: false, error: 'not found' }, { status: 404 });
-    const content = Buffer.from(data.content, 'base64').toString('utf-8');
-    return Response.json({
-      ok: true,
-      name: data.name,
-      sha: data.sha,
-      content,
-      html_url: data.html_url,
-    });
+      const content = Buffer.from(data.content, 'base64').toString('utf-8');
+      const tagsMatch = content.match(/^tags:\s*\[([^\]]*)\]/m);
+      const tags = tagsMatch ? tagsMatch[1].split(',').map(t => t.trim().replace(/['"]/g, '')).filter(Boolean) : [];
+      const imageMatch = content.match(/^image:\s*(.+)/m);
+      const image = imageMatch ? imageMatch[1].trim() : '';
+      return Response.json({
+        ok: true,
+        name: data.name,
+        sha: data.sha,
+        content,
+        image,
+        tags,
+        html_url: data.html_url,
+      });
   }
 
   const contents = await gh(`/contents/${POSTS_PATH}`);
@@ -55,6 +61,11 @@ export async function GET({ request }) {
           sha: data.sha,
           title: content.match(/^title:\s*(.+)/m)?.[1] || f.name.replace('.md', ''),
           date: content.match(/^date:\s*(.+)/m)?.[1] || '',
+          image: content.match(/^image:\s*(.+)/m)?.[1] || '',
+          tags: (() => {
+            const m = content.match(/^tags:\s*\[([^\]]*)\]/m);
+            return m ? m[1].split(',').map(t => t.trim().replace(/['"]/g, '')).filter(Boolean) : [];
+          })(),
           excerpt: content.replace(/^---[\s\S]*?---\n*/, '').slice(0, 200).replace(/\n/g, ' ') + '...',
         };
       })
@@ -65,7 +76,7 @@ export async function GET({ request }) {
 
 export async function POST({ request }) {
   try {
-    const { slug, title, body, sha } = await request.json();
+    const { slug, title, body, image, tags, category, sha } = await request.json();
     if (!slug || !title || !body) {
       return Response.json({ ok: false, error: 'slug, title, and body required' }, { status: 400 });
     }
@@ -77,7 +88,15 @@ export async function POST({ request }) {
     }
 
     const today = new Date().toISOString().split('T')[0];
-    const content = `---\ntitle: ${title.replace(/[-\\]/g, '')}\ndate: ${today}\n---\n\n${body}`;
+    const safeTitle = title.replace(/[-\\]/g, '');
+    let frontmatter = `---\ntitle: ${safeTitle}\ndate: ${today}`;
+    if (image) frontmatter += `\nimage: ${image}`;
+    if (tags && Array.isArray(tags) && tags.length > 0) {
+      frontmatter += `\ntags: [${tags.map(t => `"${t.replace(/"/g, '')}"`).join(', ')}]`;
+    }
+    if (category) frontmatter += `\ncategory: ${category}`;
+    frontmatter += '\n---\n\n';
+    const content = frontmatter + body;
     const encoded = Buffer.from(content, 'utf-8').toString('base64');
     const path = `${POSTS_PATH}/${slug}.md`;
 
