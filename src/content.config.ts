@@ -5,7 +5,7 @@ const posts = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
   schema: z.object({
     title: z.string(),
-    date: z.date().optional(),
+    date: z.coerce.date().optional(),
     image: z.string().optional(),
     tags: z.array(z.string()).optional(),
     category: z.string().optional(),
@@ -16,7 +16,7 @@ const events = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/events' }),
   schema: z.object({
     title: z.string(),
-    date: z.date(),
+    date: z.coerce.date(),
     timeStart: z.string().optional(),
     timeEnd: z.string().optional(),
     location: z.string().optional(),
@@ -34,7 +34,7 @@ const galeri = defineCollection({
     caption: z.string().optional(),
     image: z.string(),
     category: z.string().optional(),
-    date: z.date().optional(),
+    date: z.coerce.date().optional(),
   }),
 });
 
@@ -45,7 +45,7 @@ const dokumen = defineCollection({
     category: z.string().optional(),
     file: z.string(),
     fileSize: z.string().optional(),
-    date: z.date().optional(),
+    date: z.coerce.date().optional(),
   }),
 });
 

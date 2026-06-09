@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ksatria2028.or.id/sitemap.xml
