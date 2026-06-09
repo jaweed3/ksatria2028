@@ -6,52 +6,93 @@ function isActive(p: string) { return path === p || path.startsWith(p + '/'); }
 <nav class:list={{ navbar: true, scrolled: !isHome }} id="navbar">
   <div class="navbar-inner">
     <a href="/" class="nav-logo">KSATRIA 2028</a>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu">☰</button>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
     <ul class="nav-links" id="navLinks">
       <li><a href="/" class:list={{ 'nav-active': isHome }}>Beranda</a></li>
-      <li><a href="/tentang" class:list={{ 'nav-active': isActive('/tentang') }}>Tentang</a></li>
-      <li><a href="/kegiatan" class:list={{ 'nav-active': isActive('/kegiatan') }}>Kegiatan</a></li>
-      <li><a href="/komisi" class:list={{ 'nav-active': isActive('/komisi') }}>Komisi</a></li>
-      <li><a href="/#festival">Festival</a></li>
-      <li><a href="/kepanitiaan" class:list={{ 'nav-active': isActive('/kepanitiaan') }}>Kepanitiaan</a></li>
-      <li><a href="/tokoh" class:list={{ 'nav-active': isActive('/tokoh') }}>Tokoh</a></li>
-      <li><a href="/event" class:list={{ 'nav-active': isActive('/event') }}>Acara</a></li>
-      <li><a href="/galeri" class:list={{ 'nav-active': isActive('/galeri') }}>Galeri</a></li>
-      <li><a href="/dokumen" class:list={{ 'nav-active': isActive('/dokumen') }}>Dokumen</a></li>
-      <li><a href="/blog" class:list={{ 'nav-active': isActive('/blog') }}>Blog</a></li>
-      <li><a href="/opini" class:list={{ 'nav-active': isActive('/opini') }}>Opini</a></li>
-      <li><a href="/kontak" class:list={{ 'nav-active': isActive('/kontak') }}>Kontak</a></li>
-      <li><a href="/#registrasi" class="nav-cta">Daftar Sekarang</a></li>
-      <li style="display:flex;align-items:center;gap:0.25rem">
-        <button class="nav-search-btn" id="navSearchBtn" aria-label="Cari">&#8981;</button>
-        <input type="text" class="nav-search-input" id="navSearchInput" placeholder="Cari..." />
+      <li class="nav-has-dropdown">
+        <button class="nav-drop-btn" data-drop="tentang">Tentang <span class="nav-arrow">▾</span></button>
+        <ul class="nav-drop-menu" id="drop-tentang">
+          <li><a href="/tentang" class:list={{ 'nav-active': isActive('/tentang') }}>Tentang KSATRIA</a></li>
+          <li><a href="/kepanitiaan" class:list={{ 'nav-active': isActive('/kepanitiaan') }}>Kepanitiaan</a></li>
+          <li><a href="/tokoh" class:list={{ 'nav-active': isActive('/tokoh') }}>Tokoh</a></li>
+          <li><a href="/kontak" class:list={{ 'nav-active': isActive('/kontak') }}>Kontak</a></li>
+        </ul>
+      </li>
+      <li class="nav-has-dropdown">
+        <button class="nav-drop-btn" data-drop="komisi">Komisi & AKD <span class="nav-arrow">▾</span></button>
+        <ul class="nav-drop-menu" id="drop-komisi">
+          <li><a href="/komisi" class:list={{ 'nav-active': isActive('/komisi') }}>Komisi Strategis</a></li>
+          <li><a href="/kegiatan" class:list={{ 'nav-active': isActive('/kegiatan') }}>Rangkaian Kegiatan</a></li>
+          <li><a href="/event" class:list={{ 'nav-active': isActive('/event') }}>Acara & Agenda</a></li>
+        </ul>
+      </li>
+      <li class="nav-has-dropdown">
+        <button class="nav-drop-btn" data-drop="media">Media <span class="nav-arrow">▾</span></button>
+        <ul class="nav-drop-menu" id="drop-media">
+          <li><a href="/blog" class:list={{ 'nav-active': isActive('/blog') }}>Blog</a></li>
+          <li><a href="/opini" class:list={{ 'nav-active': isActive('/opini') }}>Opini</a></li>
+          <li><a href="/galeri" class:list={{ 'nav-active': isActive('/galeri') }}>Galeri</a></li>
+          <li><a href="/dokumen" class:list={{ 'nav-active': isActive('/dokumen') }}>Dokumen</a></li>
+        </ul>
+      </li>
+      <li><a href="/#festival" class:list={{ 'nav-active': path.includes('festival') }}>Festival</a></li>
+      <li class="nav-cta-li"><a href="/#registrasi" class="nav-cta">Daftar Sekarang</a></li>
+      <li class="nav-search-li">
+        <button class="nav-search-btn" id="navSearchBtn" aria-label="Cari">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
       </li>
     </ul>
+    <input type="text" class="nav-search-input" id="navSearchInput" placeholder="Cari..." />
   </div>
 </nav>
 <script>
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  if (toggle && links) {
+    toggle.addEventListener('click', () => {
+      toggle.classList.toggle('open');
+      links.classList.toggle('open');
+      document.body.style.overflow = links.classList.contains('open') ? 'hidden' : '';
+    });
+    document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        if (window.innerWidth <= 900) {
+          const menu = document.getElementById(btn.dataset.drop);
+          if (menu) {
+            menu.classList.toggle('open');
+            btn.classList.toggle('open');
+          }
+        }
+      });
+    });
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        toggle.classList.remove('open');
+        links.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+  }
   const searchBtn = document.getElementById('navSearchBtn');
   const searchInput = document.getElementById('navSearchInput');
   if (searchBtn && searchInput) {
-    searchBtn.addEventListener('click', () => {
+    searchBtn.addEventListener('click', e => {
+      e.stopPropagation();
       searchInput.classList.toggle('open');
-      if (searchInput.classList.contains('open')) {
-        searchInput.focus();
-      }
+      if (searchInput.classList.contains('open')) searchInput.focus();
     });
     searchInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && searchInput.value.trim()) {
-        window.location.href = '/search?q=' + encodeURIComponent(searchInput.value.trim());
-      }
-      if (e.key === 'Escape') {
-        searchInput.classList.remove('open');
-        searchInput.blur();
-      }
+      if (e.key === 'Enter' && searchInput.value.trim()) window.location.href = '/search?q=' + encodeURIComponent(searchInput.value.trim());
+      if (e.key === 'Escape') { searchInput.classList.remove('open'); searchInput.blur(); }
     });
     document.addEventListener('click', e => {
-      if (!e.target.closest('.nav-search-btn') && !e.target.closest('.nav-search-input')) {
-        searchInput.classList.remove('open');
-      }
+      if (!e.target.closest('.nav-search-btn') && !e.target.closest('.nav-search-input')) searchInput.classList.remove('open');
     });
   }
 </script>

@@ -1,0 +1,56 @@
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#050505;color:#F5F0E8;font-family:'Inter','Segoe UI',system-ui,sans-serif;min-height:100vh}
+.page{max-width:800px;margin:0 auto;padding:4rem 2rem}
+h1{font-family:'Cormorant Garamond','Georgia',serif;color:#C9A84C;font-size:2rem;margin-bottom:0.25rem}
+.sub{color:rgba(245,240,232,0.4);font-size:0.85rem;margin-bottom:2rem}
+input,textarea,button,select{font-family:'Inter','Segoe UI',system-ui,sans-serif}
+.pw-box{text-align:center;padding:6rem 0 4rem}
+.pw-box input{padding:0.85rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:#F5F0E8;font-size:1rem;text-align:center;outline:none;display:block;margin:1.5rem auto;max-width:300px;width:100%;border-radius:0}
+.pw-box input:focus{border-color:#C9A84C}
+.pw-box .e{color:#8B1A1A;font-size:0.8rem;margin-top:0.75rem;display:none}
+.btn{padding:0.85rem 2rem;background:#C9A84C;color:#050505;border:none;font-family:'IBM Plex Mono','SF Mono',monospace;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;cursor:pointer;transition:background 0.2s}
+.btn:hover{background:#E8C96A}
+.btn:disabled{opacity:0.4;cursor:not-allowed}
+.btn-s{padding:0.5rem 1rem;font-size:0.65rem}
+.btn-o{background:transparent;border:1px solid rgba(201,168,76,0.3);color:rgba(245,240,232,0.6)}
+.btn-o:hover{background:rgba(201,168,76,0.08);color:#F5F0E8}
+.btn-d{background:#8B1A1A;color:#F5F0E8}
+.btn-d:hover{background:#B32020}
+.hidden{display:none!important}
+.editor{display:grid;gap:1rem}
+.editor label{font-family:'IBM Plex Mono','SF Mono',monospace;font-size:0.7rem;color:rgba(201,168,76,0.7);text-transform:uppercase;letter-spacing:0.1em}
+.editor input,.editor textarea,.editor select{padding:0.75rem 1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.15);color:#F5F0E8;font-size:1rem;outline:none;border-radius:0;width:100%}
+.editor input:focus,.editor textarea:focus,.editor select:focus{border-color:#C9A84C}
+.editor textarea{min-height:250px;resize:vertical;font-family:'SF Mono','Menlo',monospace;font-size:0.9rem;line-height:1.6}
+.editor .hint{font-size:0.75rem;color:rgba(245,240,232,0.3)}
+.editor select{cursor:pointer}
+.editor input[type=date]{min-height:2.5rem}
+.editor .row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.post-list{margin-top:2rem;display:grid;gap:0.5rem}
+.post-item{padding:1rem 1.25rem;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.06);display:flex;justify-content:space-between;align-items:center}
+.post-item .title{color:rgba(201,168,76,0.8);font-family:'Cormorant Garamond','Georgia',serif;font-size:1rem}
+.post-item .meta{color:rgba(245,240,232,0.3);font-size:0.7rem;font-family:'IBM Plex Mono','SF Mono',monospace}
+.post-item .actions{display:flex;gap:0.5rem;align-items:center}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);padding:0.75rem 1.5rem;font-size:0.85rem;color:#C9A84C;z-index:999;pointer-events:none}
+.loading{text-align:center;padding:3rem;color:rgba(245,240,232,0.3)}
+.toolbar{display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(201,168,76,0.1)}
+.status{font-size:0.7rem;color:rgba(245,240,232,0.35);font-family:'IBM Plex Mono','SF Mono',monospace}
+.status.ok{color:rgba(76,201,112,0.6)}
+.tab-group{display:flex;gap:0;border:1px solid rgba(201,168,76,0.2)}
+.tab-btn{padding:0.4rem 1rem;background:transparent;color:rgba(245,240,232,0.4);border:none;font-family:'IBM Plex Mono','SF Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;cursor:pointer;transition:all 0.2s}
+.tab-btn:hover{color:#F5F0E8}
+.tab-btn.active{background:rgba(201,168,76,0.15);color:#C9A84C}
+@media(max-width:600px){
+  .editor .row{grid-template-columns:1fr}
+  .page{padding:2rem 1rem}
+  .post-item{flex-direction:column;gap:0.75rem;align-items:stretch}
+  .post-item .actions{justify-content:flex-end}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .tab-group{flex-wrap:wrap}
+  .tab-btn{flex:1;text-align:center;font-size:0.6rem;padding:0.35rem 0.5rem}
+}
+.cat-badge{display:inline-block;font-size:0.6rem;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.15);padding:0.1em 0.5em;margin-left:0.5em;text-transform:uppercase;letter-spacing:0.05em;color:rgba(201,168,76,0.6)}
+.flex{display:flex;gap:0.5rem;align-items:center}
+.upload-block{border-top:1px solid rgba(201,168,76,0.1);padding-top:1rem;margin-top:0.5rem}
+.upload-input{flex:1;font-size:0.85rem;padding:0.5rem}
+.upload-url{font-size:0.75rem;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);color:rgba(201,168,76,0.6);width:100%;outline:none}

@@ -63,64 +63,6 @@
     }
 
     /* ============================================================
-       NAVBAR
-       ============================================================ */
-    .navbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      height: 70px; display: flex; align-items: center;
-      padding: 0 var(--section-pad-x);
-      transition: all var(--dur-normal) var(--ease-out);
-      animation: navbarSlideDown var(--dur-slow) var(--ease-power) 100ms both;
-    }
-    .navbar.scrolled {
-      background: rgba(13, 13, 13, 0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
-    }
-    .navbar-inner {
-      width: 100%; max-width: var(--container); margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .nav-logo {
-      font-family: var(--font-mono); font-size: 0.875rem;
-      color: var(--color-gold); text-decoration: none; letter-spacing: 0.15em;
-      font-weight: 700;
-    }
-    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
-    .nav-links a {
-      font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--color-text-on-dark);
-      text-decoration: none; opacity: 0.8; transition: opacity var(--dur-fast);
-      position: relative;
-    }
-    .nav-links a::after {
-      content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px;
-      background: var(--color-gold); transition: width var(--dur-normal) var(--ease-out);
-    }
-    .nav-links a:hover { opacity: 1; }
-    .nav-links a:hover::after { width: 100%; }
-    .nav-cta {
-      background: var(--color-crimson); color: var(--color-ivory);
-      font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em;
-      text-transform: uppercase; padding: 0.6rem 1.25rem; border: none;
-      text-decoration: none; transition: all var(--dur-fast);
-    }
-    .nav-cta:hover { background: var(--color-crimson-dark); color: var(--color-gold); }
-    .nav-toggle { display: none; background: none; border: none; color: var(--color-gold); font-size: 1.5rem; cursor: pointer; }
-
-    @media (max-width: 900px) {
-      .nav-links { display: none; }
-      .nav-links.open {
-        display: flex; flex-direction: column; position: fixed; inset: 0;
-        background: rgba(13, 13, 13, 0.98); backdrop-filter: blur(20px);
-        justify-content: center; align-items: center; gap: 2.5rem;
-        z-index: 999; animation: navOverlayOpen var(--dur-normal) var(--ease-out);
-      }
-      .nav-links a { font-size: 1rem; }
-      .nav-toggle { display: block; z-index: 1001; }
-    }
-
-    /* ============================================================
        SECTION BASE
        ============================================================ */
     .section { padding: var(--section-pad-y) var(--section-pad-x); position: relative; }
@@ -159,19 +101,9 @@
       .section-title { font-size: clamp(1.6rem, 6vw, 2.2rem); }
       .section-lead { font-size: 0.95rem; margin-bottom: 2rem; }
       .section-label { font-size: 0.6rem; }
-      .navbar-inner { padding: 0 1.25rem; }
       .content-split { grid-template-columns: 1fr; gap: 1.5rem; }
       .glass, .glass-light, .glass-gold { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
     }
-
-    /* ============================================================
-       NAV ACTIVE LINK
-       ============================================================ */
-    .nav-links a.active {
-      opacity: 1;
-      color: var(--color-gold);
-    }
-    .nav-links a.active::after { width: 100%; }
 
     /* ============================================================
        BACK TO TOP
@@ -218,33 +150,6 @@
       background-repeat: repeat;
       background-size: 256px 256px;
       mix-blend-mode: overlay;
-    }
-
-    /* ============================================================
-       MOBILE NAV SMOOTH TRANSITION
-       ============================================================ */
-    @media (max-width: 900px) {
-      .nav-links {
-        display: flex !important;
-        position: fixed;
-        inset: 0;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 2.5rem;
-        background: rgba(5,5,5,0.98);
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
-        z-index: 999;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity var(--dur-normal) ease;
-      }
-      .nav-links.open {
-        opacity: 1;
-        pointer-events: auto;
-      }
-      .nav-links a { font-size: 1.1rem; }
     }
 
     /* ============================================================
