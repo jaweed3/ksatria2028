@@ -1,7 +1,8 @@
 ---
 export const prerender = true;
-import '../../styles/base-design.css';
-import '../../styles/blog.css';
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
 import { getCollection, getEntry, render } from 'astro:content';
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -11,7 +12,9 @@ const { slug } = Astro.params;
 const post = await getEntry('posts', slug);
 const { Content } = await render(post);
 ---
-
+<Layout>
+<Navbar />
+<main>
 <section class="blog-section">
   <div class="blog-inner blog-article">
     <a href="/blog" class="blog-back">← Kembali ke Blog</a>
@@ -31,3 +34,6 @@ const { Content } = await render(post);
     </div>
   </div>
 </section>
+</main>
+<Footer />
+</Layout>

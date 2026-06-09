@@ -1,14 +1,17 @@
 ---
 export const prerender = true;
-import '../../styles/base-design.css';
-import '../../styles/blog.css';
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
 import { getCollection } from 'astro:content';
 const posts = await getCollection('posts');
 posts.sort((a, b) => new Date(b.data.date || 0) - new Date(a.data.date || 0));
 const featured = posts[0];
 const rest = posts.slice(1);
 ---
-
+<Layout>
+<Navbar />
+<main>
 <section class="blog-section">
   <div class="blog-inner">
     <div class="blog-heading">
@@ -60,3 +63,6 @@ const rest = posts.slice(1);
     {posts.length === 0 && <p class="blog-empty">Belum ada artikel. Silakan tulis lewat panel admin.</p>}
   </div>
 </section>
+</main>
+<Footer />
+</Layout>
