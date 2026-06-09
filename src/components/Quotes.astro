@@ -15,7 +15,7 @@ const count = items.length;
     </div>
 
     {count > 0 ? (
-      <div class="quotes-carousel" data-animate="fade-up">
+      <div class="quotes-carousel" data-animate="fade-up" id="quotesCarousel">
         <div class="quotes-track">
           {items.map((item, i) => (
             <div class="quotes-slide" data-slide={i}>
@@ -53,12 +53,13 @@ const count = items.length;
 </section>
 
 <script>
-const quotes = {serialized};
-const count = quotes.length;
-if (count > 0) {
+const Q = document.getElementById('quotesCarousel');
+if (Q) {
+  const track = Q.querySelector('.quotes-track');
+  const slides = Q.querySelectorAll('.quotes-slide');
+  const dots = Q.querySelectorAll('.quotes-dot');
+  const count = slides.length;
   let current = 0;
-  const slides = document.querySelectorAll('.quotes-slide');
-  const dots = document.querySelectorAll('.quotes-dot');
 
   function show(idx) {
     current = (idx + count) % count;
@@ -66,6 +67,7 @@ if (count > 0) {
     dots.forEach((d, i) => d.classList.toggle('active', i === current));
   }
 
+  if (track) track.classList.add('js-active');
   show(0);
 
   dots.forEach(d => d.addEventListener('click', () => show(parseInt(d.dataset.dot))));
@@ -73,7 +75,7 @@ if (count > 0) {
   document.getElementById('quotesNext')?.addEventListener('click', () => show(current + 1));
 
   let interval = setInterval(() => show(current + 1), 5000);
-  document.querySelector('.quotes-carousel')?.addEventListener('mouseenter', () => clearInterval(interval));
-  document.querySelector('.quotes-carousel')?.addEventListener('mouseleave', () => { interval = setInterval(() => show(current + 1), 5000); });
+  Q.addEventListener('mouseenter', () => clearInterval(interval));
+  Q.addEventListener('mouseleave', () => { interval = setInterval(() => show(current + 1), 5000); });
 }
 </script>

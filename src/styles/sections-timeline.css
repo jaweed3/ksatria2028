@@ -70,10 +70,10 @@
       position: relative;
       margin-bottom: 4rem;
       padding-left: 72px;
-      opacity: 0;
+      opacity: 1;
     }
     .tl-node:last-child { margin-bottom: 0; }
-    .tl-node.tl-node--visible { opacity: 1; }
+    .tl-node[data-animate-in] { opacity: 0; }
 
     .tl-year-mask {
       position: absolute;
