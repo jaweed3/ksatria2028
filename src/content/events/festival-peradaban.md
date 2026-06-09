@@ -6,7 +6,7 @@ timeEnd: "23.00 WIB"
 location: "Area GBK, Jakarta"
 type: "festival"
 featured: false
-image: "https://upload.wikimedia.org/wikipedia/commons/e/e2/MuseumSumpahPemuda.jpg"
+image: "/images/sumpah-pemuda/03-museum-sumpah-pemuda.jpg"
 tags: ["festival", "budaya", "umkm", "inovasi"]
 ---
 

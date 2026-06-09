@@ -6,7 +6,7 @@ timeEnd: "22.00 WIB"
 location: "Gedung MPR RI, Jakarta"
 type: "sidang"
 featured: true
-image: "https://upload.wikimedia.org/wikipedia/commons/2/26/Youthpledge.jpg"
+image: "/images/sumpah-pemuda/04-youth-pledge.jpg"
 tags: ["sidang", "komisi", "strategis", "kongres"]
 ---
 

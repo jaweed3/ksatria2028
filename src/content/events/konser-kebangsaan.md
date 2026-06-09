@@ -6,7 +6,7 @@ timeEnd: "23.00 WIB"
 location: "Stadion Utama GBK, Jakarta"
 type: "konser"
 featured: true
-image: "https://upload.wikimedia.org/wikipedia/commons/3/31/HUT_Sumpah_Pemuda_.jpg"
+image: "/images/sumpah-pemuda/02-hut-sumpah-pemuda.jpg"
 tags: ["konser", "musik", "kebangsaan", "gbk"]
 ---
 

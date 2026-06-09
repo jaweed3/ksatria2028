@@ -3,7 +3,7 @@ title: "Makna Satu Abad Sumpah Pemuda bagi Generasi Muda Indonesia"
 excerpt: "Refleksi atas perjalanan bangsa dan tantangan yang menanti generasi muda Indonesia di abad kedua."
 date: "2028-09-15"
 author: "Panitia Nasional KSATRIA 2028"
-image: "https://upload.wikimedia.org/wikipedia/commons/6/6d/Api_sumpah_pemuda_Jakarta_1928.jpg"
+image: "/images/sumpah-pemuda/05-api-sumpah-pemuda.jpg"
 tags: ["sumpah pemuda", "sejarah", "refleksi"]
 category: "Opini"
 ---
