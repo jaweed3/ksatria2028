@@ -30,6 +30,9 @@
     .editor input:focus,.editor textarea:focus,.editor select:focus{border-color:#C9A84C}
     .editor textarea{min-height:250px;resize:vertical;font-family:'SF Mono','Menlo',monospace;font-size:0.9rem;line-height:1.6}
     .editor .hint{font-size:0.75rem;color:rgba(245,240,232,0.3)}
+    .editor select{cursor:pointer}
+    .editor input[type=date]{min-height:2.5rem}
+    .editor .row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
     .post-list{margin-top:2rem;display:grid;gap:0.5rem}
     .post-item{padding:1rem 1.25rem;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.06);display:flex;justify-content:space-between;align-items:center}
     .post-item .title{color:rgba(201,168,76,0.8);font-family:'Cormorant Garamond','Georgia',serif;font-size:1rem}
@@ -40,10 +43,15 @@
     .toolbar{display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(201,168,76,0.1)}
     .status{font-size:0.7rem;color:rgba(245,240,232,0.35);font-family:'IBM Plex Mono','SF Mono',monospace}
     .status.ok{color:rgba(76,201,112,0.6)}
+    .tab-group{display:flex;gap:0;border:1px solid rgba(201,168,76,0.2)}
+    .tab-btn{padding:0.4rem 1rem;background:transparent;color:rgba(245,240,232,0.4);border:none;font-family:'IBM Plex Mono','SF Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;cursor:pointer;transition:all 0.2s}
+    .tab-btn:hover{color:#F5F0E8}
+    .tab-btn.active{background:rgba(201,168,76,0.15);color:#C9A84C}
     @media(max-width:600px){
       .page{padding:2rem 1rem}
       .post-item{flex-direction:column;align-items:flex-start;gap:0.5rem}
       .post-item .actions{align-self:flex-end}
+      .editor .row{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -60,65 +68,168 @@
 
 <div class="page hidden" id="adminPage">
   <h1>KSATRIA 2028</h1>
-  <p class="sub">Panel Admin &mdash; Kelola Artikel Blog</p>
+  <p class="sub">Panel Admin &mdash; <span id="adminSub">Kelola Artikel Blog</span></p>
 
   <div class="toolbar">
     <span id="statusBadge" class="status">Belum terautentikasi</span>
     <button class="btn btn-s btn-o" onclick="logout()">Logout</button>
     <span style="flex:1"></span>
-    <button class="btn btn-s" onclick="newPost()">+ Artikel Baru</button>
-    <button class="btn btn-s btn-o" onclick="loadPosts()">Refresh</button>
+    <div class="tab-group">
+      <button class="tab-btn active" onclick="switchTab('post')" id="tabPost">Artikel</button>
+      <button class="tab-btn" onclick="switchTab('event')" id="tabEvent">Acara</button>
+    </div>
+    <span style="flex:1"></span>
+    <button class="btn btn-s" id="newBtn" onclick="handleNew()">+ Baru</button>
+    <button class="btn btn-s btn-o" id="refreshBtn" onclick="handleRefresh()">Refresh</button>
   </div>
 
-  <div id="postList" class="post-list"></div>
+  <!-- POSTS SECTION -->
+  <div id="postSection">
+    <div id="postList" class="post-list"></div>
 
-  <div class="editor hidden" id="editForm">
-    <label>Judul Artikel</label>
-    <input type="text" id="postTitle" placeholder="Judul" maxlength="200">
-    <label>Nama file <span class="hint">(huruf kecil, tanda hubung saja, tanpa .md)</span></label>
-    <input type="text" id="postSlug" placeholder="nama-file-artikel" maxlength="100" pattern="[a-z0-9-]+">
-    <label>URL Thumbnail <span class="hint">(opsional, upload dulu di bawah lalu salin URL-nya)</span></label>
-    <input type="text" id="postImage" placeholder="https://ksatria2028.com/uploads/nama-file.jpg" maxlength="500">
-
-    <label>Tags <span class="hint">(pisahkan dengan koma, contoh: berita, kongres, pemuda)</span></label>
-    <input type="text" id="postTags" placeholder="berita, kongres, pemuda" maxlength="300">
-
-    <label>Konten (Markdown)</label>
-    <textarea id="postBody" placeholder="Tulis konten di sini..."></textarea>
-
-    <div style="border-top:1px solid rgba(201,168,76,0.1);padding-top:1rem;margin-top:0.5rem">
-      <label>Upload Gambar <span class="hint">(PNG/JPG/GIF/WebP, max 5MB)</span></label>
-      <div style="display:flex;gap:0.5rem;align-items:center">
-        <input type="file" id="uploadInput" accept="image/png,image/jpeg,image/gif,image/webp" style="flex:1;font-size:0.85rem;padding:0.5rem">
-        <button class="btn btn-s" id="uploadBtn" onclick="uploadImage()">Upload</button>
-      </div>
-      <div id="uploadResult" style="margin-top:0.5rem;display:none">
-        <input type="text" id="uploadUrl" readonly style="font-size:0.75rem;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);color:rgba(201,168,76,0.6);width:100%;outline:none">
-        <div style="display:flex;gap:0.5rem;margin-top:0.4rem">
-          <button class="btn btn-s btn-o" onclick="copyUploadUrl()">Salin URL</button>
-          <button class="btn btn-s btn-o" onclick="setThumbnail()">Jadi Thumbnail</button>
-          <button class="btn btn-s" onclick="insertUploadUrl()">Sisipkan ke Editor</button>
+    <div class="editor hidden" id="editPostForm">
+      <label>Judul Artikel</label>
+      <input type="text" id="postTitle" placeholder="Judul" maxlength="200">
+      <label>Nama file <span class="hint">(huruf kecil, tanda hubung saja, tanpa .md)</span></label>
+      <input type="text" id="postSlug" placeholder="nama-file-artikel" maxlength="100" pattern="[a-z0-9-]+">
+      <label>URL Thumbnail <span class="hint">(opsional, upload dulu di bawah lalu salin URL-nya)</span></label>
+      <input type="text" id="postImage" placeholder="https://ksatria2028.com/uploads/nama-file.jpg" maxlength="500">
+      <label>Tags <span class="hint">(pisahkan dengan koma, contoh: berita, kongres, pemuda)</span></label>
+      <input type="text" id="postTags" placeholder="berita, kongres, pemuda" maxlength="300">
+      <label>Konten (Markdown)</label>
+      <textarea id="postBody" placeholder="Tulis konten di sini..."></textarea>
+      <div style="border-top:1px solid rgba(201,168,76,0.1);padding-top:1rem;margin-top:0.5rem">
+        <label>Upload Gambar <span class="hint">(PNG/JPG/GIF/WebP, max 5MB)</span></label>
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <input type="file" id="uploadInput" accept="image/png,image/jpeg,image/gif,image/webp" style="flex:1;font-size:0.85rem;padding:0.5rem">
+          <button class="btn btn-s" id="uploadBtn" onclick="uploadImage()">Upload</button>
+        </div>
+        <div id="uploadResult" style="margin-top:0.5rem;display:none">
+          <input type="text" id="uploadUrl" readonly style="font-size:0.75rem;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);color:rgba(201,168,76,0.6);width:100%;outline:none">
+          <div style="display:flex;gap:0.5rem;margin-top:0.4rem">
+            <button class="btn btn-s btn-o" onclick="copyUploadUrl()">Salin URL</button>
+            <button class="btn btn-s btn-o" onclick="setThumbnail()">Jadi Thumbnail</button>
+            <button class="btn btn-s" onclick="insertUploadUrl()">Sisipkan ke Editor</button>
+          </div>
         </div>
       </div>
+      <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
+        <button class="btn" id="savePostBtn" onclick="savePost()">Simpan</button>
+        <button class="btn btn-o" onclick="cancelEdit()">Batal</button>
+      </div>
     </div>
+  </div>
 
-    <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
-      <button class="btn" id="saveBtn" onclick="savePost()">Simpan</button>
-      <button class="btn btn-o" onclick="cancelEdit()">Batal</button>
+  <!-- EVENTS SECTION -->
+  <div id="eventSection" class="hidden">
+    <div id="eventList" class="post-list"></div>
+
+    <div class="editor hidden" id="editEventForm">
+      <label>Judul Acara</label>
+      <input type="text" id="eventTitle" placeholder="Judul" maxlength="200">
+      <label>Nama file <span class="hint">(huruf kecil, tanda hubung saja, tanpa .md)</span></label>
+      <input type="text" id="eventSlug" placeholder="nama-acara" maxlength="100" pattern="[a-z0-9-]+">
+      <div class="row">
+        <div>
+          <label>Tanggal <span class="hint">(wajib)</span></label>
+          <input type="date" id="eventDate">
+        </div>
+        <div>
+          <label>Tipe Acara</label>
+          <select id="eventType">
+            <option value="">— Pilih —</option>
+            <option value="sidang">Sidang</option>
+            <option value="festival">Festival</option>
+            <option value="konser">Konser</option>
+            <option value="workshop">Workshop</option>
+            <option value="other">Lainnya</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Jam Mulai</label>
+          <input type="text" id="eventTimeStart" placeholder="09.00 WIB" maxlength="50">
+        </div>
+        <div>
+          <label>Jam Selesai</label>
+          <input type="text" id="eventTimeEnd" placeholder="17.00 WIB" maxlength="50">
+        </div>
+      </div>
+      <label>Lokasi</label>
+      <input type="text" id="eventLocation" placeholder="Gedung MPR RI, Jakarta" maxlength="200">
+      <div class="row">
+        <div>
+          <label>URL Poster</label>
+          <input type="text" id="eventImage" placeholder="https://..." maxlength="500">
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:0.5rem">
+          <div style="flex:1">
+            <label>&nbsp;</label>
+            <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;text-transform:none;font-family:'Inter',sans-serif;color:rgba(245,240,232,0.6);cursor:pointer">
+              <input type="checkbox" id="eventFeatured" style="width:auto;accent-color:#C9A84C;margin:0"> Acara Unggulan
+            </label>
+          </div>
+        </div>
+      </div>
+      <label>Tags <span class="hint">(pisahkan koma)</span></label>
+      <input type="text" id="eventTags" placeholder="sidang, komisi, nasional" maxlength="300">
+      <label>Deskripsi (Markdown)</label>
+      <textarea id="eventBody" placeholder="Tulis deskripsi acara..."></textarea>
+      <div style="border-top:1px solid rgba(201,168,76,0.1);padding-top:1rem;margin-top:0.5rem">
+        <label>Upload Gambar <span class="hint">(PNG/JPG/GIF/WebP, max 5MB)</span></label>
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <input type="file" id="eventUploadInput" accept="image/png,image/jpeg,image/gif,image/webp" style="flex:1;font-size:0.85rem;padding:0.5rem">
+          <button class="btn btn-s" id="eventUploadBtn" onclick="eventUploadImage()">Upload</button>
+        </div>
+        <div id="eventUploadResult" style="margin-top:0.5rem;display:none">
+          <input type="text" id="eventUploadUrl" readonly style="font-size:0.75rem;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);color:rgba(201,168,76,0.6);width:100%;outline:none">
+          <div style="display:flex;gap:0.5rem;margin-top:0.4rem">
+            <button class="btn btn-s btn-o" onclick="eventCopyUrl()">Salin URL</button>
+            <button class="btn btn-s btn-o" onclick="eventSetPoster()">Jadi Poster</button>
+            <button class="btn btn-s" onclick="eventInsertUrl()">Sisipkan ke Deskripsi</button>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
+        <button class="btn" id="saveEventBtn" onclick="saveEvent()">Simpan</button>
+        <button class="btn btn-o" onclick="cancelEdit()">Batal</button>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
+let currentTab = 'post';
 const API = '/api/admin';
 
 function getCookie(name) {
   const m = document.cookie.match('(?:^|; )' + name + '=([^;]*)');
   return m ? decodeURIComponent(m[1]) : '';
 }
+function hasToken() { return !!getCookie('ksatria_token'); }
 
-function hasToken() {
-  return !!getCookie('ksatria_token');
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('tabPost').classList.toggle('active', tab === 'post');
+  document.getElementById('tabEvent').classList.toggle('active', tab === 'event');
+  document.getElementById('postSection').classList.toggle('hidden', tab !== 'post');
+  document.getElementById('eventSection').classList.toggle('hidden', tab !== 'event');
+  document.getElementById('adminSub').textContent = tab === 'post' ? 'Kelola Artikel Blog' : 'Kelola Acara';
+  document.getElementById('newBtn').textContent = tab === 'post' ? '+ Artikel Baru' : '+ Acara Baru';
+  cancelEdit();
+  if (tab === 'post') loadPosts();
+  else loadEvents();
+}
+
+function handleNew() {
+  if (currentTab === 'post') newPost();
+  else newEvent();
+}
+
+function handleRefresh() {
+  if (currentTab === 'post') loadPosts();
+  else loadEvents();
 }
 
 async function login() {
@@ -127,7 +238,6 @@ async function login() {
   btn.disabled = true;
   btn.textContent = 'Memeriksa...';
   document.getElementById('pwErr').style.display = 'none';
-
   try {
     const r = await fetch(API + '/login', {
       method: 'POST',
@@ -141,7 +251,7 @@ async function login() {
       document.getElementById('adminPage').classList.remove('hidden');
       document.getElementById('statusBadge').textContent = 'Terautentikasi';
       document.getElementById('statusBadge').className = 'status ok';
-      loadPosts();
+      switchTab('post');
     } else {
       document.getElementById('pwErr').style.display = 'block';
     }
@@ -157,10 +267,7 @@ async function checkSession() {
   try {
     const r = await fetch(API + '/verify', { credentials: 'same-origin' });
     const d = await r.json();
-    if (d.ok) {
-      loadPosts();
-      return true;
-    }
+    if (d.ok) { switchTab('post'); return true; }
   } catch {}
   return false;
 }
@@ -188,21 +295,17 @@ async function authFetch(url, opts = {}) {
   return r;
 }
 
+// ========== POSTS ==========
+
 async function loadPosts() {
   const list = document.getElementById('postList');
   list.innerHTML = '<div class="loading">Memuat daftar artikel...</div>';
-  document.getElementById('editForm').classList.add('hidden');
-
+  document.getElementById('editPostForm').classList.add('hidden');
   try {
     const r = await authFetch(API + '/posts');
     const d = await r.json();
     if (!d.ok) { list.innerHTML = '<div class="post-item">Gagal memuat</div>'; return; }
-
-    if (!d.posts.length) {
-      list.innerHTML = '<div class="post-item">Belum ada artikel. Klik "+ Artikel Baru" untuk membuat.</div>';
-      return;
-    }
-
+    if (!d.posts.length) { list.innerHTML = '<div class="post-item">Belum ada artikel. Klik "+ Baru" untuk membuat.</div>'; return; }
     list.innerHTML = '';
     d.posts.forEach(p => {
       const item = document.createElement('div');
@@ -210,9 +313,7 @@ async function loadPosts() {
       item.innerHTML = '<div><div class="title">' + esc(p.title) + '</div><div class="meta">' + esc(p.date) + ' · ' + esc(p.name) + '</div></div><div class="actions"><button class="btn btn-s btn-o" onclick="editPost(\'' + esc(p.name) + '\')">Edit</button><button class="btn btn-s btn-d" onclick="deletePost(\'' + esc(p.name) + '\')">Hapus</button></div>';
       list.appendChild(item);
     });
-  } catch (e) {
-    list.innerHTML = '<div class="post-item">Error: ' + esc(e.message) + '</div>';
-  }
+  } catch (e) { list.innerHTML = '<div class="post-item">Error: ' + esc(e.message) + '</div>'; }
 }
 
 async function editPost(name) {
@@ -225,12 +326,10 @@ async function editPost(name) {
     document.getElementById('postSlug').value = name.replace('.md', '');
     document.getElementById('postImage').value = d.image || '';
     document.getElementById('postTags').value = d.tags ? d.tags.join(', ') : '';
-    document.getElementById('editForm').dataset.sha = d.sha || '';
-    document.getElementById('editForm').dataset.name = name;
-    document.getElementById('editForm').classList.remove('hidden');
-  } catch (e) {
-    toast('Error: ' + e.message);
-  }
+    document.getElementById('editPostForm').dataset.sha = d.sha || '';
+    document.getElementById('editPostForm').dataset.name = name;
+    document.getElementById('editPostForm').classList.remove('hidden');
+  } catch (e) { toast('Error: ' + e.message); }
 }
 
 function newPost() {
@@ -239,18 +338,14 @@ function newPost() {
   document.getElementById('postSlug').value = '';
   document.getElementById('postImage').value = '';
   document.getElementById('postTags').value = '';
-  delete document.getElementById('editForm').dataset.sha;
-  delete document.getElementById('editForm').dataset.name;
-  document.getElementById('editForm').classList.remove('hidden');
+  delete document.getElementById('editPostForm').dataset.sha;
+  delete document.getElementById('editPostForm').dataset.name;
+  document.getElementById('editPostForm').classList.remove('hidden');
 }
 
 function setThumbnail() {
   const url = document.getElementById('uploadUrl').value;
   if (url) { document.getElementById('postImage').value = url; toast('Thumbnail diset!'); }
-}
-
-function cancelEdit() {
-  document.getElementById('editForm').classList.add('hidden');
 }
 
 async function savePost() {
@@ -259,16 +354,12 @@ async function savePost() {
   const slug = document.getElementById('postSlug').value.trim();
   if (!title || !body || !slug) { toast('Judul, slug, dan konten harus diisi'); return; }
   if (!/^[a-z0-9-]+$/.test(slug)) { toast('Slug: huruf kecil dan tanda hubung saja'); return; }
-
   const image = document.getElementById('postImage').value.trim();
   const tagsRaw = document.getElementById('postTags').value.trim();
   const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
-
-  const sha = document.getElementById('editForm').dataset.sha || '';
-  const btn = document.getElementById('saveBtn');
-  btn.disabled = true;
-  btn.textContent = 'Menyimpan...';
-
+  const sha = document.getElementById('editPostForm').dataset.sha || '';
+  const btn = document.getElementById('savePostBtn');
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
   try {
     const r = await authFetch(API + '/posts', {
       method: 'POST',
@@ -276,18 +367,10 @@ async function savePost() {
       body: JSON.stringify({ slug, title, body, image, tags, sha }),
     });
     const d = await r.json();
-    if (d.ok) {
-      toast('Tersimpan!');
-      cancelEdit();
-      loadPosts();
-    } else {
-      toast('Gagal: ' + (d.error || 'unknown'));
-    }
-  } catch (e) {
-    toast('Error: ' + e.message);
-  }
-  btn.disabled = false;
-  btn.textContent = 'Simpan';
+    if (d.ok) { toast('Tersimpan!'); cancelEdit(); loadPosts(); }
+    else { toast('Gagal: ' + (d.error || 'unknown')); }
+  } catch (e) { toast('Error: ' + e.message); }
+  btn.disabled = false; btn.textContent = 'Simpan';
 }
 
 async function deletePost(name) {
@@ -297,9 +380,117 @@ async function deletePost(name) {
     const d = await r.json();
     if (d.ok) { toast('Terhapus!'); loadPosts(); }
     else { toast('Gagal: ' + (d.error || 'unknown')); }
-  } catch (e) {
-    toast('Error: ' + e.message);
-  }
+  } catch (e) { toast('Error: ' + e.message); }
+}
+
+// ========== EVENTS ==========
+
+async function loadEvents() {
+  const list = document.getElementById('eventList');
+  list.innerHTML = '<div class="loading">Memuat daftar acara...</div>';
+  document.getElementById('editEventForm').classList.add('hidden');
+  try {
+    const r = await authFetch(API + '/events');
+    const d = await r.json();
+    if (!d.ok) { list.innerHTML = '<div class="post-item">Gagal memuat</div>'; return; }
+    if (!d.events.length) { list.innerHTML = '<div class="post-item">Belum ada acara. Klik "+ Baru" untuk membuat.</div>'; return; }
+    list.innerHTML = '';
+    d.events.forEach(e => {
+      const typeBadge = e.type ? '<span style="display:inline-block;font-size:0.6rem;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.15);padding:0.1em 0.5em;margin-left:0.5em;text-transform:uppercase;letter-spacing:0.05em;color:rgba(201,168,76,0.6)">' + esc(e.type) + '</span>' : '';
+      const featuredStar = e.featured ? ' ★' : '';
+      const item = document.createElement('div');
+      item.className = 'post-item';
+      item.innerHTML = '<div><div class="title">' + esc(e.title) + featuredStar + typeBadge + '</div><div class="meta">' + esc(e.date) + (e.location ? ' · ' + esc(e.location) : '') + ' · ' + esc(e.name) + '</div></div><div class="actions"><button class="btn btn-s btn-o" onclick="editEvent(\'' + esc(e.name) + '\')">Edit</button><button class="btn btn-s btn-d" onclick="deleteEvent(\'' + esc(e.name) + '\')">Hapus</button></div>';
+      list.appendChild(item);
+    });
+  } catch (e) { list.innerHTML = '<div class="post-item">Error: ' + esc(e.message) + '</div>'; }
+}
+
+async function editEvent(name) {
+  try {
+    const r = await authFetch(API + '/events?file=' + encodeURIComponent(name));
+    const d = await r.json();
+    if (!d.ok) { toast('Gagal memuat acara'); return; }
+    document.getElementById('eventTitle').value = d.title || '';
+    document.getElementById('eventBody').value = d.content.replace(/^---[\s\S]*?---\n*/, '');
+    document.getElementById('eventSlug').value = name.replace('.md', '');
+    document.getElementById('eventDate').value = d.date || '';
+    document.getElementById('eventTimeStart').value = d.timeStart || '';
+    document.getElementById('eventTimeEnd').value = d.timeEnd || '';
+    document.getElementById('eventLocation').value = d.location || '';
+    document.getElementById('eventImage').value = d.image || '';
+    document.getElementById('eventType').value = d.type || '';
+    document.getElementById('eventTags').value = d.tags ? d.tags.join(', ') : '';
+    document.getElementById('eventFeatured').checked = !!d.featured;
+    document.getElementById('editEventForm').dataset.sha = d.sha || '';
+    document.getElementById('editEventForm').dataset.name = name;
+    document.getElementById('editEventForm').classList.remove('hidden');
+  } catch (e) { toast('Error: ' + e.message); }
+}
+
+function newEvent() {
+  document.getElementById('eventTitle').value = '';
+  document.getElementById('eventBody').value = '';
+  document.getElementById('eventSlug').value = '';
+  document.getElementById('eventDate').value = '';
+  document.getElementById('eventTimeStart').value = '';
+  document.getElementById('eventTimeEnd').value = '';
+  document.getElementById('eventLocation').value = '';
+  document.getElementById('eventImage').value = '';
+  document.getElementById('eventType').value = '';
+  document.getElementById('eventTags').value = '';
+  document.getElementById('eventFeatured').checked = false;
+  delete document.getElementById('editEventForm').dataset.sha;
+  delete document.getElementById('editEventForm').dataset.name;
+  document.getElementById('editEventForm').classList.remove('hidden');
+}
+
+async function saveEvent() {
+  const title = document.getElementById('eventTitle').value.trim();
+  const body = document.getElementById('eventBody').value;
+  const slug = document.getElementById('eventSlug').value.trim();
+  const date = document.getElementById('eventDate').value;
+  if (!title || !slug || !date) { toast('Judul, slug, dan tanggal harus diisi'); return; }
+  if (!/^[a-z0-9-]+$/.test(slug)) { toast('Slug: huruf kecil dan tanda hubung saja'); return; }
+  const timeStart = document.getElementById('eventTimeStart').value.trim();
+  const timeEnd = document.getElementById('eventTimeEnd').value.trim();
+  const location = document.getElementById('eventLocation').value.trim();
+  const image = document.getElementById('eventImage').value.trim();
+  const type = document.getElementById('eventType').value;
+  const tagsRaw = document.getElementById('eventTags').value.trim();
+  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+  const featured = document.getElementById('eventFeatured').checked;
+  const sha = document.getElementById('editEventForm').dataset.sha || '';
+  const btn = document.getElementById('saveEventBtn');
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+  try {
+    const r = await authFetch(API + '/events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, title, body, date, timeStart, timeEnd, location, image, type, tags, featured, sha }),
+    });
+    const d = await r.json();
+    if (d.ok) { toast('Tersimpan!'); cancelEdit(); loadEvents(); }
+    else { toast('Gagal: ' + (d.error || 'unknown')); }
+  } catch (e) { toast('Error: ' + e.message); }
+  btn.disabled = false; btn.textContent = 'Simpan';
+}
+
+async function deleteEvent(name) {
+  if (!confirm('Hapus ' + name + '?')) return;
+  try {
+    const r = await authFetch(API + '/events?file=' + encodeURIComponent(name), { method: 'DELETE' });
+    const d = await r.json();
+    if (d.ok) { toast('Terhapus!'); loadEvents(); }
+    else { toast('Gagal: ' + (d.error || 'unknown')); }
+  } catch (e) { toast('Error: ' + e.message); }
+}
+
+// ========== SHARED: Upload ==========
+
+function cancelEdit() {
+  document.getElementById('editPostForm').classList.add('hidden');
+  document.getElementById('editEventForm').classList.add('hidden');
 }
 
 async function uploadImage() {
@@ -307,11 +498,8 @@ async function uploadImage() {
   const file = input.files?.[0];
   if (!file) { toast('Pilih file dulu'); return; }
   if (file.size > 5 * 1024 * 1024) { toast('Maks 5MB'); return; }
-
   const btn = document.getElementById('uploadBtn');
-  btn.disabled = true;
-  btn.textContent = 'Uploading...';
-
+  btn.disabled = true; btn.textContent = 'Upload...';
   try {
     const fd = new FormData();
     fd.append('file', file);
@@ -321,14 +509,30 @@ async function uploadImage() {
       document.getElementById('uploadUrl').value = d.url;
       document.getElementById('uploadResult').style.display = 'block';
       toast('Upload berhasil!');
-    } else {
-      toast('Gagal: ' + (d.error || 'unknown'));
-    }
-  } catch (e) {
-    toast('Error: ' + e.message);
-  }
-  btn.disabled = false;
-  btn.textContent = 'Upload';
+    } else { toast('Gagal: ' + (d.error || 'unknown')); }
+  } catch (e) { toast('Error: ' + e.message); }
+  btn.disabled = false; btn.textContent = 'Upload';
+}
+
+async function eventUploadImage() {
+  const input = document.getElementById('eventUploadInput');
+  const file = input.files?.[0];
+  if (!file) { toast('Pilih file dulu'); return; }
+  if (file.size > 5 * 1024 * 1024) { toast('Maks 5MB'); return; }
+  const btn = document.getElementById('eventUploadBtn');
+  btn.disabled = true; btn.textContent = 'Upload...';
+  try {
+    const fd = new FormData();
+    fd.append('file', file);
+    const r = await authFetch(API + '/upload', { method: 'POST', body: fd });
+    const d = await r.json();
+    if (d.ok) {
+      document.getElementById('eventUploadUrl').value = d.url;
+      document.getElementById('eventUploadResult').style.display = 'block';
+      toast('Upload berhasil!');
+    } else { toast('Gagal: ' + (d.error || 'unknown')); }
+  } catch (e) { toast('Error: ' + e.message); }
+  btn.disabled = false; btn.textContent = 'Upload';
 }
 
 function copyUploadUrl() {
@@ -336,6 +540,26 @@ function copyUploadUrl() {
   input.select();
   navigator.clipboard?.writeText(input.value);
   toast('URL disalin!');
+}
+
+function eventCopyUrl() {
+  const input = document.getElementById('eventUploadUrl');
+  input.select();
+  navigator.clipboard?.writeText(input.value);
+  toast('URL disalin!');
+}
+
+function eventSetPoster() {
+  const url = document.getElementById('eventUploadUrl').value;
+  if (url) { document.getElementById('eventImage').value = url; toast('Poster diset!'); }
+}
+
+function eventInsertUrl() {
+  const url = document.getElementById('eventUploadUrl').value;
+  const ta = document.getElementById('eventBody');
+  const start = ta.selectionStart || ta.value.length;
+  ta.value = ta.value.slice(0, start) + `\n![gambar](${url})\n` + ta.value.slice(ta.selectionEnd || start);
+  toast('Disisipkan ke deskripsi!');
 }
 
 function insertUploadUrl() {
@@ -367,7 +591,6 @@ function toast(msg) {
 document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
 document.getElementById('loginBtn').addEventListener('click', login);
 
-// Auto-restore session from cookie
 (function() {
   if (hasToken()) {
     document.getElementById('pwPage').classList.add('hidden');
@@ -378,9 +601,7 @@ document.getElementById('loginBtn').addEventListener('click', login);
       if (ok) {
         document.getElementById('statusBadge').textContent = 'Terautentikasi';
         document.getElementById('statusBadge').className = 'status ok';
-      } else {
-        logout();
-      }
+      } else { logout(); }
     });
   }
 })();

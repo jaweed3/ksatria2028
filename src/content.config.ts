@@ -12,4 +12,19 @@ const posts = defineCollection({
   }),
 });
 
-export const collections = { posts };
+const events = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/events' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.date(),
+    timeStart: z.string().optional(),
+    timeEnd: z.string().optional(),
+    location: z.string().optional(),
+    image: z.string().optional(),
+    type: z.enum(['sidang', 'festival', 'konser', 'workshop', 'other']).optional(),
+    tags: z.array(z.string()).optional(),
+    featured: z.boolean().optional(),
+  }),
+});
+
+export const collections = { posts, events };

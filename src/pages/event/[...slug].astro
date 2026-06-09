@@ -1,0 +1,70 @@
+---
+export const prerender = true;
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+export async function getStaticPaths() {
+  const events = await getCollection('events');
+  return events.map(ev => ({ params: { slug: ev.id } }));
+}
+const { slug } = Astro.params;
+const ev = await getEntry('events', slug);
+const { Content } = await render(ev);
+const allEvents = await getCollection('events');
+const sorted = allEvents.sort((a, b) => new Date(b.data.date || 0) - new Date(a.data.date || 0));
+const idx = sorted.findIndex(e => e.id === slug);
+const prev = idx > 0 ? sorted[idx - 1] : null;
+const next = idx < sorted.length - 1 ? sorted[idx + 1] : null;
+---
+<Layout>
+<Navbar />
+<main>
+<section class="event-section">
+  <div class="event-inner event-article">
+    <a href="/event" class="event-back">← Semua Acara</a>
+
+    <div class="event-article-header">
+      <div class="event-article-meta">
+        <span class="event-type-badge">{ev.data.type || 'acara'}</span>
+        <p class="event-article-date">
+          {ev.data.date?.toLocaleDateString('id-ID', { year:'numeric', month:'long', day:'numeric' })}
+        </p>
+      </div>
+
+      <h1>{ev.data.title}</h1>
+
+      <div class="event-article-info">
+        {ev.data.timeStart && (
+          <div class="event-info-item">
+            <span class="event-info-icon">🕐</span>
+            <span>{ev.data.timeStart}{ev.data.timeEnd ? ` – ${ev.data.timeEnd}` : ''}</span>
+          </div>
+        )}
+        {ev.data.location && (
+          <div class="event-info-item">
+            <span class="event-info-icon">📍</span>
+            <span>{ev.data.location}</span>
+          </div>
+        )}
+        {ev.data.featured && <span class="event-featured-label">Acara Unggulan</span>}
+      </div>
+    </div>
+
+    {ev.data.image && <img src={ev.data.image} alt="" class="event-article-img" />}
+
+    <div class="event-article-body">
+      <Content />
+    </div>
+
+    {(prev || next) && (
+      <div class="event-article-nav">
+        {prev ? <a href={`/event/${prev.id}`} class="event-nav-link prev">← {prev.data.title}</a> : <span></span>}
+        {next ? <a href={`/event/${next.id}`} class="event-nav-link next">{next.data.title} →</a> : <span></span>}
+      </div>
+    )}
+  </div>
+</section>
+</main>
+<Footer />
+</Layout>
