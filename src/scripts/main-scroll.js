@@ -103,12 +103,14 @@
           );
         });
       }
+    }
 
-      // ============================================================
-      // OUTPUT — Staggered Grid Intersection Observer
-      // ============================================================
-      const ogCards = document.querySelectorAll('.og-card');
-      if (ogCards.length) {
+    // ============================================================
+    // OUTPUT — Staggered Grid Intersection Observer
+    // ============================================================
+    const ogCards = document.querySelectorAll('.og-card');
+    if (ogCards.length) {
+      if ('IntersectionObserver' in window) {
         const ogObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -116,8 +118,10 @@
               ogObserver.unobserve(entry.target);
             }
           });
-        }, { threshold: 0.15 });
+        }, { rootMargin: '0px 0px -40px 0px', threshold: 0.05 });
         ogCards.forEach(card => ogObserver.observe(card));
+      } else {
+        ogCards.forEach(card => card.classList.add('og-visible'));
       }
     }
 
