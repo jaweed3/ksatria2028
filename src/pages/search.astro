@@ -1,0 +1,117 @@
+---
+export const prerender = false;
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+const q = Astro.url.searchParams.get('q') || '';
+---
+<Layout>
+<Navbar />
+<main>
+<section class="search-page">
+  <div class="search-inner">
+    <div class="search-heading">
+      <h1>Cari</h1>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Cari artikel, acara, galeri, dokumen..." value={q} autofocus>
+      </div>
+      <div class="search-filters" id="searchFilters">
+        <button class="search-filter active" data-filter="all">Semua</button>
+        <button class="search-filter" data-filter="Blog">Blog</button>
+        <button class="search-filter" data-filter="Acara">Acara</button>
+        <button class="search-filter" data-filter="Galeri">Galeri</button>
+        <button class="search-filter" data-filter="Dokumen">Dokumen</button>
+      </div>
+    </div>
+
+    <div id="searchStatus" class="search-status"></div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</section>
+</main>
+<Footer />
+</Layout>
+
+<script>
+const input = document.getElementById('searchInput');
+const resultsEl = document.getElementById('searchResults');
+const statusEl = document.getElementById('searchStatus');
+let allItems = [];
+let activeFilter = 'all';
+
+function highlight(text, query) {
+  if (!query) return text;
+  const re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  return text.replace(re, '<strong style="color:#C9A84C">$1</strong>');
+}
+
+function render(items, query) {
+  if (!items.length) {
+    resultsEl.innerHTML = '<div class="search-empty">Tidak ditemukan hasil untuk <strong>' + highlight(query || '', '') + '</strong></div>';
+    return;
+  }
+  resultsEl.innerHTML = items.map(item => {
+    const title = highlight(item.title, query);
+    const excerpt = item.excerpt ? highlight(item.excerpt.slice(0, 150), query) : '';
+    return '<a href="' + item.url + '" class="search-item">' +
+      '<span class="search-item-type">' + item.type + '</span>' +
+      '<div class="search-item-body">' +
+      '<div class="search-item-title">' + title + '</div>' +
+      (excerpt ? '<div class="search-item-excerpt">' + excerpt + '</div>' : '') +
+      '</div>' +
+      (item.date ? '<span class="search-item-date">' + item.date + '</span>' : '') +
+      '</a>';
+  }).join('');
+}
+
+function filterAndRender(query) {
+  query = (query || '').trim().toLowerCase();
+  let filtered = allItems;
+  if (activeFilter !== 'all') {
+    filtered = filtered.filter(i => i.type === activeFilter);
+  }
+  if (query) {
+    filtered = filtered.filter(i =>
+      i.title.toLowerCase().includes(query) ||
+      i.excerpt.toLowerCase().includes(query) ||
+      (i.tags && i.tags.some(t => t.toLowerCase().includes(query)))
+    );
+  }
+  statusEl.textContent = query
+    ? filtered.length + ' hasil untuk "' + query + '"'
+    : (filtered.length ? filtered.length + ' item tersedia' : '');
+  render(filtered, query);
+}
+
+async function loadIndex() {
+  resultsEl.innerHTML = '<div class="search-loading">Memuat indeks pencarian...</div>';
+  try {
+    const r = await fetch('/api/search.json');
+    const data = await r.json();
+    allItems = Array.isArray(data) ? data : (data.items || []);
+    const query = input.value.trim();
+    filterAndRender(query);
+  } catch {
+    resultsEl.innerHTML = '<div class="search-empty">Gagal memuat data pencarian.</div>';
+  }
+}
+
+input?.addEventListener('input', function() {
+  const q = this.value;
+  const url = new URL(window.location);
+  url.searchParams.set('q', q);
+  window.history.replaceState({}, '', url);
+  filterAndRender(q);
+});
+
+document.getElementById('searchFilters')?.addEventListener('click', function(e) {
+  const btn = e.target.closest('.search-filter');
+  if (!btn) return;
+  document.querySelectorAll('.search-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.filter;
+  filterAndRender(input.value);
+});
+
+loadIndex();
+</script>

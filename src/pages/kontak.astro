@@ -1,0 +1,145 @@
+---
+export const prerender = false;
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout>
+<Navbar />
+<main>
+<section class="kontak-section">
+  <div class="kontak-inner">
+    <div class="kontak-heading">
+      <p class="section-label">— Kontak —</p>
+      <h1>Hubungi Kami</h1>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="kontak-grid">
+      <div class="kontak-info">
+        <div class="kontak-addr">
+          <h2>Panitia Nasional KSATRIA 2028</h2>
+          <p>Gedung MPR RI, Jl. Jenderal Gatot Subroto, Senayan, Jakarta Pusat 10270</p>
+          <p>Gelora Bung Karno, Jl. Pintu Satu Senayan, Jakarta Pusat 10270</p>
+        </div>
+
+        <div class="kontak-item">
+          <svg class="kontak-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <div>
+            <div class="kontak-item-label">Email</div>
+            <div class="kontak-item-value"><a href="mailto:info@ksatria2028.id">info@ksatria2028.id</a></div>
+          </div>
+        </div>
+
+        <div class="kontak-item">
+          <svg class="kontak-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <div>
+            <div class="kontak-item-label">WhatsApp</div>
+            <div class="kontak-item-value"><a href="https://wa.me/6285210076423" target="_blank" rel="noopener noreferrer">+62 852 1007 6423</a></div>
+          </div>
+        </div>
+
+        <div class="kontak-item">
+          <svg class="kontak-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div>
+            <div class="kontak-item-label">Lokasi</div>
+            <div class="kontak-item-value">Jakarta, Indonesia</div>
+          </div>
+        </div>
+
+        <div class="kontak-sosial">
+          <h3>Ikuti Kami</h3>
+          <div class="kontak-sosial-links">
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram">IG</a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X">X</a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="YouTube">YT</a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok">TT</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="kontak-form-wrap">
+        <h2>Kirim Pesan</h2>
+        <form class="kontak-form" id="kontakForm">
+          <div>
+            <label for="kontakNama">Nama Lengkap *</label>
+            <input type="text" id="kontakNama" required maxlength="200">
+          </div>
+          <div>
+            <label for="kontakEmail">Email *</label>
+            <input type="email" id="kontakEmail" required maxlength="200">
+          </div>
+          <div>
+            <label for="kontakSubjek">Subjek *</label>
+            <input type="text" id="kontakSubjek" required maxlength="200">
+          </div>
+          <div>
+            <label for="kontakPesan">Pesan *</label>
+            <textarea id="kontakPesan" required maxlength="5000"></textarea>
+          </div>
+          <button type="submit" class="btn" id="kontakBtn">Kirim Pesan</button>
+          <div id="kontakError" class="field-error"></div>
+        </form>
+        <div class="kontak-thanks" id="kontakThanks">
+          <h3>Terima Kasih</h3>
+          <p>Pesan Anda telah terkirim. Kami akan menghubungi Anda segera.</p>
+          <p style="margin-top:0.5rem;font-size:0.8rem;color:var(--color-text-muted)"><em>Atau hubungi kami langsung via WhatsApp di +62 852 1007 6423</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<Footer />
+</Layout>
+
+<script>
+  const form = document.getElementById('kontakForm');
+  const btn = document.getElementById('kontakBtn');
+  const errEl = document.getElementById('kontakError');
+  const thanks = document.getElementById('kontakThanks');
+
+  form?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'Mengirim...';
+    errEl.style.display = 'none';
+
+    const payload = {
+      nama: document.getElementById('kontakNama').value.trim(),
+      email: document.getElementById('kontakEmail').value.trim(),
+      subjek: document.getElementById('kontakSubjek').value.trim(),
+      pesan: document.getElementById('kontakPesan').value.trim(),
+      type: 'contact',
+    };
+
+    if (!payload.nama || !payload.email || !payload.subjek || !payload.pesan) {
+      errEl.textContent = 'Semua field harus diisi';
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Kirim Pesan';
+      return;
+    }
+
+    try {
+      const r = await fetch('/api/kontak', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const d = await r.json();
+      if (d.ok) {
+        form.style.display = 'none';
+        thanks.style.display = 'block';
+      } else {
+        errEl.textContent = d.error || 'Gagal mengirim pesan';
+        errEl.style.display = 'block';
+      }
+    } catch {
+      errEl.textContent = 'Gagal menghubungi server';
+      errEl.style.display = 'block';
+    }
+    btn.disabled = false;
+    btn.textContent = 'Kirim Pesan';
+  });
+</script>

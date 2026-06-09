@@ -1,0 +1,64 @@
+---
+export const prerender = true;
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+const items = await getCollection('dokumen');
+items.sort((a, b) => new Date(b.data.date || 0) - new Date(a.data.date || 0));
+const categories = [...new Set(items.map(i => i.data.category).filter(Boolean))];
+---
+<Layout>
+<Navbar />
+<main>
+<section class="dokumen-section">
+  <div class="dokumen-inner">
+    <div class="dokumen-heading">
+      <p class="section-label">— Dokumen —</p>
+      <h1>Dokumen KSATRIA 2028</h1>
+      <div class="section-divider"></div>
+    </div>
+
+    {categories.map(cat => (
+      <div class="dokumen-category">
+        <h2 class="dokumen-cat-title">{cat}</h2>
+        <div class="dokumen-grid">
+          {items.filter(i => i.data.category === cat).map(item => (
+            <a href={item.data.file} target="_blank" rel="noopener noreferrer" class="dokumen-card">
+              <div class="dokumen-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </div>
+              <div class="dokumen-body">
+                <h3 class="dokumen-title">{item.data.title}</h3>
+                {item.data.fileSize && <span class="dokumen-size">{item.data.fileSize}</span>}
+              </div>
+              <span class="dokumen-download">Download</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+
+    {items.length === 0 && <p class="dokumen-empty">Belum ada dokumen.</p>}
+
+    {!categories.length && items.length > 0 && (
+      <div class="dokumen-grid">
+        {items.map(item => (
+          <a href={item.data.file} target="_blank" rel="noopener noreferrer" class="dokumen-card">
+            <div class="dokumen-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div class="dokumen-body">
+              <h3 class="dokumen-title">{item.data.title}</h3>
+              {item.data.fileSize && <span class="dokumen-size">{item.data.fileSize}</span>}
+            </div>
+            <span class="dokumen-download">Download</span>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+</main>
+<Footer />
+</Layout>

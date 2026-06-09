@@ -32,20 +32,22 @@ export async function POST({ request }) {
     }
 
     const ext = file.name.split('.').pop()?.toLowerCase() || 'png';
-    const allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+    const allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'pdf'];
     if (!allowed.includes(ext)) {
       return Response.json({ ok: false, error: 'file type not allowed: ' + ext }, { status: 400 });
     }
 
-    const maxSize = 5 * 1024 * 1024;
+    const maxSize = ext === 'pdf' ? 15 * 1024 * 1024 : 5 * 1024 * 1024;
     if (file.size > maxSize) {
-      return Response.json({ ok: false, error: 'file too large (max 5MB)' }, { status: 400 });
+      return Response.json({ ok: false, error: 'file too large (max ' + (maxSize / 1024 / 1024) + 'MB)' }, { status: 400 });
     }
 
+    const folder = form.get('folder') || '';
+    const sub = ['galeri', 'dokumen'].includes(folder) ? folder + '/' : '';
     const buffer = Buffer.from(await file.arrayBuffer());
     const b64 = buffer.toString('base64');
     const slug = Date.now().toString(36) + '-' + file.name.replace(/[^a-zA-Z0-9.-]/g, '_').toLowerCase();
-    const ghPath = `${UPLOADS_PATH}/${slug}`;
+    const ghPath = `${UPLOADS_PATH}/${sub}${slug}`;
 
     const existing = await gh(`/contents/${encodeURIComponent(ghPath)}`);
 

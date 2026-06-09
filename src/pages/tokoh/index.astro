@@ -1,0 +1,65 @@
+---
+export const prerender = true;
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+const items = await getCollection('people');
+items.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+const categories = [...new Set(items.map(p => p.data.category).filter(Boolean))];
+---
+<Layout>
+<Navbar />
+<main>
+<section class="tokoh-section">
+  <div class="tokoh-inner">
+    <div class="tokoh-heading">
+      <p class="section-label">— Tokoh & Panitia —</p>
+      <h1>Tokoh & Panitia KSATRIA 2028</h1>
+      <div class="section-divider"></div>
+    </div>
+
+    {categories.length > 0 && (
+      <div class="tokoh-filters" id="tokohFilters">
+        <button class="tokoh-filter active" data-cat="all">Semua</button>
+        {categories.map(cat => (
+          <button class="tokoh-filter" data-cat={cat}>{cat.replace(/-/g, ' ')}</button>
+        ))}
+      </div>
+    )}
+
+    <div class="tokoh-grid" id="tokohGrid">
+      {items.map(p => (
+        <a href={`/tokoh/${p.id}`} class="tokoh-card" data-category={p.data.category || ''}>
+          <div class="tokoh-photo-wrap">
+            {p.data.photo
+              ? <img src={p.data.photo} alt={p.data.name} class="tokoh-photo" loading="lazy" />
+              : <div class="tokoh-photo-placeholder">{p.data.name.charAt(0)}</div>
+            }
+          </div>
+          <h2 class="tokoh-card-name">{p.data.name}</h2>
+          <p class="tokoh-card-role">{p.data.role}</p>
+          {p.data.category && <span class="tokoh-card-cat">{p.data.category.replace(/-/g, ' ')}</span>}
+        </a>
+      ))}
+    </div>
+
+    {items.length === 0 && <p class="tokoh-empty">Belum ada data tokoh.</p>}
+  </div>
+</section>
+</main>
+<Footer />
+</Layout>
+
+<script>
+document.getElementById('tokohFilters')?.addEventListener('click', function(e) {
+  const btn = e.target.closest('.tokoh-filter');
+  if (!btn) return;
+  document.querySelectorAll('.tokoh-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cat = btn.dataset.cat;
+  document.querySelectorAll('.tokoh-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.category === cat) ? '' : 'none';
+  });
+});
+</script>

@@ -27,4 +27,49 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { posts, events };
+const galeri = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/galeri' }),
+  schema: z.object({
+    title: z.string(),
+    caption: z.string().optional(),
+    image: z.string(),
+    category: z.string().optional(),
+    date: z.date().optional(),
+  }),
+});
+
+const dokumen = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/dokumen' }),
+  schema: z.object({
+    title: z.string(),
+    category: z.string().optional(),
+    file: z.string(),
+    fileSize: z.string().optional(),
+    date: z.date().optional(),
+  }),
+});
+
+const people = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/people' }),
+  schema: z.object({
+    name: z.string(),
+    role: z.string(),
+    photo: z.string().optional(),
+    bio: z.string().optional(),
+    category: z.string().optional(),
+    order: z.number().optional(),
+  }),
+});
+
+const quotes = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/quotes' }),
+  schema: z.object({
+    name: z.string(),
+    role: z.string().optional(),
+    quote: z.string(),
+    photo: z.string().optional(),
+    order: z.number().optional(),
+  }),
+});
+
+export const collections = { posts, events, galeri, dokumen, people, quotes };

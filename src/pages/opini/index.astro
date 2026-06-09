@@ -1,0 +1,56 @@
+---
+export const prerender = false;
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+---
+<Layout>
+<Navbar />
+<main>
+<section class="blog-section">
+  <div class="blog-inner">
+    <div class="blog-heading" data-animate="fade-up">
+      <p class="section-label">— OPINI —</p>
+      <h1>Opini & Gagasan Kebangsaan</h1>
+      <p class="blog-lead">Perspektif, refleksi, dan gagasan strategis dari tokoh muda Indonesia untuk masa depan bangsa.</p>
+      <div class="section-divider"></div>
+    </div>
+
+    <div id="opiniContainer" class="blog-posts">
+      <div class="loading" style="text-align:center;padding:3rem;color:var(--color-text-muted)">Memuat opini...</div>
+    </div>
+  </div>
+</section>
+</main>
+<Footer />
+</Layout>
+
+<script>
+(async function() {
+  const container = document.getElementById('opiniContainer');
+  try {
+    const r = await fetch('/api/posts');
+    const d = await r.json();
+    const items = (d.items || []).filter(p => p.category === 'Opini');
+    if (!items.length) { container.innerHTML = '<p style="text-align:center;padding:3rem;color:var(--color-text-muted)">Belum ada opini.</p>'; return; }
+    items.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+    const featured = items[0];
+    let html = `<article class="blog-featured">`;
+    if (featured.image) html += `<img src="${featured.image}" alt="${esc(featured.title)}" class="blog-featured-img" loading="lazy">`;
+    html += `<div class="blog-featured-body"><div class="blog-meta"><span class="blog-cat-badge">Opini</span>${featured.date ? ' · ' + new Date(featured.date).toLocaleDateString('id-ID', {year:'numeric',month:'long',day:'numeric'}) : ''}</div><h2 class="blog-featured-title"><a href="/blog/${featured.slug}">${esc(featured.title)}</a></h2><p class="blog-excerpt">${esc(featured.excerpt || '')}</p><a href="/blog/${featured.slug}" class="blog-readmore">Baca Selengkapnya →</a></div></article>`;
+
+    html += '<div class="blog-grid">';
+    for (let i = 1; i < items.length; i++) {
+      const p = items[i];
+      html += `<article class="blog-card">`;
+      if (p.image) html += `<a href="/blog/${p.slug}"><img src="${p.image}" alt="${esc(p.title)}" class="blog-card-img" loading="lazy"></a>`;
+      html += `<div class="blog-card-body"><div class="blog-meta"><span class="blog-cat-badge">Opini</span>${p.date ? ' · ' + new Date(p.date).toLocaleDateString('id-ID', {year:'numeric',month:'long',day:'numeric'}) : ''}</div><h3 class="blog-card-title"><a href="/blog/${p.slug}">${esc(p.title)}</a></h3><p class="blog-excerpt">${esc(p.excerpt || '')}</p><a href="/blog/${p.slug}" class="blog-readmore">Baca →</a></div></article>`;
+    }
+    html += '</div>';
+    container.innerHTML = html;
+  } catch(e) { container.innerHTML = '<p style="text-align:center;padding:3rem;color:red">Gagal memuat: ' + e.message + '</p>'; }
+
+  function esc(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+})();
+</script>

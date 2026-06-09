@@ -35,6 +35,8 @@ export async function GET({ request }) {
       const tags = tagsMatch ? tagsMatch[1].split(',').map(t => t.trim().replace(/['"]/g, '')).filter(Boolean) : [];
       const imageMatch = content.match(/^image:\s*(.+)/m);
       const image = imageMatch ? imageMatch[1].trim() : '';
+      const categoryMatch = content.match(/^category:\s*(.+)/m);
+      const category = categoryMatch ? categoryMatch[1].trim() : '';
       return Response.json({
         ok: true,
         name: data.name,
@@ -42,6 +44,7 @@ export async function GET({ request }) {
         content,
         image,
         tags,
+        category,
         html_url: data.html_url,
       });
   }

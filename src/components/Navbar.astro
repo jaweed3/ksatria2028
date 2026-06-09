@@ -14,9 +14,44 @@ function isActive(p: string) { return path === p || path.startsWith(p + '/'); }
       <li><a href="/komisi" class:list={{ 'nav-active': isActive('/komisi') }}>Komisi</a></li>
       <li><a href="/#festival">Festival</a></li>
       <li><a href="/kepanitiaan" class:list={{ 'nav-active': isActive('/kepanitiaan') }}>Kepanitiaan</a></li>
+      <li><a href="/tokoh" class:list={{ 'nav-active': isActive('/tokoh') }}>Tokoh</a></li>
       <li><a href="/event" class:list={{ 'nav-active': isActive('/event') }}>Acara</a></li>
+      <li><a href="/galeri" class:list={{ 'nav-active': isActive('/galeri') }}>Galeri</a></li>
+      <li><a href="/dokumen" class:list={{ 'nav-active': isActive('/dokumen') }}>Dokumen</a></li>
       <li><a href="/blog" class:list={{ 'nav-active': isActive('/blog') }}>Blog</a></li>
+      <li><a href="/opini" class:list={{ 'nav-active': isActive('/opini') }}>Opini</a></li>
+      <li><a href="/kontak" class:list={{ 'nav-active': isActive('/kontak') }}>Kontak</a></li>
       <li><a href="/#registrasi" class="nav-cta">Daftar Sekarang</a></li>
+      <li style="display:flex;align-items:center;gap:0.25rem">
+        <button class="nav-search-btn" id="navSearchBtn" aria-label="Cari">&#8981;</button>
+        <input type="text" class="nav-search-input" id="navSearchInput" placeholder="Cari..." />
+      </li>
     </ul>
   </div>
 </nav>
+<script>
+  const searchBtn = document.getElementById('navSearchBtn');
+  const searchInput = document.getElementById('navSearchInput');
+  if (searchBtn && searchInput) {
+    searchBtn.addEventListener('click', () => {
+      searchInput.classList.toggle('open');
+      if (searchInput.classList.contains('open')) {
+        searchInput.focus();
+      }
+    });
+    searchInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && searchInput.value.trim()) {
+        window.location.href = '/search?q=' + encodeURIComponent(searchInput.value.trim());
+      }
+      if (e.key === 'Escape') {
+        searchInput.classList.remove('open');
+        searchInput.blur();
+      }
+    });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-search-btn') && !e.target.closest('.nav-search-input')) {
+        searchInput.classList.remove('open');
+      }
+    });
+  }
+</script>

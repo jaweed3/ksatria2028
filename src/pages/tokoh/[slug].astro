@@ -1,0 +1,38 @@
+---
+export const prerender = true;
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+export async function getStaticPaths() {
+  const items = await getCollection('people');
+  return items.map(p => ({ params: { slug: p.id }, props: { person: p } }));
+}
+const { person } = Astro.props;
+const p = person;
+---
+<Layout>
+<Navbar />
+<main>
+<section class="tokoh-detail-section">
+  <div class="tokoh-detail-inner">
+    <a href="/tokoh" class="tokoh-detail-back">← Semua Tokoh</a>
+
+    <div class="tokoh-detail-header">
+      {p.data.photo
+        ? <img src={p.data.photo} alt={p.data.name} class="tokoh-detail-photo" />
+        : <div class="tokoh-detail-photo-placeholder">{p.data.name.charAt(0)}</div>
+      }
+      <div class="tokoh-detail-info">
+        <h1>{p.data.name}</h1>
+        <p class="tokoh-detail-role">{p.data.role}</p>
+        {p.data.category && <span class="tokoh-detail-cat">{p.data.category.replace(/-/g, ' ')}</span>}
+      </div>
+    </div>
+
+    {p.data.bio && <div class="tokoh-detail-bio"><p>{p.data.bio}</p></div>}
+  </div>
+</section>
+</main>
+<Footer />
+</Layout>

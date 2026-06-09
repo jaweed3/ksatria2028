@@ -1,0 +1,137 @@
+    .galeri-section {
+      background: var(--color-charcoal);
+      color: var(--color-text-on-dark);
+      min-height: 100vh;
+      padding: 8rem 2rem 4rem;
+    }
+    .galeri-inner { max-width: var(--container); margin: 0 auto; }
+    .galeri-heading { text-align: center; margin-bottom: 4rem; }
+    .galeri-heading .section-label { color: var(--color-gold); }
+    .galeri-heading h1 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--color-text-on-dark);
+      line-height: 1.15;
+      margin: 1rem 0 1.5rem;
+    }
+    .galeri-heading .section-divider { width: 60px; height: 2px; background: var(--color-gold); margin: 0 auto; }
+
+    .galeri-filters {
+      display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .galeri-filter {
+      padding: 0.4rem 1rem;
+      background: transparent;
+      border: 1px solid rgba(201,168,76,0.1);
+      color: rgba(245,240,232,0.4);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .galeri-filter:hover { color: var(--color-text-on-dark); border-color: rgba(201,168,76,0.3); }
+    .galeri-filter.active { background: rgba(201,168,76,0.12); color: var(--color-gold); border-color: var(--color-gold); }
+
+    .galeri-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .galeri-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+      aspect-ratio: 4/3;
+      display: block;
+      width: 100%;
+    }
+    .galeri-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .galeri-card:hover .galeri-img { transform: scale(1.06); }
+    .galeri-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 2rem 1.25rem 1rem;
+      background: linear-gradient(to top, rgba(5,5,5,0.85) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      text-align: left;
+    }
+    .galeri-card:hover .galeri-overlay { opacity: 1; }
+    .galeri-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--color-gold);
+      margin-bottom: 0.2rem;
+    }
+    .galeri-caption {
+      font-size: 0.8rem;
+      color: rgba(245,240,232,0.6);
+    }
+    .galeri-empty { text-align: center; padding: 6rem 2rem; color: rgba(245,240,232,0.3); }
+
+    .lightbox {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(5,5,5,0.95);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lightbox.hidden { display: none; }
+    .lightbox-content {
+      position: relative;
+      max-width: 90vw; max-height: 85vh;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%; max-height: 75vh;
+      object-fit: contain;
+    }
+    .lightbox-info {
+      text-align: center;
+      padding: 1rem 0 0;
+    }
+    .lightbox-info h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--color-gold);
+    }
+    .lightbox-info p {
+      font-size: 0.85rem;
+      color: rgba(245,240,232,0.5);
+      margin-top: 0.25rem;
+    }
+    .lightbox-close {
+      position: absolute; top: 1rem; right: 1.5rem;
+      background: none; border: none; color: rgba(245,240,232,0.5);
+      font-size: 2rem; cursor: pointer; z-index: 10001;
+      transition: color 0.2s;
+    }
+    .lightbox-close:hover { color: var(--color-gold); }
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2);
+      color: var(--color-gold); font-size: 1.5rem; cursor: pointer;
+      width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; z-index: 10001;
+    }
+    .lightbox-nav:hover { background: rgba(201,168,76,0.2); }
+    .lightbox-prev { left: 1rem; }
+    .lightbox-next { right: 1rem; transform: translateY(-50%) scaleX(-1); }
+
+    @media (max-width: 767px) {
+      .galeri-section { padding: 6rem 1.25rem 3rem; }
+      .galeri-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+      .galeri-card { aspect-ratio: 1; }
+      .galeri-overlay { opacity: 1; padding: 1rem 0.75rem; }
+      .galeri-title { font-size: 0.8rem; }
+      .galeri-caption { display: none; }
+    }

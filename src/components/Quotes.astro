@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+const items = await getCollection('quotes');
+items.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+const serialized = JSON.stringify(items.map(i => ({ name: i.data.name, quote: i.data.quote, role: i.data.role || '', photo: i.data.photo || '' })));
+const count = items.length;
+---
+
+<section class="section-quotes">
+  <div class="quotes-inner">
+    <div class="quotes-heading" data-animate="fade-up">
+      <p class="section-label">— SUARA KEBANGSAAN —</p>
+      <h2>Kata Mereka tentang KSATRIA</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    {count > 0 ? (
+      <div class="quotes-carousel" data-animate="fade-up">
+        <div class="quotes-track">
+          {items.map((item, i) => (
+            <div class="quotes-slide" data-slide={i}>
+              <div class="quotes-mark">&ldquo;</div>
+              <blockquote class="quotes-text">{item.data.quote}</blockquote>
+              <div class="quotes-author">
+                {item.data.photo ? (
+                  <img src={item.data.photo} alt={item.data.name} class="quotes-author-photo" loading="lazy" />
+                ) : (
+                  <div class="quotes-author-photo-placeholder">{item.data.name.charAt(0)}</div>
+                )}
+                <div class="quotes-author-info">
+                  <div class="quotes-author-name">{item.data.name}</div>
+                  {item.data.role && <div class="quotes-author-role">{item.data.role}</div>}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="quotes-nav" id="quotesDots">
+          {items.map((_, i) => (
+            <button class="quotes-dot" data-dot={i} aria-label="Slide {i + 1}"></button>
+          ))}
+        </div>
+        <div class="quotes-arrows">
+          <button class="quotes-arrow" id="quotesPrev">&larr; Sebelumnya</button>
+          <button class="quotes-arrow" id="quotesNext">Selanjutnya &rarr;</button>
+        </div>
+      </div>
+    ) : (
+      <div class="quotes-empty">Belum ada kutipan.</div>
+    )}
+  </div>
+</section>
+
+<script>
+const quotes = {serialized};
+const count = quotes.length;
+if (count > 0) {
+  let current = 0;
+  const slides = document.querySelectorAll('.quotes-slide');
+  const dots = document.querySelectorAll('.quotes-dot');
+
+  function show(idx) {
+    current = (idx + count) % count;
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  show(0);
+
+  dots.forEach(d => d.addEventListener('click', () => show(parseInt(d.dataset.dot))));
+  document.getElementById('quotesPrev')?.addEventListener('click', () => show(current - 1));
+  document.getElementById('quotesNext')?.addEventListener('click', () => show(current + 1));
+
+  let interval = setInterval(() => show(current + 1), 5000);
+  document.querySelector('.quotes-carousel')?.addEventListener('mouseenter', () => clearInterval(interval));
+  document.querySelector('.quotes-carousel')?.addEventListener('mouseleave', () => { interval = setInterval(() => show(current + 1), 5000); });
+}
+</script>

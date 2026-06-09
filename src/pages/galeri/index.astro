@@ -1,0 +1,113 @@
+---
+export const prerender = true;
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+const items = await getCollection('galeri');
+items.sort((a, b) => new Date(b.data.date || 0) - new Date(a.data.date || 0));
+const categories = [...new Set(items.map(i => i.data.category).filter(Boolean))];
+const serialized = JSON.stringify(items.map(i => ({ title: i.data.title, caption: i.data.caption || '', image: i.data.image, category: i.data.category || '' })));
+---
+<Layout>
+<Navbar />
+<main>
+<section class="galeri-section">
+  <div class="galeri-inner">
+    <div class="galeri-heading">
+      <p class="section-label">— Galeri —</p>
+      <h1>Galeri KSATRIA 2028</h1>
+      <div class="section-divider"></div>
+    </div>
+
+    {categories.length > 0 && (
+      <div class="galeri-filters" id="galeriFilters">
+        <button class="galeri-filter active" data-cat="all">Semua</button>
+        {categories.map(cat => (
+          <button class="galeri-filter" data-cat={cat}>{cat}</button>
+        ))}
+      </div>
+    )}
+
+    <div class="galeri-grid" id="galeriGrid">
+      {items.map((item, i) => (
+        <button class="galeri-card" data-index={i} data-category={item.data.category || ''}>
+          <img src={item.data.image} alt={item.data.title} class="galeri-img" loading="lazy" />
+          <div class="galeri-overlay">
+            <h3 class="galeri-title">{item.data.title}</h3>
+            {item.data.caption && <p class="galeri-caption">{item.data.caption}</p>}
+          </div>
+        </button>
+      ))}
+    </div>
+
+    {items.length === 0 && <p class="galeri-empty">Belum ada foto.</p>}
+  </div>
+</section>
+
+<div id="lightbox" class="lightbox hidden">
+  <button class="lightbox-close" id="lbClose">&times;</button>
+  <button class="lightbox-nav lightbox-prev" id="lbPrev">&#8592;</button>
+  <button class="lightbox-nav lightbox-next" id="lbNext">&#8592;</button>
+  <div class="lightbox-content">
+    <img id="lbImg" src="" alt="" class="lightbox-img" />
+    <div class="lightbox-info">
+      <h3 id="lbTitle"></h3>
+      <p id="lbCaption"></p>
+    </div>
+  </div>
+</div>
+</main>
+<Footer />
+</Layout>
+
+<script>
+const galeriItems = {serialized};
+let lbIndex = -1;
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbTitle = document.getElementById('lbTitle');
+const lbCaption = document.getElementById('lbCaption');
+
+document.getElementById('galeriGrid')?.addEventListener('click', e => {
+  const card = e.target.closest('.galeri-card');
+  if (!card) return;
+  const idx = parseInt(card.dataset.index);
+  if (isNaN(idx)) return;
+  lbIndex = idx;
+  updateLightbox();
+  lb.classList.remove('hidden');
+});
+
+document.getElementById('lbClose')?.addEventListener('click', () => lb.classList.add('hidden'));
+document.getElementById('lbPrev')?.addEventListener('click', () => { lbIndex--; if (lbIndex < 0) lbIndex = galeriItems.length - 1; updateLightbox(); });
+document.getElementById('lbNext')?.addEventListener('click', () => { lbIndex++; if (lbIndex >= galeriItems.length) lbIndex = 0; updateLightbox(); });
+lb?.addEventListener('click', e => { if (e.target === lb) lb.classList.add('hidden'); });
+document.addEventListener('keydown', e => {
+  if (!lb || lb.classList.contains('hidden')) return;
+  if (e.key === 'Escape') lb.classList.add('hidden');
+  if (e.key === 'ArrowLeft') document.getElementById('lbPrev')?.click();
+  if (e.key === 'ArrowRight') document.getElementById('lbNext')?.click();
+});
+
+function updateLightbox() {
+  const item = galeriItems[lbIndex];
+  if (!item) return;
+  lbImg.src = item.image;
+  lbImg.alt = item.title;
+  lbTitle.textContent = item.title;
+  lbCaption.textContent = item.caption;
+}
+
+// Filters
+document.getElementById('galeriFilters')?.addEventListener('click', function(e) {
+  const btn = e.target.closest('.galeri-filter');
+  if (!btn) return;
+  document.querySelectorAll('.galeri-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cat = btn.dataset.cat;
+  document.querySelectorAll('.galeri-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.category === cat) ? '' : 'none';
+  });
+});
+</script>
