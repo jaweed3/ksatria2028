@@ -105,46 +105,19 @@
       }
 
       // ============================================================
-      // OUTPUT — Full-Viewport Horizontal Scroll + Center Glassmorphism
+      // OUTPUT — Staggered Grid Intersection Observer
       // ============================================================
-      const outputSection = document.querySelector('.section-output[data-hscroll]');
-      const outputViewport = outputSection?.querySelector('.output-viewport');
-      const outputTrack = outputSection?.querySelector('.output-track');
-      const outputCards = outputSection ? gsap.utils.toArray('.output-card') : [];
-
-      if (outputSection && outputTrack && outputViewport && outputCards.length) {
-        const getTravel = () => -(outputTrack.scrollWidth - outputViewport.offsetWidth);
-
-        gsap.to(outputTrack, {
-          x: getTravel,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: outputSection,
-            start: 'top top',
-            end: () => '+=' + Math.abs(getTravel()),
-            pin: true,
-            scrub: 1.2,
-            invalidateOnRefresh: true,
-            onUpdate: self => {
-              const progress = self.progress;
-              const totalCards = outputCards.length;
-              const rawIndex = progress * (totalCards - 1);
-              const centerIdx = Math.min(Math.max(Math.round(rawIndex), 0), totalCards - 1);
-
-              outputCards.forEach((card, i) => {
-                card.classList.remove('output-card--center', 'output-card--left', 'output-card--right', 'output-card--far');
-
-                if (i === centerIdx) {
-                  card.classList.add('output-card--center');
-                } else if (i < centerIdx) {
-                  card.classList.add(centerIdx - i >= 2 ? 'output-card--far' : 'output-card--left');
-                } else {
-                  card.classList.add(i - centerIdx >= 2 ? 'output-card--far' : 'output-card--right');
-                }
-              });
+      const ogCards = document.querySelectorAll('.og-card');
+      if (ogCards.length) {
+        const ogObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('og-visible');
+              ogObserver.unobserve(entry.target);
             }
-          }
-        });
+          });
+        }, { threshold: 0.15 });
+        ogCards.forEach(card => ogObserver.observe(card));
       }
     }
 

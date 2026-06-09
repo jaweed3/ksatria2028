@@ -166,7 +166,7 @@
     }
 
     .section-number,
-    .output-number {
+    .og-num {
       filter: drop-shadow(0 0 12px rgba(201,168,76,0.06));
     }
 
@@ -177,7 +177,7 @@
 
     .nilai-card,
     .komisi-card,
-    .output-card,
+    .og-card,
     .hscroll-card,
     .konser-card,
     .day-card,
@@ -187,7 +187,7 @@
     }
     .nilai-card:hover,
     .komisi-card:hover,
-    .output-card:hover,
+    .og-card:hover,
     .hscroll-card:hover,
     .konser-card:hover,
     .day-card:hover,
