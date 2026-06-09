@@ -6,7 +6,7 @@ timeEnd: "23.00 WIB"
 location: "Gelora Bung Karno, Jakarta"
 type: "konser"
 featured: true
-image: "https://picsum.photos/seed/hari-puncak/1200/600"
+image: "https://upload.wikimedia.org/wikipedia/commons/b/b5/TV_News_Media_in_GBK_Stadium%2C_Jakarta%2C_MetroTV.jpg"
 tags: ["puncak", "konser", "deklarasi", "28 oktober"]
 ---
 

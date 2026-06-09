@@ -6,7 +6,7 @@ timeEnd: "22.00 WIB"
 location: "Gedung MPR RI, Jakarta"
 type: "sidang"
 featured: true
-image: "https://picsum.photos/seed/sidang-komisi/1200/600"
+image: "https://upload.wikimedia.org/wikipedia/commons/e/e2/University_of_Indonesia_Graduation_Ceremony%2C_11_September_2025_170.jpg"
 tags: ["sidang", "komisi", "strategis", "kongres"]
 ---
 

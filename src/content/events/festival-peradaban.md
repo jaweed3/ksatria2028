@@ -6,7 +6,7 @@ timeEnd: "23.00 WIB"
 location: "Area GBK, Jakarta"
 type: "festival"
 featured: false
-image: "https://picsum.photos/seed/festival-peradaban/1200/600"
+image: "https://upload.wikimedia.org/wikipedia/commons/4/4f/Around_the_World_Cultural_Food_Festival_2018_%2830648122398%29.jpg"
 tags: ["festival", "budaya", "umkm", "inovasi"]
 ---
 

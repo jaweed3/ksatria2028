@@ -3,7 +3,7 @@ title: "Deklarasi Pemuda Indonesia 2028: Komitmen Seabad Kedua"
 excerpt: "Dokumen moral dan kebangsaan yang akan menjadi kompas bagi generasi muda Indonesia menuju 2045."
 date: "2028-10-05"
 author: "Panitia Nasional KSATRIA 2028"
-image: "https://picsum.photos/seed/deklarasi-2028/1200/600"
+image: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Flag_Ceremony_at_School_in_Indonesia.JPG"
 tags: ["deklarasi", "komitmen", "kebangsaan", "2045"]
 category: "Pengumuman"
 ---
