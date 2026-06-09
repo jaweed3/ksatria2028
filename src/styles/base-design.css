@@ -3,6 +3,7 @@
        ============================================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+    :root { scroll-padding-top: 80px; }
 
     /* ============================================================
        SELF-HOSTED FONTS (variable fonts, woff2)
