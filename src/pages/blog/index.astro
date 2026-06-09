@@ -33,6 +33,7 @@ const serialized = JSON.stringify(posts.map(p => ({ id: p.id, title: p.data.titl
     <div class="blog-grid" id="blogGrid"></div>
     <div class="blog-pagination" id="blogPagination"></div>
     <p class="blog-empty" id="blogEmpty" style="display:none">Belum ada artikel.</p>
+    <div id="blogData" data-items={serialized} data-perpage={perPage} style="display:none"></div>
   </div>
 </section>
 </main>
@@ -40,104 +41,101 @@ const serialized = JSON.stringify(posts.map(p => ({ id: p.id, title: p.data.titl
 </Layout>
 
 <script>
-const allPosts = {serialized};
-const perPage = {perPage};
-let currentPage = 1;
-let currentCat = 'all';
+(function(d) {
+  var raw = d.getElementById('blogData');
+  if (!raw) return;
+  var allPosts, perPage;
+  try { allPosts = JSON.parse(raw.dataset.items); perPage = parseInt(raw.dataset.perpage) || 9; } catch(e) { return; }
+  var currentPage = 1, currentCat = 'all';
 
-function formatDate(iso) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  return d.toLocaleDateString('id-ID', { year:'numeric', month:'long', day:'numeric' });
-}
-
-function render() {
-  const filtered = currentCat === 'all'
-    ? allPosts
-    : allPosts.filter(p => p.category === currentCat);
-
-  const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
-  if (currentPage > totalPages) currentPage = 1;
-
-  const featured = filtered[0];
-  const start = currentPage === 1 ? 1 : (currentPage - 1) * perPage;
-  const pageItems = currentPage === 1 ? filtered.slice(1, perPage) : filtered.slice(start, start + perPage);
-
-  // Featured
-  const featEl = document.getElementById('blogFeaturedContainer');
-  if (currentPage === 1 && featured) {
-    const p = featured;
-    featEl.innerHTML = '<a href="/blog/' + p.id + '" class="blog-featured">' +
-      '<div class="blog-featured-img-wrap">' +
-      (p.image ? '<img src="' + p.image + '" alt="" class="blog-featured-img" />' : '<div class="blog-featured-img-placeholder">KSATRIA</div>') +
-      '<div class="blog-featured-overlay">' +
-      '<p class="blog-featured-date">' + formatDate(p.date) + '</p>' +
-      (p.category ? '<span class="blog-cat-badge">' + p.category + '</span>' : '') +
-      (p.tags.length ? '<div class="blog-tags">' + p.tags.map(t => '<span class="blog-tag">' + t + '</span>').join('') + '</div>' : '') +
-      '<h2 class="blog-featured-title">' + p.title + '</h2>' +
-      '<p class="blog-featured-excerpt">' + p.body.slice(0, 180) + '...</p>' +
-      '</div></div></a>';
-    featEl.style.display = '';
-  } else {
-    featEl.innerHTML = '';
-    featEl.style.display = 'none';
+  function formatDate(iso) {
+    if (!iso) return '';
+    var dt = new Date(iso);
+    return dt.toLocaleDateString('id-ID', { year:'numeric', month:'long', day:'numeric' });
   }
 
-  // Grid
-  const grid = document.getElementById('blogGrid');
-  if (!pageItems.length && (!featured || currentPage > 1)) {
-    grid.innerHTML = '';
-    document.getElementById('blogEmpty').style.display = 'block';
-    document.getElementById('blogPagination').innerHTML = '';
-    return;
-  }
-  document.getElementById('blogEmpty').style.display = 'none';
-  grid.innerHTML = pageItems.map(p =>
-    '<a href="/blog/' + p.id + '" class="blog-card" data-category="' + (p.category || '') + '">' +
-    (p.image ? '<img src="' + p.image + '" alt="" class="blog-card-img" />' : '<div class="blog-card-img-placeholder">✦</div>') +
-    '<p class="blog-card-date">' + formatDate(p.date) + '</p>' +
-    (p.category ? '<span class="blog-cat-badge">' + p.category + '</span>' : '') +
-    (p.tags.length ? '<div class="blog-tags">' + p.tags.map(t => '<span class="blog-tag">' + t + '</span>').join('') + '</div>' : '') +
-    '<h3 class="blog-card-title">' + p.title + '</h3>' +
-    '<p class="blog-card-excerpt">' + p.body.slice(0, 120) + '...</p>' +
-    '</a>'
-  ).join('');
+  function render() {
+    var filtered = currentCat === 'all' ? allPosts : allPosts.filter(function(p) { return p.category === currentCat; });
+    var totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
+    if (currentPage > totalPages) currentPage = 1;
 
-  // Pagination
-  if (totalPages <= 1) { document.getElementById('blogPagination').innerHTML = ''; return; }
-  let pagHtml = '';
-  if (currentPage > 1) pagHtml += '<button class="blog-page-btn" data-page="' + (currentPage - 1) + '">←</button>';
-  for (let i = 1; i <= totalPages; i++) {
-    pagHtml += '<button class="blog-page-btn' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</button>';
-  }
-  if (currentPage < totalPages) pagHtml += '<button class="blog-page-btn" data-page="' + (currentPage + 1) + '">→</button>';
-  document.getElementById('blogPagination').innerHTML = pagHtml;
-}
+    var featured = filtered[0];
+    var start = currentPage === 1 ? 1 : (currentPage - 1) * perPage;
+    var pageItems = currentPage === 1 ? filtered.slice(1, perPage) : filtered.slice(start, start + perPage);
 
-// Filter click
-document.getElementById('blogFilters')?.addEventListener('click', function(e) {
-  const btn = e.target.closest('.blog-filter');
-  if (!btn) return;
-  document.querySelectorAll('.blog-filter').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  currentCat = btn.dataset.cat;
-  currentPage = 1;
+    var featEl = d.getElementById('blogFeaturedContainer');
+    if (currentPage === 1 && featured) {
+      var p = featured;
+      featEl.innerHTML = '<a href="/blog/' + p.id + '" class="blog-featured">' +
+        '<div class="blog-featured-img-wrap">' +
+        (p.image ? '<img src="' + esc(p.image) + '" alt="" class="blog-featured-img" />' : '<div class="blog-featured-img-placeholder">KSATRIA</div>') +
+        '<div class="blog-featured-overlay">' +
+        '<p class="blog-featured-date">' + formatDate(p.date) + '</p>' +
+        (p.category ? '<span class="blog-cat-badge">' + esc(p.category) + '</span>' : '') +
+        (p.tags.length ? '<div class="blog-tags">' + p.tags.map(function(t) { return '<span class="blog-tag">' + esc(t) + '</span>'; }).join('') + '</div>' : '') +
+        '<h2 class="blog-featured-title">' + esc(p.title) + '</h2>' +
+        '<p class="blog-featured-excerpt">' + esc(p.body.slice(0, 180)) + '...</p>' +
+        '</div></div></a>';
+      featEl.style.display = '';
+    } else {
+      featEl.innerHTML = '';
+      featEl.style.display = 'none';
+    }
+
+    var grid = d.getElementById('blogGrid');
+    if (!pageItems.length && (!featured || currentPage > 1)) {
+      grid.innerHTML = '';
+      d.getElementById('blogEmpty').style.display = 'block';
+      d.getElementById('blogPagination').innerHTML = '';
+      return;
+    }
+    d.getElementById('blogEmpty').style.display = 'none';
+    grid.innerHTML = pageItems.map(function(p) {
+      return '<a href="/blog/' + p.id + '" class="blog-card" data-category="' + (p.category || '') + '">' +
+        (p.image ? '<img src="' + esc(p.image) + '" alt="" class="blog-card-img" />' : '<div class="blog-card-img-placeholder">✦</div>') +
+        '<p class="blog-card-date">' + formatDate(p.date) + '</p>' +
+        (p.category ? '<span class="blog-cat-badge">' + esc(p.category) + '</span>' : '') +
+        (p.tags.length ? '<div class="blog-tags">' + p.tags.map(function(t) { return '<span class="blog-tag">' + esc(t) + '</span>'; }).join('') + '</div>' : '') +
+        '<h3 class="blog-card-title">' + esc(p.title) + '</h3>' +
+        '<p class="blog-card-excerpt">' + esc(p.body.slice(0, 120)) + '...</p>' +
+        '</a>';
+    }).join('');
+
+    if (totalPages <= 1) { d.getElementById('blogPagination').innerHTML = ''; return; }
+    var pagHtml = '';
+    if (currentPage > 1) pagHtml += '<button class="blog-page-btn" data-page="' + (currentPage - 1) + '">←</button>';
+    for (var i = 1; i <= totalPages; i++) {
+      pagHtml += '<button class="blog-page-btn' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</button>';
+    }
+    if (currentPage < totalPages) pagHtml += '<button class="blog-page-btn" data-page="' + (currentPage + 1) + '">→</button>';
+    d.getElementById('blogPagination').innerHTML = pagHtml;
+  }
+
+  d.getElementById('blogFilters').addEventListener('click', function(e) {
+    var btn = e.target.closest('.blog-filter');
+    if (!btn) return;
+    d.querySelectorAll('.blog-filter').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    currentPage = 1;
+    render();
+  });
+
+  d.getElementById('blogPagination').addEventListener('click', function(e) {
+    var btn = e.target.closest('.blog-page-btn');
+    if (!btn) return;
+    currentPage = parseInt(btn.dataset.page);
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  var catParam = new URLSearchParams(window.location.search).get('kategori');
+  if (catParam) {
+    var btn = d.querySelector('.blog-filter[data-cat="' + catParam + '"]');
+    if (btn) btn.click();
+  }
   render();
-});
 
-// Page click
-document.getElementById('blogPagination')?.addEventListener('click', function(e) {
-  const btn = e.target.closest('.blog-page-btn');
-  if (!btn) return;
-  currentPage = parseInt(btn.dataset.page);
-  render();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-const catParam = new URLSearchParams(window.location.search).get('kategori');
-if (catParam) {
-  const btn = document.querySelector('.blog-filter[data-cat="' + catParam + '"]');
-  if (btn) btn.click();
-}
-render();
+  function esc(s) { var e = d.createElement('div'); e.textContent = s || ''; return e.innerHTML; }
+})(document);
 </script>
