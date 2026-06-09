@@ -4,6 +4,13 @@
     .hero {
       position: relative; overflow: hidden; background: var(--color-deep-black);
     }
+    .hero-bg-image {
+      position: absolute; inset: 0;
+      background-image: url("https://upload.wikimedia.org/wikipedia/commons/3/30/Historical_Indonesian_Youth_Pledge%2C_Sumpah_Pemuda_in_1928.jpg");
+      background-size: cover; background-position: center 30%;
+      opacity: 0.15;
+      filter: grayscale(1) contrast(1.2);
+    }
     .hero-bg-pattern {
       position: absolute; inset: 0; opacity: 0.4;
       background:

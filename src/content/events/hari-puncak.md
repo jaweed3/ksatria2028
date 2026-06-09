@@ -6,7 +6,7 @@ timeEnd: "23.00 WIB"
 location: "Gelora Bung Karno, Jakarta"
 type: "konser"
 featured: true
-image: "https://upload.wikimedia.org/wikipedia/commons/b/b5/TV_News_Media_in_GBK_Stadium%2C_Jakarta%2C_MetroTV.jpg"
+image: "https://upload.wikimedia.org/wikipedia/commons/6/6d/Api_sumpah_pemuda_Jakarta_1928.jpg"
 tags: ["puncak", "konser", "deklarasi", "28 oktober"]
 ---
 

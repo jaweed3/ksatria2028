@@ -3,7 +3,7 @@ title: "7 Komisi Strategis: Apa yang Akan Dibahas di KSATRIA 2028?"
 excerpt: "Mengenal tujuh komisi strategis yang akan menjadi jantung diskusi kongres pemuda satu abad."
 date: "2028-10-01"
 author: "Panitia Nasional KSATRIA 2028"
-image: "https://upload.wikimedia.org/wikipedia/commons/e/e2/University_of_Indonesia_Graduation_Ceremony%2C_11_September_2025_170.jpg"
+image: "https://upload.wikimedia.org/wikipedia/commons/2/26/Youthpledge.jpg"
 tags: ["komisi", "strategis", "diskusi", "kebijakan"]
 category: "Berita"
 ---
